@@ -4,7 +4,7 @@ Clase con la información correspondiente a cada operación
 '''
 
 class Operation:
-    def __init__(self, id='0_0', duration=0, start_time=0, end_time=0, machine=0, job=0, job_id=0, machine_id=0):
+    def __init__(self, id='0_0', duration=0, start_time=0, end_time=0, machine=0, job=0, job_id=0, machine_id=0, fixed=False, machine_time_assigned=False):
         self.id         = id
         self.duration   = duration
         self.start_time = start_time
@@ -16,14 +16,23 @@ class Operation:
         self.assigned_machine_order = False
         self.common_operations = []
         self.start_times = []
+        self.fixed = fixed
+        self.machine_time_assigned = machine_time_assigned
 
-    def add_start_time(self, time):
+
+    def add_possible_start_time(self, time):
         start_time.append(time)
 
     def has_machine_order(self):
         return self.assigned_machine_order
 
     '''Sección para getters'''
+
+    def has_machine_time_assigned(self):
+        return self.machine_time_assigned
+
+    def is_fiexd(self):
+        return self.fixed
 
     def get_common_operations(self):
         return common_operations
@@ -53,6 +62,11 @@ class Operation:
         return self.job_id
     
     '''Sección para setters'''
+    def set_machine_time_assigned(self, machine_time_assigned):
+        self.machine_time_assigned = machine_time_assigned
+
+    def set_fixed(sefl, fixed):
+        self.fixed = fixed
 
     def set_machine_order(self, assigned_machine):
         self.assigned_machine = assigned_machine
@@ -92,5 +106,6 @@ class Operation:
     machine_id = property(get_machine_id, set_machine_id)
     job        = property(get_job, set_job)
     job_is     = property(get_job_id, set_job_id)
+    fixed      = property(is_fixed, set_fixed)
     assigned_machine = property(get_assigned_machine, set_assigned_machine)
 
