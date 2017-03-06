@@ -31,7 +31,7 @@ class Operation:
     def has_machine_time_assigned(self):
         return self.machine_time_assigned
 
-    def is_fiexd(self):
+    def is_fixed(self):
         return self.fixed
 
     def get_common_operations(self):
@@ -61,6 +61,9 @@ class Operation:
     def get_job_id(self):
         return self.job_id
     
+    def get_assigned_machine(self):
+        return self.assigned_machine
+
     '''Sección para setters'''
     def set_machine_time_assigned(self, machine_time_assigned):
         self.machine_time_assigned = machine_time_assigned
@@ -98,6 +101,9 @@ class Operation:
     def set_common_operations(self, common_operations):
         self.common_operations = common_operations
     
+    def set_assigned_machine(self, assigned_machine):
+        self.assigned_machine = assigned_machine
+
     id         = property(get_id, set_id)
     duration   = property(get_duration, set_duration)
     start_time = property(get_start_time, set_start_time)

@@ -13,7 +13,6 @@ class DisjunctiveGraph:
 		# For each operation identify common operations in terms of machines		
 		
 		graph = self.assign_machine_order(graph, operations)
-
 		first_op_ids = find_first_operations(graph, operations)
 
 		# ALGORITHM 1 : Calculate Makespan
