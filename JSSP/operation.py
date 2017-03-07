@@ -4,7 +4,7 @@ Clase con la información correspondiente a cada operación
 '''
 
 class Operation:
-    def __init__(self, id='0_0', duration=0, start_time=0, end_time=0, machine=0, job=0, job_id=0, machine_id=0, fixed=False, machine_time_assigned=False):
+    def __init__(self, id='0_0', self_id = 0, duration=0, start_time=0, end_time=0, machine=0, job=0, job_id=0, machine_id=0, fixed=False, machine_time_assigned=False):
         self.id         = id
         self.duration   = duration
         self.start_time = start_time
@@ -18,7 +18,16 @@ class Operation:
         self.start_times = []
         self.fixed = fixed
         self.machine_time_assigned = machine_time_assigned
+        self.self_id = self_id
 
+    def create_self_id(self, op_job):
+        final = ''
+        for char in op_job:
+            if char != '_':
+                final = final + char
+            else:
+                self.self_id = int(final)
+        
 
     def add_possible_start_time(self, time):
         start_time.append(time)
@@ -27,6 +36,9 @@ class Operation:
         return self.assigned_machine_order
 
     '''Sección para getters'''
+
+    def get_self_id(self):
+        return self.self_id
 
     def has_machine_time_assigned(self):
         return self.machine_time_assigned
@@ -68,6 +80,9 @@ class Operation:
     def set_machine_time_assigned(self, machine_time_assigned):
         self.machine_time_assigned = machine_time_assigned
 
+    def set_self_id(self, id):
+        self.self_id = id
+
     def set_fixed(sefl, fixed):
         self.fixed = fixed
 
@@ -77,14 +92,15 @@ class Operation:
     def set_job_id(self, job_id):
         self.job_id = job_id
     
-    def set_id(self, id):
-        self.id = id
+    def set_id(self, self_job):
+        self.id = self_job
+        self.create_self_id(self.id)
     
     def set_job(self, job):
         self.job = job
     
     def set_start_time(self):
-        self.start_time = max(start_times)
+        self.start_time = max(self.start_times)
     
     def set_duration(self, duration):
         self.duration = duration

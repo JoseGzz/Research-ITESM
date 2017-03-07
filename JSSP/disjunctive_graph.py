@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*
 import collections
 from random import shuffle
 
@@ -9,11 +10,24 @@ class DisjunctiveGraph:
 		# Using the job array index values
 		# Create diccionary, each key for each operation and values are the next operation
 		#graph = dict([((operations[i], operations[i].get_id()), [operations[i+1].get_id()]) for i in range(len(operations) - 1)])
-		graph = collections.OrderedDict((operations[i].get_id(), [operations[i], operations[i + 1]]) for i in range(len(operations) - 1))
+		graph = collections.OrderedDict((operations[i].get_id(), [operations[i], operations[i + 1]])
+			for i in range(len(operations) - 1) if operations[i].get_job_id() == operations[i+1].get_job_id())
+
+		# crea nodos finales apuntando a vacío por el momento
+		for op in operations:
+			if op.get_self_id() == 14:
+				graph[op.get_id()] = [op]
+	
+		'''
 		# For each operation identify common operations in terms of machines		
+		for k, v in graph.iteritems():
+			print 'key: {}'.format(k)
+			for val in v:
+				print val.get_id()
+		'''
 		
 		graph = self.assign_machine_order(graph, operations)
-		first_op_ids = find_first_operations(graph, operations)
+		first_op_ids = self.find_first_operations(graph, operations)
 
 		# ALGORITHM 1 : Calculate Makespan
 		#
@@ -42,12 +56,16 @@ class DisjunctiveGraph:
 		backtracking = False
 		nect_job = 0
 		times = []
-		while not all_fixed(graph):
+		print 'Asignando tiempos...'
+		while not self.all_fixed(graph):
 			for op_id, lst in graph.iteritems():
+				print 'Analizando operación...'
 				current_op = lst[0]
 				if not backtracking: 
 					if not current_op.is_fixed():
+						print 'operación sin asignacion.'
 						if current_op.get_id() in first_op_ids:
+							print 'Operación es primera. '
 							current_op.set_tart_time(0)
 							current_op.set_end_time(current_op.get_start_time() + current_op.get_duration())
 							end_time = current_op.get_end_time()
@@ -58,8 +76,8 @@ class DisjunctiveGraph:
 									graph[adjacent.get_id()][0].set_machine_time_assigned(True)
 							graph[current_op.get_id()][0].set_fixed(True)
 						else:
-							if waits_for_machine(lst[0], graph) and not current_op.has_machine_time_assigned():
-							    if depends_on_posterior_op(graph, lst):
+							if self.waits_for_machine(lst[0], graph) and not current_op.has_machine_time_assigned():
+							    if self.depends_on_posterior_op(graph, lst):
 							    	continue
 							    else:
 							    	backtracking = True
@@ -69,8 +87,6 @@ class DisjunctiveGraph:
 								current_op.set_fixed(True)
 								graph[current_op.get_id()][0] = current_op
 								times.append(current_op.get_start_time())
-						else:
-							continue
 				elif int(lst[0].get_job_id()[2]) == next_job :
 					backtracking = False
 				else:
@@ -80,10 +96,10 @@ class DisjunctiveGraph:
 
 		return graph
 
-	def waits_for_machine(op, graph):
+	def waits_for_machine(self, op, graph):
 		appearances = 0
 		for op_id, lst in graph.iteritems():
-			for next_op in ls[:1]:
+			for next_op in lst[:1]:
 				if op.get_id() ==  next_op.get_id():
 					appearances += 1
 				else:
@@ -98,7 +114,7 @@ class DisjunctiveGraph:
 		next(iterops)
 		for op in iterops:
 			adjacents = graph.get(op.get_id())[1:]
-			if current_op in adjacents
+			if current_op in adjacents:
 				return True
 			else:
 				continue
@@ -118,10 +134,11 @@ class DisjunctiveGraph:
 			if not lst[0].has_machine_order():
 			    machine_id = lst[0].get_machine_id()
 			    ops_with_common_machines = [op for op in operations if op.get_machine_id() == machine_id]
-			    ops_with_common_machines.append(lst[0])
-			    ops = shuffle(ops_with_common_machines)
+			    #ops_with_common_machines.append(lst[0])
+			    ops = ops_with_common_machines
+			    shuffle(ops)
 			    # se agrergan las operaciones comunes (por máquinas) a la lista de adjacentes
-			    for i in range(len(ops) - 1):
+			    for i in range(len(ops)-1):
 			    	graph[ops[i].get_id()] = graph.get(ops[i].get_id()) + list([ops[i+1]])
 			    # para las operaciones a las que ya se les asignaron máquinas, se prende su booleana
 			    for op in ops:
@@ -134,7 +151,7 @@ class DisjunctiveGraph:
 	def find_first_operations(self, graph, operations):
 		id_list = []
 		for op in operations:
-			for k, v in graph:
+			for k, v in graph.iteritems():
 				if op.get_id() in v:
 					id_list.append(op.get_id())
 				else:
