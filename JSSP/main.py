@@ -19,9 +19,13 @@ import numpy as np
 
 '''Función main para comenzar a ejecutar el programa '''
 def main():
+
+    times    = 'times_sample_mat.txt' 
+    machines = 'machines_sample_mat.txt'
     # verifica que los archivos existan
+    # IMPORTANTE: se asume que todas las tareas tienen la misma cantidad de operaciones
     try:
-        times_mat, machines_mat = np.loadtxt('times_mat.txt'), np.loadtxt('machines_mat.txt')
+        times_mat, machines_mat = np.genfromtxt(times), np.genfromtxt(machines, dtype=None)
     except IOError as e:
         print("One file was not found.")
         print(e)
@@ -69,7 +73,7 @@ def main():
     #    print op.id
     '''
     dg = DisjunctiveGraph()
-    g = dg.find_makespan(jobs, ops, machines)
+    g = dg.find_makespan(jobs, ops, machines, no_machines)
     # print g
     
 if __name__ == "__main__":

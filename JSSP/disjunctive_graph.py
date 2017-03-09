@@ -6,16 +6,18 @@ class DisjunctiveGraph:
 	def __init__(self):
 		pass
 
-	def find_makespan(self, jobs, operations, machines):
+	def find_makespan(self, jobs, operations, machines, no_machines):
 		# Using the job array index values
 		# Create diccionary, each key for each operation and values are the next operation
 		#graph = dict([((operations[i], operations[i].get_id()), [operations[i+1].get_id()]) for i in range(len(operations) - 1)])
 		graph = collections.OrderedDict((operations[i].get_id(), [operations[i], operations[i + 1]])
 			for i in range(len(operations) - 1) if operations[i].get_job_id() == operations[i+1].get_job_id())
 
+		print no_machines-1
+
 		# crea nodos finales apuntando a vacío por el momento
 		for op in operations:
-			if op.get_self_id() == 14:
+			if op.get_self_id() == (no_machines-1):
 				graph[op.get_id()] = [op]
 	
 		'''
@@ -25,9 +27,26 @@ class DisjunctiveGraph:
 			for val in v:
 				print val.get_id()
 		'''
-		
+		'''
+		for k, v in graph.iteritems():
+			print 'key: {}'.format(k)
+			for val in v:
+				print val.get_id()
+			print '---'
+		'''
 		graph = self.assign_machine_order(graph, operations)
 		first_op_ids = self.find_first_operations(graph, operations)
+
+		# For each operation identify common operations in terms of machines
+				
+		for k, v in graph.iteritems():
+			print 'key: {}'.format(k)
+			for val in v:
+				print val.get_id()
+			print '---'
+		
+
+		print first_op_ids
 
 		# ALGORITHM 1 : Calculate Makespan
 		#
@@ -59,11 +78,12 @@ class DisjunctiveGraph:
 		print 'Asignando tiempos...'
 		while not self.all_fixed(graph):
 			for op_id, lst in graph.iteritems():
+				print op_id
 				print 'Analizando operación...'
 				current_op = lst[0]
 				if not backtracking: 
 					if not current_op.is_fixed():
-						print 'operación sin asignacion.'
+						print 'Operación sin asignacion.'
 						if current_op.get_id() in first_op_ids:
 							print 'Operación es primera. '
 							current_op.set_tart_time(0)
@@ -76,13 +96,17 @@ class DisjunctiveGraph:
 									graph[adjacent.get_id()][0].set_machine_time_assigned(True)
 							graph[current_op.get_id()][0].set_fixed(True)
 						else:
+							print 'Operación no es primera.'
 							if self.waits_for_machine(lst[0], graph) and not current_op.has_machine_time_assigned():
+							    print 'Operación espera tiempo de máquina.'
 							    if self.depends_on_posterior_op(graph, lst):
-							    	continue
+							        print 'Operación depente de nodos posteriores.'
+							   	    
 							    else:
 							    	backtracking = True
 							    	next_job = int(current_op.get_job_id()[2]) 
 							else:
+								print 'Operación no espera tiempo de máquina'
 								current_op.set_start_time()
 								current_op.set_fixed(True)
 								graph[current_op.get_id()][0] = current_op
@@ -133,19 +157,20 @@ class DisjunctiveGraph:
 		for op_id, lst in graph.iteritems():
 			if not lst[0].has_machine_order():
 			    machine_id = lst[0].get_machine_id()
-			    ops_with_common_machines = [op for op in operations if op.get_machine_id() == machine_id]
-			    #ops_with_common_machines.append(lst[0])
+			    ops_with_common_machines = [lst[0] for op_id, lst in graph.iteritems()
+			    if lst[0].get_machine_id() == machine_id and not lst[0].has_machine_order()]
 			    ops = ops_with_common_machines
 			    shuffle(ops)
 			    # se agrergan las operaciones comunes (por máquinas) a la lista de adjacentes
 			    for i in range(len(ops)-1):
 			    	graph[ops[i].get_id()] = graph.get(ops[i].get_id()) + list([ops[i+1]])
 			    # para las operaciones a las que ya se les asignaron máquinas, se prende su booleana
-			    for op in ops:
-			    	op.set_machine_order(True)
-			    	vals = graph.get(op.get_id())
-			    	vals[0] = op
-			    	graph[op.get_id()] = vals
+			    vals = graph.get(op_id)
+			    new_vals = []
+			    for val in vals:
+			    	val.set_machine_order(True)
+			    	new_vals.append(val)
+			    graph[op_id] = new_vals
 		return graph
 
 	def find_first_operations(self, graph, operations):
