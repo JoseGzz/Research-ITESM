@@ -92,18 +92,20 @@ class DisjunctiveGraph:
 							    if self.depends_on_posterior_op(graph, lst):
 							        print('Operación depente de nodos posteriores.')
 							    else:
+							    	print('Activando backtracking.')
 							    	backtracking = True
-							    	next_job = int(current_op.get_id()[2]) 
+							    	current_job = int(current_op.get_id()[2])
+							    	next_job = 0 if current_job == (len(jobs) - 1) else current_job + 1 
 							else:
 								print('Operación no espera tiempo de máquina.')
 								current_op.set_start_time()
 								current_op.set_fixed(True)
 								graph[current_op.get_id()][0] = current_op
 								times.append(current_op.get_start_time())
-				elif int(lst[0].get_id()[2]) == next_job :
+				elif int(lst[1].get_id()[2]) == next_job :
 					backtracking = False
-				else:
-					continue
+
+
 
 		print("makespan: " + str(max(times)))
 		return graph

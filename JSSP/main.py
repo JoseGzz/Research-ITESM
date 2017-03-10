@@ -33,6 +33,7 @@ def main():
 
     # Estableecmos cantidades necesarias
     no_jobs     = len(times_mat[:])
+    print no_jobs
     no_machines = len(times_mat[0])
 
     # Se crea la lista de objetos
@@ -72,6 +73,7 @@ def main():
     #for op in ops:
     #    print op.id
     '''
+    print '--->', len(jobs)
     dg = DisjunctiveGraph()
     g = dg.find_makespan(jobs, ops, machines, no_machines)
     # print g
