@@ -71,38 +71,59 @@ class DisjunctiveGraph:
 				print(op_id)
 				print('Analizando operación...')
 				current_op = lst[0]
+				# si no estamos buscando una tarea distinta
 				if not backtracking: 
+					# si la operación actual no tiene asignado un tiempo
 					if not current_op.is_fixed():
 						print('Operación sin asignacion.')
+						# si la operación actual no tiene predecesores
 						if current_op.get_id() in first_op_ids:
 							print('Operación es primera.')
-							current_op.set_tart_time(0)
+							# le asignamos tiempo de inicio en cero
+							current_job.add_possible_start_time(0)
+							current_op.set_start_time()
+							# le asignamos tiempo de finalización en base a su duración
 							current_op.set_end_time(current_op.get_start_time() + current_op.get_duration())
+							# establecemos un tiempo de finalización
 							end_time = current_op.get_end_time()
+							# remplazamos el objeto ya con el tiempo asignado
 							graph[current_op.get_id()][0] = current_op
+							# se le asigna a los adjacentes un posible tiempo de inicio
+							# a partir del segundo adyacente (si existe) se trata de un adyacente 
+							# conectado por máquina, así que se prende su booleana
 							for count, adjacent in enumarate(lst[:1]):
 								graph[adjacent.get_id()][0].add_possible_start_time(end_time)
 								if count > 0:
 									graph[adjacent.get_id()][0].set_machine_time_assigned(True)
+							# se prende booleana de asignación para la operación actual
 							graph[current_op.get_id()][0].set_fixed(True)
 						else:
 							print('Operación no es primera.')
+							# si la operación actual espera una asignación de tiempo por máquina que no ha ocurrido
+							# si esto depende de una operación adelante entonces seguimos al siguiente nodo
 							if current_op.waits_for_machine() and not current_op.has_machine_time_assigned():
 							    print('Operación espera tiempo de máquina.')
 							    if self.depends_on_posterior_op(graph, lst):
 							        print('Operación depente de nodos posteriores.')
 							    else:
 							    	print('Activando backtracking.')
+							    	# si no depende de una op posterior entonces activamos backtracking
+							    	# para pasar a la sig. tarea. Si estamos en la última tarea
+							    	# pasamos a la primera, de lo contrario a la siguiente (secuencia)
 							    	backtracking = True
-							    	current_job = int(current_op.get_id()[2])
-							    	next_job = 0 if current_job == (len(jobs) - 1) else current_job + 1 
+							    	current_job_id = int(current_op.get_id()[2])
+							    	next_job = 0 if current_job_id == (len(jobs) - 1) else current_job + 1 
 							else:
+								# si la operación no espera un tiempo por máquina o ya lo tiene
+								# establecemos tiempo de inicio, lo marcamos como asignado, reemplazamos el objeto
+								# y agregamos su tiempo de inicio a la lista de tiempos
 								print('Operación no espera tiempo de máquina.')
 								current_op.set_start_time()
 								current_op.set_fixed(True)
 								graph[current_op.get_id()][0] = current_op
 								times.append(current_op.get_start_time())
-				elif int(lst[1].get_id()[2]) == next_job :
+				# si la siguiente operación corresponde a la tarea que se buscaba, detenemos la búsqueda 
+				elif int(lst[1].get_id()[2]) == next_job:
 					backtracking = False
 
 
