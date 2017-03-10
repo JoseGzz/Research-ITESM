@@ -6,28 +6,28 @@ Clase con la información correspondiente a cada operación
 class Operation:
     
 
-    def __init__(self, id='0_0', waits_for_m = True, self_id = 0, duration=0, start_time=0, end_time=0, machine=0, job=0, job_id=0, machine_id=0, fixed=False, machine_time_assigned=False):
-        self.id         = id
-        self.duration   = duration
-        self.start_time = start_time
-        self.end_time   = end_time
-        self.machine    = machine
-        self.job        = job
-        self.job_id     = job_id
-        self.machine_id = machine_id
-        self.assigned_machine_order = False
-        self.common_operations = []
-        self.start_times = []
-        self.fixed = fixed
-        self.machine_time_assigned = machine_time_assigned
-        self.self_id = self_id
-        self.waits_for_m = waits_for_m
+    def __init__(self, op_id='0_0', waits_for_m = True, self_id = 0, duration=0, start_time=0, end_time=0, machine=0, job=0, job_id=0, machine_id=0, fixed=False, machine_time_assigned=False):
+        self.__op_id      = op_id
+        self.__duration   = duration
+        self.__start_time = start_time
+        self.__end_time   = end_time
+        self.__machine    = machine
+        self.__job        = job
+        self.__job_id     = job_id
+        self.__machine_id = machine_id
+        self.__assigned_machine_order = False
+        self.__common_operations = []
+        self.__start_times = []
+        self.__fixed = fixed
+        self.__machine_time_assigned = machine_time_assigned
+        self.__self_id = self_id
+        self.__waits_for_m = waits_for_m
 
     def __str__(self):
-        return self.id 
+        return self.__op_id 
 
     def waits_for_machine(self):
-        return self.waits_for_m
+        return self.__waits_for_m
 
     def create_self_id(self, op_job):
         final = ''
@@ -35,104 +35,103 @@ class Operation:
             if char != '_':
                 final = final + char
             else:
-                self.self_id = int(final)
-        
+                self.__self_id = int(final)
 
     def add_possible_start_time(self, time):
-        start_time.append(time)
+        self.start_time.append(time)
 
     def has_machine_order(self):
-        return self.assigned_machine_order
+        return self.__assigned_machine_order
 
     '''Sección para getters'''
 
     def get_self_id(self):
-        return self.self_id
+        return self.__self_id
 
     def has_machine_time_assigned(self):
-        return self.machine_time_assigned
+        return self.__machine_time_assigned
 
     def is_fixed(self):
-        return self.fixed
+        return self.__fixed
 
     def get_common_operations(self):
-        return common_operations
+        return self.__common_operations
 
     def get_id(self):
-        return self.id    
+        return self.__op_id    
     
     def get_start_time(self):
-        return self.start_time
+        return self.__start_time
     
     def get_duration(self):
-        return self.duration
+        return self.__duration
     
     def get_end_time(self):
-        return self.start_time + duration
+        return self.__start_time + duration
     
     def get_machine(self):
-        return self.machine
+        return self.__machine
     
     def get_machine_id(self):
-        return self.machine_id
+        return self.__machine_id
     
     def get_job(self):
-        return self.job
+        return self.__job
     
     def get_job_id(self):
-        return self.job_id
+        return self.__job_id
     
     def get_assigned_machine(self):
-        return self.assigned_machine
+        return self.__assigned_machine
 
     '''Sección para setters'''  
     def set_waits_for_machine(self, waits_for_m):
-        self.waits_for_m = waits_for_m
+        self.__waits_for_m = waits_for_m
 
     def set_machine_time_assigned(self, machine_time_assigned):
-        self.machine_time_assigned = machine_time_assigned
+        self.__machine_time_assigned = machine_time_assigned
 
-    def set_self_id(self, id):
-        self.self_id = id
+    def set_self_id(self, self_id):
+        self.__self_id = self_id
 
     def set_fixed(sefl, fixed):
-        self.fixed = fixed
+        self.__fixed = fixed
 
     def set_machine_order(self, assigned_machine_order):
-        self.assigned_machine_order = assigned_machine_order
+        self.__assigned_machine_order = assigned_machine_order
 
     def set_job_id(self, job_id):
-        self.job_id = job_id
+        self.__job_id = job_id
     
     def set_id(self, self_job):
-        self.id = self_job
-        self.create_self_id(self.id)
+        self.__op_id = self_job
+        self.create_self_id(self.__op_id)
     
     def set_job(self, job):
-        self.job = job
+        self.__job = job
     
     def set_start_time(self):
-        self.start_time = max(self.start_times)
+        self.__start_time = max(self.__start_times)
     
     def set_duration(self, duration):
-        self.duration = duration
+        self.__duration = duration
         
     def set_end_time(self,end_time):
-        self.end_time = end_time
+        self.__end_time = end_time
     
     def set_machine(self, machine):
-        self.machine = machine
+        self.__machine = machine
     
     def set_machine_id(self, machine_id):
-        self.machine_id = machine_id
+        self.__machine_id = machine_id
 
     def set_common_operations(self, common_operations):
-        self.common_operations = common_operations
+        self.__common_operations = common_operations
     
     def set_assigned_machine(self, assigned_machine):
-        self.assigned_machine = assigned_machine
+        self.__assigned_machine = assigned_machine
 
-    id         = property(get_id, set_id)
+    id_op      = property(get_id, set_id)
     duration   = property(get_duration, set_duration)
     start_time = property(get_start_time, set_start_time)
     end_time   = property(get_end_time, set_end_time)

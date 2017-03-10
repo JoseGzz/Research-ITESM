@@ -20,20 +20,19 @@ import numpy as np
 '''Función main para comenzar a ejecutar el programa '''
 def main():
 
-    times    = 'times_sample_mat.txt' 
-    machines = 'machines_sample_mat.txt'
+    times    = 'datos/times_sample_mat.txt' 
+    machines = 'datos/machines_sample_mat.txt'
     # verifica que los archivos existan
     # IMPORTANTE: se asume que todas las tareas tienen la misma cantidad de operaciones
     try:
         times_mat, machines_mat = np.genfromtxt(times), np.genfromtxt(machines, dtype=None)
     except IOError as e:
-        print("One file was not found.")
+        print("No se encontró uno de los archivos.")
         print(e)
         sys.exit(0)
 
     # Estableecmos cantidades necesarias
     no_jobs     = len(times_mat[:])
-    print no_jobs
     no_machines = len(times_mat[0])
 
     # Se crea la lista de objetos
@@ -73,7 +72,6 @@ def main():
     #for op in ops:
     #    print op.id
     '''
-    print '--->', len(jobs)
     dg = DisjunctiveGraph()
     g = dg.find_makespan(jobs, ops, machines, no_machines)
     # print g

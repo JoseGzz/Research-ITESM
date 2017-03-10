@@ -18,28 +18,26 @@ class DisjunctiveGraph:
 			if op.get_self_id() == (no_machines-1):
 				graph_last[op.get_id()] = [op]
 	
-		#graph = self.merge_graphs(graph, graph_last)
+		#graph = self.merge_graphs(graph, graph_last, jobs)
 
 		
-		for k, v in graph.iteritems():
-			print 'key: {}'.format(k)
+		for k, v in graph.items():
+			print('key: ' + k)
 			for val in v:
-				print val.get_id()
-			print '---'
+				print(val.get_id())
+			print('---')
 		
 		graph = self.assign_machine_order(graph, operations)
 		first_op_ids = self.find_first_operations(graph, operations)
 
 		# imrpime diccionario después de asignación de máquinas
 		'''
-		for k, v in graph.iteritems():
+		for k, v in graph.items():
 			print('key: ' + str(k))
 			for val in v:
 				print(val.get_id())
 			print('---')
 		'''
-
-		print first_op_ids
 
 		# ALGORITHM 1 : Calculate Makespan
 		#
@@ -70,7 +68,7 @@ class DisjunctiveGraph:
 		times = []
 		print('Asignando tiempos...')
 		while not self.all_fixed(graph):
-			for op_id, lst in graph.iteritems():
+			for op_id, lst in graph.items():
 				print(op_id)
 				current_op = lst[0]
 				# si no estamos buscando una tarea distinta
@@ -101,7 +99,6 @@ class DisjunctiveGraph:
 									graph[adjacent.get_id()][0].set_machine_time_assigned(True)
 								elif count > 1:
 									graph[adjacent.get_id()][0].set_machine_time_assigned(True)
-
 							# se prende booleana de asignación para la operación actual
 							graph[current_op.get_id()][0].set_fixed(True)
 						else:
@@ -114,9 +111,9 @@ class DisjunctiveGraph:
 							        print('Operación depente de nodos posteriores.')
 							    else:
 							    	print('Backtracking activado.')
-							    	# si no depende de una op posterior entonces activamos backtracking
+							    	# si no depende de una operación posterior entonces activamos backtracking
 							    	# para pasar a la sig. tarea. Si estamos en la última tarea
-							    	# pasamos a la primera, de lo contrario a la siguiente (secuencia)
+							    	# pasamos a la primera, de lo contrario a la siguiente.
 							    	backtracking = True
 							    	current_job_id = current_op.get_self_id()
 							    	next_job = 0 if current_job_id == (len(jobs) - 1) else current_job_id + 1 
@@ -155,16 +152,16 @@ class DisjunctiveGraph:
 		return False
 
 	def all_fixed(self, graph):
-		for op_id, lst in graph.iteritems():
+		for op_id, lst in graph.items():
 			if not lst[0].is_fixed():
 				return False
 		return True
 
 	def assign_machine_order(self, graph, operations):
-		for op_id, lst in graph.iteritems():
+		for op_id, lst in graph.items():
 			if not lst[0].has_machine_order():
 			    machine_id = lst[0].get_machine_id()
-			    ops_with_common_machine = [lst2[0] for op_id2, lst2 in graph.iteritems()
+			    ops_with_common_machine = [lst2[0] for op_id2, lst2 in graph.items()
 			    if lst2[0].get_machine_id() == machine_id and not lst2[0].has_machine_order()]
 			    ops_cm = ops_with_common_machine
 			    vals = []
@@ -182,7 +179,7 @@ class DisjunctiveGraph:
 	def find_first_operations(self, graph, operations):
 		id_list = []
 		for op in operations:
-			for k, v in graph.iteritems():
+			for k, v in graph.items():
 				if op.get_id() in v:
 					id_list.append(op.get_id())
 		return id_list

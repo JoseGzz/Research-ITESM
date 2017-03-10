@@ -3,9 +3,9 @@
 Clase que transforma matrices de tiempos y máquinas
 a listas con máquinas, tareas y operaciones.
 '''
-from machine import Machine
-from job import Job   
-from schedule import Schedule
+from machine   import Machine
+from job       import Job   
+from schedule  import Schedule
 from operation import Operation
 
 class Formatter:
