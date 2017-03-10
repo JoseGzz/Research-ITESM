@@ -4,7 +4,9 @@ Clase con la información correspondiente a cada operación
 '''
 
 class Operation:
-    def __init__(self, id='0_0', self_id = 0, duration=0, start_time=0, end_time=0, machine=0, job=0, job_id=0, machine_id=0, fixed=False, machine_time_assigned=False):
+    
+
+    def __init__(self, id='0_0', waits_for_m = True, self_id = 0, duration=0, start_time=0, end_time=0, machine=0, job=0, job_id=0, machine_id=0, fixed=False, machine_time_assigned=False):
         self.id         = id
         self.duration   = duration
         self.start_time = start_time
@@ -19,6 +21,13 @@ class Operation:
         self.fixed = fixed
         self.machine_time_assigned = machine_time_assigned
         self.self_id = self_id
+        self.waits_for_m = waits_for_m
+
+    def __str__(self):
+        return self.id 
+
+    def waits_for_machine(self):
+        return self.waits_for_m
 
     def create_self_id(self, op_job):
         final = ''
@@ -76,7 +85,10 @@ class Operation:
     def get_assigned_machine(self):
         return self.assigned_machine
 
-    '''Sección para setters'''
+    '''Sección para setters'''  
+    def set_waits_for_machine(self, waits_for_m):
+        self.waits_for_m = waits_for_m
+
     def set_machine_time_assigned(self, machine_time_assigned):
         self.machine_time_assigned = machine_time_assigned
 
@@ -86,8 +98,8 @@ class Operation:
     def set_fixed(sefl, fixed):
         self.fixed = fixed
 
-    def set_machine_order(self, assigned_machine):
-        self.assigned_machine = assigned_machine
+    def set_machine_order(self, assigned_machine_order):
+        self.assigned_machine_order = assigned_machine_order
 
     def set_job_id(self, job_id):
         self.job_id = job_id
