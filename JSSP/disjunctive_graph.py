@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*
-import collections
+from collections import OrderedDict
 from random import shuffle
 
 class DisjunctiveGraph:
@@ -9,7 +9,7 @@ class DisjunctiveGraph:
 	def find_makespan(self, jobs, operations, machines, no_machines):
 		# Using the job array index values
 		# Create diccionary, each key for each operation and values are the next operation
-		graph = collections.OrderedDict((operations[i].get_id(), [operations[i], operations[i + 1]])
+		graph = OrderedDict((operations[i].get_id(), [operations[i], operations[i + 1]])
 			for i in range(len(operations) - 1) if operations[i].get_job_id() == operations[i+1].get_job_id())
 
 		# crea nodos finales apuntando a vacío por el momento
@@ -18,7 +18,7 @@ class DisjunctiveGraph:
 			if op.get_self_id() == (no_machines-1):
 				graph_last[op.get_id()] = [op]
 	
-		#graph = self.merge_graphs(graph, graph_last, jobs)
+		graph = self.merge_graphs(graph, graph_last, jobs)
 
 		
 		for k, v in graph.items():
@@ -38,6 +38,7 @@ class DisjunctiveGraph:
 				print(val.get_id())
 			print('---')
 		'''
+		print('firsts: ', first_op_ids)
 
 		# ALGORITHM 1 : Calculate Makespan
 		#
@@ -93,7 +94,7 @@ class DisjunctiveGraph:
 							# a partir del primer adyacente (si existe y la operación es final) se trata de un adyacente 
 							# conectado por máquina, así que se prende su booleana
 							# en otros casos a partir del tercer elemento tenemos adyacentes por máquinas
-							for count, adjacent in enumarate(lst[:1]):
+							for count, adjacent in enumarate(lst[1:]):
 								graph[adjacent.get_id()][0].add_possible_start_time(end_time)
 								if current_op.get_self_id() == (no_machines-1) and count > 0: 
 									graph[adjacent.get_id()][0].set_machine_time_assigned(True)
@@ -127,7 +128,7 @@ class DisjunctiveGraph:
 								graph[current_op.get_id()][0] = current_op
 								times.append(current_op.get_start_time())
 				# si la siguiente operación corresponde a la tarea que se buscaba, detenemos la búsqueda 
-				elif int(lst[1].get_id()[2]) == next_job:
+				elif len(lst) > 1 and int(lst[1].get_id()[2]) == next_job:
 					print('Se detiene el backtracking en tarea: ' + op_id)
 					backtracking = False
 
@@ -137,9 +138,16 @@ class DisjunctiveGraph:
 		return graph
 
 
-	def merge_graphs(self, first, last):
-		pass
-
+	def merge_graphs(self, first, second, jobs):
+		graph_new = OrderedDict()
+		for op_id, vals in first.items():
+			if vals[0].get_self_id() == (jobs[vals[0].get_job_id()].get_op_count())-2:
+				graph_new[op_id] = vals
+				new_id = str(vals[0].get_self_id() + 1) + '_' + str(vals[0].get_job_id())
+				graph_new[new_id] = second.get(new_id)
+			else:
+				graph_new[op_id] = vals
+		return graph_new
 
 	def depends_on_posterior_op(self, graph, op_lst):
 		current_op = op_lst[0]
@@ -179,9 +187,13 @@ class DisjunctiveGraph:
 	def find_first_operations(self, graph, operations):
 		id_list = []
 		for op in operations:
+			found = False
 			for k, v in graph.items():
-				if op.get_id() in v:
-					id_list.append(op.get_id())
+				ids = [id_op.get_id() for id_op in v[1:]]
+				if op.get_id() in ids:
+					found = True
+			if not found:
+				id_list.append(op.get_id())
 		return id_list
 
 

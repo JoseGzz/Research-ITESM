@@ -5,6 +5,8 @@ Clase con la información correspondiente a cada operación
 
 class Operation:
     
+    def __str__(self):
+        return str(self.__op_id)
 
     def __init__(self, op_id='0_0', waits_for_m = True, self_id = 0, duration=0, start_time=0, end_time=0, machine=0, job=0, job_id=0, machine_id=0, fixed=False, machine_time_assigned=False):
         self.__op_id      = op_id
@@ -23,8 +25,7 @@ class Operation:
         self.__self_id = self_id
         self.__waits_for_m = waits_for_m
 
-    def __str__(self):
-        return self.__op_id 
+
 
     def waits_for_machine(self):
         return self.__waits_for_m
