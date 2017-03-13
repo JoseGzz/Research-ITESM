@@ -25,8 +25,6 @@ class Operation:
         self.__self_id = self_id
         self.__waits_for_m = waits_for_m
 
-
-
     def waits_for_machine(self):
         return self.__waits_for_m
 
@@ -39,7 +37,7 @@ class Operation:
                 self.__self_id = int(final)
 
     def add_possible_start_time(self, time):
-        self.start_time.append(time)
+        self.__start_times.append(time)
 
     def has_machine_order(self):
         return self.__assigned_machine_order
@@ -68,7 +66,7 @@ class Operation:
         return self.__duration
     
     def get_end_time(self):
-        return self.__start_time + duration
+        return self.__start_time + self.__duration
     
     def get_machine(self):
         return self.__machine
@@ -95,7 +93,7 @@ class Operation:
     def set_self_id(self, self_id):
         self.__self_id = self_id
 
-    def set_fixed(sefl, fixed):
+    def set_fixed(self, fixed):
         self.__fixed = fixed
 
     def set_machine_order(self, assigned_machine_order):

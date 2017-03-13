@@ -17,8 +17,19 @@ class Formatter:
         operations = self.create_operation_list(times_matrix, machines_matrix)
         jobs       = self.create_job_list(times_matrix, operations)
         machines   = self.create_machine_list(no_machines, machines_matrix, operations)
+        operations = self.assign_jobs_to_operations(jobs, operations)
         return operations, jobs, machines
     
+
+    def assign_jobs_to_operations(self, jobs, operations):
+        count = 0
+        for job in jobs:
+            for i in range(job.get_op_count()):
+                operations[count].set_job(job)
+                count += 1
+        return operations
+
+
     '''Para crear la lista de máquinas se agregan los id y se les asignan
     sus correspondientes operaciones'''
     def create_machine_list(self, no_machines, machines_matrix, operations):
@@ -89,7 +100,7 @@ class Formatter:
         return operations
     
     '''Crea las operacoines y les asigna un id que consiste de el id propio
-    dentro de la operación y el id de la operación'''
+    dentro de la operación y el id de la tarea.'''
     def add_operation_ids(self, times_matrix, operations):
         job_id = 0
         for job in times_matrix:
@@ -99,7 +110,7 @@ class Formatter:
                 id_sub = str(own_id) + '_' + str(job_id)
                 op.set_id(id_sub)
                 op.set_job_id(job_id)
-                own_id +=1
+                own_id += 1
                 operations.append(op)
             job_id += 1
         return operations

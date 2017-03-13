@@ -20,25 +20,25 @@ class DisjunctiveGraph:
 	
 		graph = self.merge_graphs(graph, graph_last, jobs)
 
-		
+		'''
 		for k, v in graph.items():
 			print('key: ' + k)
 			for val in v:
 				print(val.get_id())
 			print('---')
-		
+		'''
 		graph = self.assign_machine_order(graph, operations)
 		first_op_ids = self.find_first_operations(graph, operations)
 
 		# imrpime diccionario después de asignación de máquinas
-		'''
+		
 		for k, v in graph.items():
 			print('key: ' + str(k))
 			for val in v:
 				print(val.get_id())
 			print('---')
-		'''
-		print('firsts: ', first_op_ids)
+		
+		#print('firsts: ', first_op_ids)
 
 		# ALGORITHM 1 : Calculate Makespan
 		#
@@ -77,24 +77,26 @@ class DisjunctiveGraph:
 					print('Analizando operación...')
 					# si la operación actual no tiene asignado un tiempo
 					if not current_op.is_fixed():
-						print('Operación sin asignacion.')
+						print('Operación sin asignación.')
 						# si la operación actual no tiene predecesores
 						if current_op.get_id() in first_op_ids:
 							print('Operación es primera.')
 							# le asignamos tiempo de inicio en cero
-							current_job.add_possible_start_time(0)
+							current_op.add_possible_start_time(0)
 							current_op.set_start_time()
 							# le asignamos tiempo de finalización en base a su duración
 							current_op.set_end_time(current_op.get_start_time() + current_op.get_duration())
 							# establecemos un tiempo de finalización
 							end_time = current_op.get_end_time()
 							# remplazamos el objeto ya con el tiempo asignado
+							print('Se fija la tarea.')
+							current_op.set_fixed(True)
 							graph[current_op.get_id()][0] = current_op
 							# se le asigna a los adjacentes un posible tiempo de inicio
 							# a partir del primer adyacente (si existe y la operación es final) se trata de un adyacente 
 							# conectado por máquina, así que se prende su booleana
 							# en otros casos a partir del tercer elemento tenemos adyacentes por máquinas
-							for count, adjacent in enumarate(lst[1:]):
+							for count, adjacent in enumerate(lst[1:]):
 								graph[adjacent.get_id()][0].add_possible_start_time(end_time)
 								if current_op.get_self_id() == (no_machines-1) and count > 0: 
 									graph[adjacent.get_id()][0].set_machine_time_assigned(True)
@@ -116,8 +118,8 @@ class DisjunctiveGraph:
 							    	# para pasar a la sig. tarea. Si estamos en la última tarea
 							    	# pasamos a la primera, de lo contrario a la siguiente.
 							    	backtracking = True
-							    	current_job_id = current_op.get_self_id()
-							    	next_job = 0 if current_job_id == (len(jobs) - 1) else current_job_id + 1 
+							    	#current_job_id = current_op.get_self_id()
+							    	#next_job = 0 if current_job_id == (len(jobs) - 1) else current_job_id + 1 
 							else:
 								# si la operación no espera un tiempo por máquina o ya lo tiene
 								# establecemos tiempo de inicio, lo marcamos como asignado, reemplazamos el objeto
@@ -128,11 +130,9 @@ class DisjunctiveGraph:
 								graph[current_op.get_id()][0] = current_op
 								times.append(current_op.get_start_time())
 				# si la siguiente operación corresponde a la tarea que se buscaba, detenemos la búsqueda 
-				elif len(lst) > 1 and int(lst[1].get_id()[2]) == next_job:
-					print('Se detiene el backtracking en tarea: ' + op_id)
+				elif int(lst[1].get_id()[0]) == lst[1].get_job().get_op_count()-1:#len(jobs)-1:# len(lst) > 1 and int(lst[1].get_id()[2]) == next_job:
+					print('Se detiene el backtracking en operación: ' + op_id)
 					backtracking = False
-
-
 
 		print("makespan: " + str(max(times)))
 		return graph
@@ -179,7 +179,7 @@ class DisjunctiveGraph:
 			    ops = vals
 			    shuffle(ops)
 			    ops[0].set_waits_for_machine(False)
-			    # se agrergan las operaciones comunes (por máquinas) a la lista de adjacentes
+			    # se agrergan las operaciones comunes (por máquina) a la lista de adjacentes
 			    for i in range(len(ops)-1):
 			          graph[ops[i].get_id()].append(ops[i+1])
 		return graph
