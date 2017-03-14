@@ -44,6 +44,9 @@ class Operation:
 
     '''Sección para getters'''
 
+    def get_possible_times(self):
+        return self.__start_times
+
     def get_self_id(self):
         return self.__self_id
 

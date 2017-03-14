@@ -83,6 +83,7 @@ class DisjunctiveGraph:
 							print('Operación es primera.')
 							# le asignamos tiempo de inicio en cero
 							current_op.add_possible_start_time(0)
+							print('--se agregó un tiempo posible:', 0)
 							current_op.set_start_time()
 							# le asignamos tiempo de finalización en base a su duración
 							current_op.set_end_time(current_op.get_start_time() + current_op.get_duration())
@@ -99,6 +100,7 @@ class DisjunctiveGraph:
 							if len(lst) > 1:
 								for adjacent in lst[1:]:
 									graph[adjacent.get_id()][0].add_possible_start_time(end_time)
+									print('--se agregó un tiempo posible:', end_time)
 									if graph[adjacent.get_id()][0].get_job_id() != current_op.get_job_id():
 										graph[adjacent.get_id()][0].set_machine_time_assigned(True)
 							# se prende booleana de fijación para la operación actual
@@ -125,8 +127,10 @@ class DisjunctiveGraph:
 								# y agregamos su tiempo de inicio a la lista de tiempos
 								print('Operación no espera tiempo de máquina.')
 								current_op.set_start_time()
+								current_op.set_end_time(current_op.get_start_time() + current_op.get_duration())
 								current_op.set_fixed(True)
 								print('Se fija la operación ', op_id, '.')
+								end_time = current_op.get_end_time()
 								graph[current_op.get_id()][0] = current_op
 								times.append(current_op.get_end_time())
 								# se le asigna a los adjacentes un posible tiempo de inicio
@@ -136,6 +140,7 @@ class DisjunctiveGraph:
 								if len(lst) > 1:
 									for adjacent in lst[1:]:
 										graph[adjacent.get_id()][0].add_possible_start_time(end_time)
+										print('--se agregó un tiempo posible:', end_time)
 										if graph[adjacent.get_id()][0].get_job_id() != current_op.get_job_id():
 											graph[adjacent.get_id()][0].set_machine_time_assigned(True)
 										# se prende booleana de asignación para la operación actual
@@ -146,9 +151,22 @@ class DisjunctiveGraph:
 					print('Se detiene el backtracking en operación: ' + op_id)
 					backtracking = False
 		print('--tiempos--')
+
+		'''
+		for k, v in graph.items():
+			print(k, ' termina en:', v[0].get_end_time())
+		'''
+		'''
+		for k, v in graph.items():
+			print('tiempos de:', k)
+			for t in v[0].get_possible_times():
+				print(t)
+
+		'''
 		for t in times:
 			print(t)
 		print("makespan: " + str(max(times)))
+		
 		return graph
 
 
@@ -191,7 +209,7 @@ class DisjunctiveGraph:
 			    	val.set_machine_order(True)
 			    	vals.append(val)
 			    ops = vals
-			    #shuffle(ops)
+			    shuffle(ops)
 			    ops[0].set_waits_for_machine(False)
 			    # se agrergan las operaciones comunes (por máquina) a la lista de adjacentes
 			    for i in range(len(ops)-1):
