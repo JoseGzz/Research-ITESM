@@ -27,17 +27,17 @@ class DisjunctiveGraph:
 				print(val.get_id())
 			print('---')
 		'''
-		graph = self.assign_machine_order(graph, operations)
+		graph = self.assign_machine_order(graph)
 		first_op_ids = self.find_first_operations(graph, operations)
 
 		# imrpime diccionario después de asignación de máquinas
-		
+		'''
 		for k, v in graph.items():
 			print('key: ' + str(k))
 			for val in v:
 				print(val.get_id())
 			print('---')
-		
+		'''
 		#print('firsts: ', first_op_ids)
 
 		# ALGORITHM 1 : Calculate Makespan
@@ -83,7 +83,6 @@ class DisjunctiveGraph:
 							print('Operación es primera.')
 							# le asignamos tiempo de inicio en cero
 							current_op.add_possible_start_time(0)
-							print('--se agregó un tiempo posible:', 0)
 							current_op.set_start_time()
 							# le asignamos tiempo de finalización en base a su duración
 							current_op.set_end_time(current_op.get_start_time() + current_op.get_duration())
@@ -100,7 +99,6 @@ class DisjunctiveGraph:
 							if len(lst) > 1:
 								for adjacent in lst[1:]:
 									graph[adjacent.get_id()][0].add_possible_start_time(end_time)
-									print('--se agregó un tiempo posible:', end_time)
 									if graph[adjacent.get_id()][0].get_job_id() != current_op.get_job_id():
 										graph[adjacent.get_id()][0].set_machine_time_assigned(True)
 							# se prende booleana de fijación para la operación actual
@@ -140,7 +138,6 @@ class DisjunctiveGraph:
 								if len(lst) > 1:
 									for adjacent in lst[1:]:
 										graph[adjacent.get_id()][0].add_possible_start_time(end_time)
-										print('--se agregó un tiempo posible:', end_time)
 										if graph[adjacent.get_id()][0].get_job_id() != current_op.get_job_id():
 											graph[adjacent.get_id()][0].set_machine_time_assigned(True)
 										# se prende booleana de asignación para la operación actual
@@ -150,22 +147,8 @@ class DisjunctiveGraph:
 					#print('op: ', int(lst[1].get_id()[0]))
 					print('Se detiene el backtracking en operación: ' + op_id)
 					backtracking = False
-		print('--tiempos--')
 
-		'''
-		for k, v in graph.items():
-			print(k, ' termina en:', v[0].get_end_time())
-		'''
-		'''
-		for k, v in graph.items():
-			print('tiempos de:', k)
-			for t in v[0].get_possible_times():
-				print(t)
-
-		'''
-		for t in times:
-			print(t)
-		print("makespan: " + str(max(times)))
+		print("Makespan: " + str(max(times)))
 		
 		return graph
 
@@ -197,7 +180,8 @@ class DisjunctiveGraph:
 				return False
 		return True
 
-	def assign_machine_order(self, graph, operations):
+	def assign_machine_order(self, graph):
+		graph2 = graph.copy()
 		for op_id, lst in graph.items():
 			if not lst[0].has_machine_order():
 			    machine_id = lst[0].get_machine_id()
@@ -214,7 +198,54 @@ class DisjunctiveGraph:
 			    # se agrergan las operaciones comunes (por máquina) a la lista de adjacentes
 			    for i in range(len(ops)-1):
 			          graph[ops[i].get_id()].append(ops[i+1])
-		return graph
+
+		for k, v in graph.items():
+			print('key: ' + k)
+			for val in v:
+				print(val.get_id())
+			print('---')
+		
+		if self.cycle_exists(graph):
+			print('El grafo generado está ciclado. Generando un nuevo grafo...')
+			return self.assign_machine_order(graph2)
+		else:
+			print('Grafo sin ciclos.')
+			return graph
+
+#-----------
+	def has_cycles(self, graph):
+		return self.cycle_exists(graph)
+
+	def cycle_exists(self, G):
+	    color = { u : "white" for u in G  }
+	    found_cycle = [False]
+	    for u in G:
+	    	if color[u] == "white":
+	    		self.dfs_visit(G, u, color, found_cycle)
+	    	if found_cycle[0]:
+	    		break
+	    return found_cycle[0]
+
+	def dfs_visit(self, G, u, color, found_cycle):
+		'''
+		for k, v in G.items():
+			print('key: ' + k)
+			for val in v:
+				print(val)
+			print('------')
+		'''
+		if found_cycle[0]:                          
+			return 
+		color[u] = "gray"
+		for v in G[u][1:]:                              
+			if color[v.get_id()] == "gray":                 
+				found_cycle[0] = True       
+				return 
+			if color[v.get_id()] == "white":                 
+				self.dfs_visit(G, v.get_id(), color, found_cycle)
+		color[u] = "black"                          
+		
+#-----------------
 
 	def find_first_operations(self, graph, operations):
 		id_list = []
