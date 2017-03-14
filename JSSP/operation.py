@@ -66,7 +66,7 @@ class Operation:
         return self.__duration
     
     def get_end_time(self):
-        return self.__start_time + self.__duration
+        return self.__end_time
     
     def get_machine(self):
         return self.__machine
