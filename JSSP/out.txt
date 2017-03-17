@@ -1,0 +1,2726 @@
+key: 0_0
+0_0
+1_0
+0_14
+---
+key: 1_0
+1_0
+2_0
+13_10
+---
+key: 2_0
+2_0
+3_0
+8_6
+---
+key: 3_0
+3_0
+4_0
+8_11
+---
+key: 4_0
+4_0
+5_0
+3_8
+---
+key: 5_0
+5_0
+6_0
+8_3
+---
+key: 6_0
+6_0
+7_0
+11_14
+---
+key: 7_0
+7_0
+8_0
+14_19
+---
+key: 8_0
+8_0
+9_0
+11_8
+---
+key: 9_0
+9_0
+10_0
+---
+key: 10_0
+10_0
+11_0
+6_2
+---
+key: 11_0
+11_0
+12_0
+12_7
+---
+key: 12_0
+12_0
+13_0
+2_14
+---
+key: 13_0
+13_0
+14_0
+9_15
+---
+key: 14_0
+14_0
+4_6
+---
+key: 0_1
+0_1
+1_1
+8_13
+---
+key: 1_1
+1_1
+2_1
+1_7
+---
+key: 2_1
+2_1
+3_1
+0_10
+---
+key: 3_1
+3_1
+4_1
+4_15
+---
+key: 4_1
+4_1
+5_1
+14_5
+---
+key: 5_1
+5_1
+6_1
+7_19
+---
+key: 6_1
+6_1
+7_1
+3_6
+---
+key: 7_1
+7_1
+8_1
+2_0
+---
+key: 8_1
+8_1
+9_1
+12_0
+---
+key: 9_1
+9_1
+10_1
+8_2
+---
+key: 10_1
+10_1
+11_1
+4_0
+---
+key: 11_1
+11_1
+12_1
+6_8
+---
+key: 12_1
+12_1
+13_1
+10_18
+---
+key: 13_1
+13_1
+14_1
+6_19
+---
+key: 14_1
+14_1
+8_9
+---
+key: 0_2
+0_2
+1_2
+13_19
+---
+key: 1_2
+1_2
+2_2
+9_8
+---
+key: 2_2
+2_2
+3_2
+4_9
+---
+key: 3_2
+3_2
+4_2
+9_11
+---
+key: 4_2
+4_2
+5_2
+5_14
+---
+key: 5_2
+5_2
+6_2
+12_19
+---
+key: 6_2
+6_2
+7_2
+2_19
+---
+key: 7_2
+7_2
+8_2
+5_3
+---
+key: 8_2
+8_2
+9_2
+1_16
+---
+key: 9_2
+9_2
+10_2
+13_18
+---
+key: 10_2
+10_2
+11_2
+3_12
+---
+key: 11_2
+11_2
+12_2
+14_14
+---
+key: 12_2
+12_2
+13_2
+---
+key: 13_2
+13_2
+14_2
+6_16
+---
+key: 14_2
+14_2
+5_8
+---
+key: 0_3
+0_3
+1_3
+10_2
+---
+key: 1_3
+1_3
+2_3
+---
+key: 2_3
+2_3
+3_3
+7_8
+---
+key: 3_3
+3_3
+4_3
+14_10
+---
+key: 4_3
+4_3
+5_3
+0_0
+---
+key: 5_3
+5_3
+6_3
+10_16
+---
+key: 6_3
+6_3
+7_3
+6_17
+---
+key: 7_3
+7_3
+8_3
+2_8
+---
+key: 8_3
+8_3
+9_3
+9_13
+---
+key: 9_3
+9_3
+10_3
+8_16
+---
+key: 10_3
+10_3
+11_3
+8_15
+---
+key: 11_3
+11_3
+12_3
+9_1
+---
+key: 12_3
+12_3
+13_3
+5_9
+---
+key: 13_3
+13_3
+14_3
+5_17
+---
+key: 14_3
+14_3
+14_11
+---
+key: 0_4
+0_4
+1_4
+6_3
+---
+key: 1_4
+1_4
+2_4
+13_7
+---
+key: 2_4
+2_4
+3_4
+2_3
+---
+key: 3_4
+3_4
+4_4
+1_18
+---
+key: 4_4
+4_4
+5_4
+4_19
+---
+key: 5_4
+5_4
+6_4
+2_13
+---
+key: 6_4
+6_4
+7_4
+5_2
+---
+key: 7_4
+7_4
+8_4
+3_13
+---
+key: 8_4
+8_4
+9_4
+---
+key: 9_4
+9_4
+10_4
+1_8
+---
+key: 10_4
+10_4
+11_4
+13_15
+---
+key: 11_4
+11_4
+12_4
+4_17
+---
+key: 12_4
+12_4
+13_4
+1_13
+---
+key: 13_4
+13_4
+14_4
+11_2
+---
+key: 14_4
+14_4
+12_15
+---
+key: 0_5
+0_5
+1_5
+2_9
+---
+key: 1_5
+1_5
+2_5
+12_14
+---
+key: 2_5
+2_5
+3_5
+5_1
+---
+key: 3_5
+3_5
+4_5
+9_3
+---
+key: 4_5
+4_5
+5_5
+12_16
+---
+key: 5_5
+5_5
+6_5
+5_13
+---
+key: 6_5
+6_5
+7_5
+0_3
+---
+key: 7_5
+7_5
+8_5
+---
+key: 8_5
+8_5
+9_5
+0_19
+---
+key: 9_5
+9_5
+10_5
+9_6
+---
+key: 10_5
+10_5
+11_5
+5_0
+---
+key: 11_5
+11_5
+12_5
+2_12
+---
+key: 12_5
+12_5
+13_5
+11_10
+---
+key: 13_5
+13_5
+14_5
+13_16
+---
+key: 14_5
+14_5
+10_17
+---
+key: 0_6
+0_6
+1_6
+10_10
+---
+key: 1_6
+1_6
+2_6
+2_16
+---
+key: 2_6
+2_6
+3_6
+2_10
+---
+key: 3_6
+3_6
+4_6
+3_15
+---
+key: 4_6
+4_6
+5_6
+3_1
+---
+key: 5_6
+5_6
+6_6
+5_5
+---
+key: 6_6
+6_6
+7_6
+1_12
+---
+key: 7_6
+7_6
+8_6
+14_2
+---
+key: 8_6
+8_6
+9_6
+6_18
+---
+key: 9_6
+9_6
+10_6
+12_11
+---
+key: 10_6
+10_6
+11_6
+8_10
+---
+key: 11_6
+11_6
+12_6
+0_18
+---
+key: 12_6
+12_6
+13_6
+7_18
+---
+key: 13_6
+13_6
+14_6
+5_4
+---
+key: 14_6
+14_6
+1_0
+---
+key: 0_7
+0_7
+1_7
+13_2
+---
+key: 1_7
+1_7
+2_7
+4_16
+---
+key: 2_7
+2_7
+3_7
+14_16
+---
+key: 3_7
+3_7
+4_7
+6_0
+---
+key: 4_7
+4_7
+5_7
+9_17
+---
+key: 5_7
+5_7
+6_7
+7_9
+---
+key: 6_7
+6_7
+7_7
+13_4
+---
+key: 7_7
+7_7
+8_7
+2_1
+---
+key: 8_7
+8_7
+9_7
+9_0
+---
+key: 9_7
+9_7
+10_7
+---
+key: 10_7
+10_7
+11_7
+2_15
+---
+key: 11_7
+11_7
+12_7
+6_10
+---
+key: 12_7
+12_7
+13_7
+12_1
+---
+key: 13_7
+13_7
+14_7
+3_11
+---
+key: 14_7
+14_7
+11_11
+---
+key: 0_8
+0_8
+1_8
+1_9
+---
+key: 1_8
+1_8
+2_8
+10_9
+---
+key: 2_8
+2_8
+3_8
+8_17
+---
+key: 3_8
+3_8
+4_8
+9_2
+---
+key: 4_8
+4_8
+5_8
+14_4
+---
+key: 5_8
+5_8
+6_8
+7_13
+---
+key: 6_8
+6_8
+7_8
+0_2
+---
+key: 7_8
+7_8
+8_8
+---
+key: 8_8
+8_8
+9_8
+4_12
+---
+key: 9_8
+9_8
+10_8
+0_5
+---
+key: 10_8
+10_8
+11_8
+13_12
+---
+key: 11_8
+11_8
+12_8
+7_14
+---
+key: 12_8
+12_8
+13_8
+6_5
+---
+key: 13_8
+13_8
+14_8
+1_19
+---
+key: 14_8
+14_8
+11_18
+---
+key: 0_9
+0_9
+1_9
+6_14
+---
+key: 1_9
+1_9
+2_9
+---
+key: 2_9
+2_9
+3_9
+4_11
+---
+key: 3_9
+3_9
+4_9
+14_15
+---
+key: 4_9
+4_9
+5_9
+11_5
+---
+key: 5_9
+5_9
+6_9
+0_12
+---
+key: 6_9
+6_9
+7_9
+8_1
+---
+key: 7_9
+7_9
+8_9
+11_4
+---
+key: 8_9
+8_9
+9_9
+7_16
+---
+key: 9_9
+9_9
+10_9
+1_4
+---
+key: 10_9
+10_9
+11_9
+0_1
+---
+key: 11_9
+11_9
+12_9
+12_5
+---
+key: 12_9
+12_9
+13_9
+14_18
+---
+key: 13_9
+13_9
+14_9
+11_0
+---
+key: 14_9
+14_9
+11_1
+---
+key: 0_10
+0_10
+1_10
+11_6
+---
+key: 1_10
+1_10
+2_10
+10_1
+---
+key: 2_10
+2_10
+3_10
+2_5
+---
+key: 3_10
+3_10
+4_10
+10_4
+---
+key: 4_10
+4_10
+5_10
+13_9
+---
+key: 5_10
+5_10
+6_10
+14_0
+---
+key: 6_10
+6_10
+7_10
+3_16
+---
+key: 7_10
+7_10
+8_10
+8_4
+---
+key: 8_10
+8_10
+9_10
+7_11
+---
+key: 9_10
+9_10
+10_10
+12_13
+---
+key: 10_10
+10_10
+11_10
+3_4
+---
+key: 11_10
+11_10
+12_10
+12_17
+---
+key: 12_10
+12_10
+13_10
+5_11
+---
+key: 13_10
+13_10
+14_10
+10_3
+---
+key: 14_10
+14_10
+9_16
+---
+key: 0_11
+0_11
+1_11
+14_9
+---
+key: 1_11
+1_11
+2_11
+9_14
+---
+key: 2_11
+2_11
+3_11
+5_18
+---
+key: 3_11
+3_11
+4_11
+9_18
+---
+key: 4_11
+4_11
+5_11
+4_3
+---
+key: 5_11
+5_11
+6_11
+14_12
+---
+key: 6_11
+6_11
+7_11
+11_7
+---
+key: 7_11
+7_11
+8_11
+7_4
+---
+key: 8_11
+8_11
+9_11
+11_15
+---
+key: 9_11
+9_11
+10_11
+12_3
+---
+key: 10_11
+10_11
+11_11
+5_19
+---
+key: 11_11
+11_11
+12_11
+0_17
+---
+key: 12_11
+12_11
+13_11
+10_8
+---
+key: 13_11
+13_11
+14_11
+12_12
+---
+key: 14_11
+14_11
+8_14
+---
+key: 0_12
+0_12
+1_12
+3_10
+---
+key: 1_12
+1_12
+2_12
+7_0
+---
+key: 2_12
+2_12
+3_12
+1_14
+---
+key: 3_12
+3_12
+4_12
+1_17
+---
+key: 4_12
+4_12
+5_12
+0_13
+---
+key: 5_12
+5_12
+6_12
+1_6
+---
+key: 6_12
+6_12
+7_12
+10_11
+---
+key: 7_12
+7_12
+8_12
+10_15
+---
+key: 8_12
+8_12
+9_12
+13_3
+---
+key: 9_12
+9_12
+10_12
+2_4
+---
+key: 10_12
+10_12
+11_12
+3_7
+---
+key: 11_12
+11_12
+12_12
+2_7
+---
+key: 12_12
+12_12
+13_12
+3_17
+---
+key: 13_12
+13_12
+14_12
+3_3
+---
+key: 14_12
+14_12
+0_15
+---
+key: 0_13
+0_13
+1_13
+14_3
+---
+key: 1_13
+1_13
+2_13
+11_19
+---
+key: 2_13
+2_13
+3_13
+13_5
+---
+key: 3_13
+3_13
+4_13
+8_18
+---
+key: 4_13
+4_13
+5_13
+3_0
+---
+key: 5_13
+5_13
+6_13
+12_18
+---
+key: 6_13
+6_13
+7_13
+1_10
+---
+key: 7_13
+7_13
+8_13
+6_9
+---
+key: 8_13
+8_13
+9_13
+12_6
+---
+key: 9_13
+9_13
+10_13
+5_15
+---
+key: 10_13
+10_13
+11_13
+6_11
+---
+key: 11_13
+11_13
+12_13
+13_1
+---
+key: 12_13
+12_13
+13_13
+7_5
+---
+key: 13_13
+13_13
+14_13
+9_19
+---
+key: 14_13
+14_13
+---
+key: 0_14
+0_14
+1_14
+0_16
+---
+key: 1_14
+1_14
+2_14
+7_1
+---
+key: 2_14
+2_14
+3_14
+3_19
+---
+key: 3_14
+3_14
+4_14
+11_17
+---
+key: 4_14
+4_14
+5_14
+12_2
+---
+key: 5_14
+5_14
+6_14
+7_3
+---
+key: 6_14
+6_14
+7_14
+4_13
+---
+key: 7_14
+7_14
+8_14
+1_1
+---
+key: 8_14
+8_14
+9_14
+6_1
+---
+key: 9_14
+9_14
+10_14
+4_8
+---
+key: 10_14
+10_14
+11_14
+10_5
+---
+key: 11_14
+11_14
+12_14
+7_2
+---
+key: 12_14
+12_14
+13_14
+4_4
+---
+key: 13_14
+13_14
+14_14
+13_13
+---
+key: 14_14
+14_14
+14_8
+---
+key: 0_15
+0_15
+1_15
+10_0
+---
+key: 1_15
+1_15
+2_15
+13_8
+---
+key: 2_15
+2_15
+3_15
+2_11
+---
+key: 3_15
+3_15
+4_15
+2_18
+---
+key: 4_15
+4_15
+5_15
+---
+key: 5_15
+5_15
+6_15
+0_11
+---
+key: 6_15
+6_15
+7_15
+10_6
+---
+key: 7_15
+7_15
+8_15
+4_10
+---
+key: 8_15
+8_15
+9_15
+13_11
+---
+key: 9_15
+9_15
+10_15
+5_7
+---
+key: 10_15
+10_15
+11_15
+1_2
+---
+key: 11_15
+11_15
+12_15
+14_17
+---
+key: 12_15
+12_15
+13_15
+9_10
+---
+key: 13_15
+13_15
+14_15
+---
+key: 14_15
+14_15
+5_12
+---
+key: 0_16
+0_16
+1_16
+12_4
+---
+key: 1_16
+1_16
+2_16
+1_11
+---
+key: 2_16
+2_16
+3_16
+1_5
+---
+key: 3_16
+3_16
+4_16
+2_2
+---
+key: 4_16
+4_16
+5_16
+3_2
+---
+key: 5_16
+5_16
+6_16
+13_14
+---
+key: 6_16
+6_16
+7_16
+9_12
+---
+key: 7_16
+7_16
+8_16
+14_6
+---
+key: 8_16
+8_16
+9_16
+9_7
+---
+key: 9_16
+9_16
+10_16
+11_13
+---
+key: 10_16
+10_16
+11_16
+8_19
+---
+key: 11_16
+11_16
+12_16
+6_4
+---
+key: 12_16
+12_16
+13_16
+7_10
+---
+key: 13_16
+13_16
+14_16
+7_15
+---
+key: 14_16
+14_16
+10_14
+---
+key: 0_17
+0_17
+1_17
+6_13
+---
+key: 1_17
+1_17
+2_17
+5_10
+---
+key: 2_17
+2_17
+3_17
+0_6
+---
+key: 3_17
+3_17
+4_17
+8_5
+---
+key: 4_17
+4_17
+5_17
+4_14
+---
+key: 5_17
+5_17
+6_17
+4_5
+---
+key: 6_17
+6_17
+7_17
+1_15
+---
+key: 7_17
+7_17
+8_17
+---
+key: 8_17
+8_17
+9_17
+---
+key: 9_17
+9_17
+10_17
+12_9
+---
+key: 10_17
+10_17
+11_17
+10_12
+---
+key: 11_17
+11_17
+12_17
+12_10
+---
+key: 12_17
+12_17
+13_17
+8_8
+---
+key: 13_17
+13_17
+14_17
+5_6
+---
+key: 14_17
+14_17
+4_18
+---
+key: 0_18
+0_18
+1_18
+7_17
+---
+key: 1_18
+1_18
+2_18
+---
+key: 2_18
+2_18
+3_18
+8_7
+---
+key: 3_18
+3_18
+4_18
+9_5
+---
+key: 4_18
+4_18
+5_18
+0_7
+---
+key: 5_18
+5_18
+6_18
+8_12
+---
+key: 6_18
+6_18
+7_18
+0_4
+---
+key: 7_18
+7_18
+8_18
+3_14
+---
+key: 8_18
+8_18
+9_18
+4_1
+---
+key: 9_18
+9_18
+10_18
+12_8
+---
+key: 10_18
+10_18
+11_18
+4_2
+---
+key: 11_18
+11_18
+12_18
+14_13
+---
+key: 12_18
+12_18
+13_18
+10_19
+---
+key: 13_18
+13_18
+14_18
+1_3
+---
+key: 14_18
+14_18
+6_6
+---
+key: 0_19
+0_19
+1_19
+6_7
+---
+key: 1_19
+1_19
+2_19
+---
+key: 2_19
+2_19
+3_19
+3_5
+---
+key: 3_19
+3_19
+4_19
+10_7
+---
+key: 4_19
+4_19
+5_19
+14_7
+---
+key: 5_19
+5_19
+6_19
+13_6
+---
+key: 6_19
+6_19
+7_19
+13_0
+---
+key: 7_19
+7_19
+8_19
+0_9
+---
+key: 8_19
+8_19
+9_19
+0_8
+---
+key: 9_19
+9_19
+10_19
+9_9
+---
+key: 10_19
+10_19
+11_19
+8_0
+---
+key: 11_19
+11_19
+12_19
+7_7
+---
+key: 12_19
+12_19
+13_19
+11_9
+---
+key: 13_19
+13_19
+14_19
+2_17
+---
+key: 14_19
+14_19
+11_3
+---
+Asignando tiempos...
+Operación actual: 0_0.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_0.
+Operación actual: 2_0.
+Operación actual: 3_0.
+Operación actual: 4_0.
+Operación actual: 5_0.
+Operación actual: 6_0.
+Operación actual: 7_0.
+Operación actual: 8_0.
+Operación actual: 9_0.
+Operación actual: 10_0.
+Operación actual: 11_0.
+Operación actual: 12_0.
+Operación actual: 13_0.
+Operación actual: 14_0.
+Se detiene el backtracking en la operación: 14_0
+Operación actual: 0_1.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_1.
+Operación actual: 2_1.
+Operación actual: 3_1.
+Operación actual: 4_1.
+Operación actual: 5_1.
+Operación actual: 6_1.
+Operación actual: 7_1.
+Operación actual: 8_1.
+Operación actual: 9_1.
+Operación actual: 10_1.
+Operación actual: 11_1.
+Operación actual: 12_1.
+Operación actual: 13_1.
+Operación actual: 14_1.
+Se detiene el backtracking en la operación: 14_1
+Operación actual: 0_2.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_2.
+Operación actual: 2_2.
+Operación actual: 3_2.
+Operación actual: 4_2.
+Operación actual: 5_2.
+Operación actual: 6_2.
+Operación actual: 7_2.
+Operación actual: 8_2.
+Operación actual: 9_2.
+Operación actual: 10_2.
+Operación actual: 11_2.
+Operación actual: 12_2.
+Operación actual: 13_2.
+Operación actual: 14_2.
+Se detiene el backtracking en la operación: 14_2
+Operación actual: 0_3.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_3.
+Operación actual: 2_3.
+Operación actual: 3_3.
+Operación actual: 4_3.
+Operación actual: 5_3.
+Operación actual: 6_3.
+Operación actual: 7_3.
+Operación actual: 8_3.
+Operación actual: 9_3.
+Operación actual: 10_3.
+Operación actual: 11_3.
+Operación actual: 12_3.
+Operación actual: 13_3.
+Operación actual: 14_3.
+Se detiene el backtracking en la operación: 14_3
+Operación actual: 0_4.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_4.
+Operación actual: 2_4.
+Operación actual: 3_4.
+Operación actual: 4_4.
+Operación actual: 5_4.
+Operación actual: 6_4.
+Operación actual: 7_4.
+Operación actual: 8_4.
+Operación actual: 9_4.
+Operación actual: 10_4.
+Operación actual: 11_4.
+Operación actual: 12_4.
+Operación actual: 13_4.
+Operación actual: 14_4.
+Se detiene el backtracking en la operación: 14_4
+Operación actual: 0_5.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_5.
+Operación actual: 2_5.
+Operación actual: 3_5.
+Operación actual: 4_5.
+Operación actual: 5_5.
+Operación actual: 6_5.
+Operación actual: 7_5.
+Operación actual: 8_5.
+Operación actual: 9_5.
+Operación actual: 10_5.
+Operación actual: 11_5.
+Operación actual: 12_5.
+Operación actual: 13_5.
+Operación actual: 14_5.
+Se detiene el backtracking en la operación: 14_5
+Operación actual: 0_6.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_6.
+Operación actual: 2_6.
+Operación actual: 3_6.
+Operación actual: 4_6.
+Operación actual: 5_6.
+Operación actual: 6_6.
+Operación actual: 7_6.
+Operación actual: 8_6.
+Operación actual: 9_6.
+Operación actual: 10_6.
+Operación actual: 11_6.
+Operación actual: 12_6.
+Operación actual: 13_6.
+Operación actual: 14_6.
+Se detiene el backtracking en la operación: 14_6
+Operación actual: 0_7.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_7.
+Operación actual: 2_7.
+Operación actual: 3_7.
+Operación actual: 4_7.
+Operación actual: 5_7.
+Operación actual: 6_7.
+Operación actual: 7_7.
+Operación actual: 8_7.
+Operación actual: 9_7.
+Operación actual: 10_7.
+Operación actual: 11_7.
+Operación actual: 12_7.
+Operación actual: 13_7.
+Operación actual: 14_7.
+Se detiene el backtracking en la operación: 14_7
+Operación actual: 0_8.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_8.
+Operación actual: 2_8.
+Operación actual: 3_8.
+Operación actual: 4_8.
+Operación actual: 5_8.
+Operación actual: 6_8.
+Operación actual: 7_8.
+Operación actual: 8_8.
+Operación actual: 9_8.
+Operación actual: 10_8.
+Operación actual: 11_8.
+Operación actual: 12_8.
+Operación actual: 13_8.
+Operación actual: 14_8.
+Se detiene el backtracking en la operación: 14_8
+Operación actual: 0_9.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_9.
+Operación actual: 2_9.
+Operación actual: 3_9.
+Operación actual: 4_9.
+Operación actual: 5_9.
+Operación actual: 6_9.
+Operación actual: 7_9.
+Operación actual: 8_9.
+Operación actual: 9_9.
+Operación actual: 10_9.
+Operación actual: 11_9.
+Operación actual: 12_9.
+Operación actual: 13_9.
+Operación actual: 14_9.
+Se detiene el backtracking en la operación: 14_9
+Operación actual: 0_10.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_10.
+Operación actual: 2_10.
+Operación actual: 3_10.
+Operación actual: 4_10.
+Operación actual: 5_10.
+Operación actual: 6_10.
+Operación actual: 7_10.
+Operación actual: 8_10.
+Operación actual: 9_10.
+Operación actual: 10_10.
+Operación actual: 11_10.
+Operación actual: 12_10.
+Operación actual: 13_10.
+Operación actual: 14_10.
+Se detiene el backtracking en la operación: 14_10
+Operación actual: 0_11.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_11.
+Operación actual: 2_11.
+Operación actual: 3_11.
+Operación actual: 4_11.
+Operación actual: 5_11.
+Operación actual: 6_11.
+Operación actual: 7_11.
+Operación actual: 8_11.
+Operación actual: 9_11.
+Operación actual: 10_11.
+Operación actual: 11_11.
+Operación actual: 12_11.
+Operación actual: 13_11.
+Operación actual: 14_11.
+Se detiene el backtracking en la operación: 14_11
+Operación actual: 0_12.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_12.
+Operación actual: 2_12.
+Operación actual: 3_12.
+Operación actual: 4_12.
+Operación actual: 5_12.
+Operación actual: 6_12.
+Operación actual: 7_12.
+Operación actual: 8_12.
+Operación actual: 9_12.
+Operación actual: 10_12.
+Operación actual: 11_12.
+Operación actual: 12_12.
+Operación actual: 13_12.
+Operación actual: 14_12.
+Se detiene el backtracking en la operación: 14_12
+Operación actual: 0_13.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_13.
+Operación actual: 2_13.
+Operación actual: 3_13.
+Operación actual: 4_13.
+Operación actual: 5_13.
+Operación actual: 6_13.
+Operación actual: 7_13.
+Operación actual: 8_13.
+Operación actual: 9_13.
+Operación actual: 10_13.
+Operación actual: 11_13.
+Operación actual: 12_13.
+Operación actual: 13_13.
+Operación actual: 14_13.
+Se detiene el backtracking en la operación: 14_13
+Operación actual: 0_14.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_14.
+Operación actual: 2_14.
+Operación actual: 3_14.
+Operación actual: 4_14.
+Operación actual: 5_14.
+Operación actual: 6_14.
+Operación actual: 7_14.
+Operación actual: 8_14.
+Operación actual: 9_14.
+Operación actual: 10_14.
+Operación actual: 11_14.
+Operación actual: 12_14.
+Operación actual: 13_14.
+Operación actual: 14_14.
+Se detiene el backtracking en la operación: 14_14
+Operación actual: 0_15.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_15.
+Operación actual: 2_15.
+Operación actual: 3_15.
+Operación actual: 4_15.
+Operación actual: 5_15.
+Operación actual: 6_15.
+Operación actual: 7_15.
+Operación actual: 8_15.
+Operación actual: 9_15.
+Operación actual: 10_15.
+Operación actual: 11_15.
+Operación actual: 12_15.
+Operación actual: 13_15.
+Operación actual: 14_15.
+Se detiene el backtracking en la operación: 14_15
+Operación actual: 0_16.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_16.
+Operación actual: 2_16.
+Operación actual: 3_16.
+Operación actual: 4_16.
+Operación actual: 5_16.
+Operación actual: 6_16.
+Operación actual: 7_16.
+Operación actual: 8_16.
+Operación actual: 9_16.
+Operación actual: 10_16.
+Operación actual: 11_16.
+Operación actual: 12_16.
+Operación actual: 13_16.
+Operación actual: 14_16.
+Se detiene el backtracking en la operación: 14_16
+Operación actual: 0_17.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_17.
+Operación actual: 2_17.
+Operación actual: 3_17.
+Operación actual: 4_17.
+Operación actual: 5_17.
+Operación actual: 6_17.
+Operación actual: 7_17.
+Operación actual: 8_17.
+Operación actual: 9_17.
+Operación actual: 10_17.
+Operación actual: 11_17.
+Operación actual: 12_17.
+Operación actual: 13_17.
+Operación actual: 14_17.
+Se detiene el backtracking en la operación: 14_17
+Operación actual: 0_18.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_18.
+Operación actual: 2_18.
+Operación actual: 3_18.
+Operación actual: 4_18.
+Operación actual: 5_18.
+Operación actual: 6_18.
+Operación actual: 7_18.
+Operación actual: 8_18.
+Operación actual: 9_18.
+Operación actual: 10_18.
+Operación actual: 11_18.
+Operación actual: 12_18.
+Operación actual: 13_18.
+Operación actual: 14_18.
+Se detiene el backtracking en la operación: 14_18
+Operación actual: 0_19.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_19.
+Operación actual: 2_19.
+Operación actual: 3_19.
+Operación actual: 4_19.
+Operación actual: 5_19.
+Operación actual: 6_19.
+Operación actual: 7_19.
+Operación actual: 8_19.
+Operación actual: 9_19.
+Operación actual: 10_19.
+Operación actual: 11_19.
+Operación actual: 12_19.
+Operación actual: 13_19.
+Operación actual: 14_19.
+Se detiene el backtracking en la operación: 14_19
+Operación actual: 0_0.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_0.
+Operación actual: 2_0.
+Operación actual: 3_0.
+Operación actual: 4_0.
+Operación actual: 5_0.
+Operación actual: 6_0.
+Operación actual: 7_0.
+Operación actual: 8_0.
+Operación actual: 9_0.
+Operación actual: 10_0.
+Operación actual: 11_0.
+Operación actual: 12_0.
+Operación actual: 13_0.
+Operación actual: 14_0.
+Se detiene el backtracking en la operación: 14_0
+Operación actual: 0_1.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_1.
+Operación actual: 2_1.
+Operación actual: 3_1.
+Operación actual: 4_1.
+Operación actual: 5_1.
+Operación actual: 6_1.
+Operación actual: 7_1.
+Operación actual: 8_1.
+Operación actual: 9_1.
+Operación actual: 10_1.
+Operación actual: 11_1.
+Operación actual: 12_1.
+Operación actual: 13_1.
+Operación actual: 14_1.
+Se detiene el backtracking en la operación: 14_1
+Operación actual: 0_2.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_2.
+Operación actual: 2_2.
+Operación actual: 3_2.
+Operación actual: 4_2.
+Operación actual: 5_2.
+Operación actual: 6_2.
+Operación actual: 7_2.
+Operación actual: 8_2.
+Operación actual: 9_2.
+Operación actual: 10_2.
+Operación actual: 11_2.
+Operación actual: 12_2.
+Operación actual: 13_2.
+Operación actual: 14_2.
+Se detiene el backtracking en la operación: 14_2
+Operación actual: 0_3.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_3.
+Operación actual: 2_3.
+Operación actual: 3_3.
+Operación actual: 4_3.
+Operación actual: 5_3.
+Operación actual: 6_3.
+Operación actual: 7_3.
+Operación actual: 8_3.
+Operación actual: 9_3.
+Operación actual: 10_3.
+Operación actual: 11_3.
+Operación actual: 12_3.
+Operación actual: 13_3.
+Operación actual: 14_3.
+Se detiene el backtracking en la operación: 14_3
+Operación actual: 0_4.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_4.
+Operación actual: 2_4.
+Operación actual: 3_4.
+Operación actual: 4_4.
+Operación actual: 5_4.
+Operación actual: 6_4.
+Operación actual: 7_4.
+Operación actual: 8_4.
+Operación actual: 9_4.
+Operación actual: 10_4.
+Operación actual: 11_4.
+Operación actual: 12_4.
+Operación actual: 13_4.
+Operación actual: 14_4.
+Se detiene el backtracking en la operación: 14_4
+Operación actual: 0_5.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_5.
+Operación actual: 2_5.
+Operación actual: 3_5.
+Operación actual: 4_5.
+Operación actual: 5_5.
+Operación actual: 6_5.
+Operación actual: 7_5.
+Operación actual: 8_5.
+Operación actual: 9_5.
+Operación actual: 10_5.
+Operación actual: 11_5.
+Operación actual: 12_5.
+Operación actual: 13_5.
+Operación actual: 14_5.
+Se detiene el backtracking en la operación: 14_5
+Operación actual: 0_6.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_6.
+Operación actual: 2_6.
+Operación actual: 3_6.
+Operación actual: 4_6.
+Operación actual: 5_6.
+Operación actual: 6_6.
+Operación actual: 7_6.
+Operación actual: 8_6.
+Operación actual: 9_6.
+Operación actual: 10_6.
+Operación actual: 11_6.
+Operación actual: 12_6.
+Operación actual: 13_6.
+Operación actual: 14_6.
+Se detiene el backtracking en la operación: 14_6
+Operación actual: 0_7.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_7.
+Operación actual: 2_7.
+Operación actual: 3_7.
+Operación actual: 4_7.
+Operación actual: 5_7.
+Operación actual: 6_7.
+Operación actual: 7_7.
+Operación actual: 8_7.
+Operación actual: 9_7.
+Operación actual: 10_7.
+Operación actual: 11_7.
+Operación actual: 12_7.
+Operación actual: 13_7.
+Operación actual: 14_7.
+Se detiene el backtracking en la operación: 14_7
+Operación actual: 0_8.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_8.
+Operación actual: 2_8.
+Operación actual: 3_8.
+Operación actual: 4_8.
+Operación actual: 5_8.
+Operación actual: 6_8.
+Operación actual: 7_8.
+Operación actual: 8_8.
+Operación actual: 9_8.
+Operación actual: 10_8.
+Operación actual: 11_8.
+Operación actual: 12_8.
+Operación actual: 13_8.
+Operación actual: 14_8.
+Se detiene el backtracking en la operación: 14_8
+Operación actual: 0_9.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_9.
+Operación actual: 2_9.
+Operación actual: 3_9.
+Operación actual: 4_9.
+Operación actual: 5_9.
+Operación actual: 6_9.
+Operación actual: 7_9.
+Operación actual: 8_9.
+Operación actual: 9_9.
+Operación actual: 10_9.
+Operación actual: 11_9.
+Operación actual: 12_9.
+Operación actual: 13_9.
+Operación actual: 14_9.
+Se detiene el backtracking en la operación: 14_9
+Operación actual: 0_10.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_10.
+Operación actual: 2_10.
+Operación actual: 3_10.
+Operación actual: 4_10.
+Operación actual: 5_10.
+Operación actual: 6_10.
+Operación actual: 7_10.
+Operación actual: 8_10.
+Operación actual: 9_10.
+Operación actual: 10_10.
+Operación actual: 11_10.
+Operación actual: 12_10.
+Operación actual: 13_10.
+Operación actual: 14_10.
+Se detiene el backtracking en la operación: 14_10
+Operación actual: 0_11.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_11.
+Operación actual: 2_11.
+Operación actual: 3_11.
+Operación actual: 4_11.
+Operación actual: 5_11.
+Operación actual: 6_11.
+Operación actual: 7_11.
+Operación actual: 8_11.
+Operación actual: 9_11.
+Operación actual: 10_11.
+Operación actual: 11_11.
+Operación actual: 12_11.
+Operación actual: 13_11.
+Operación actual: 14_11.
+Se detiene el backtracking en la operación: 14_11
+Operación actual: 0_12.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_12.
+Operación actual: 2_12.
+Operación actual: 3_12.
+Operación actual: 4_12.
+Operación actual: 5_12.
+Operación actual: 6_12.
+Operación actual: 7_12.
+Operación actual: 8_12.
+Operación actual: 9_12.
+Operación actual: 10_12.
+Operación actual: 11_12.
+Operación actual: 12_12.
+Operación actual: 13_12.
+Operación actual: 14_12.
+Se detiene el backtracking en la operación: 14_12
+Operación actual: 0_13.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_13.
+Operación actual: 2_13.
+Operación actual: 3_13.
+Operación actual: 4_13.
+Operación actual: 5_13.
+Operación actual: 6_13.
+Operación actual: 7_13.
+Operación actual: 8_13.
+Operación actual: 9_13.
+Operación actual: 10_13.
+Operación actual: 11_13.
+Operación actual: 12_13.
+Operación actual: 13_13.
+Operación actual: 14_13.
+Se detiene el backtracking en la operación: 14_13
+Operación actual: 0_14.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_14.
+Operación actual: 2_14.
+Operación actual: 3_14.
+Operación actual: 4_14.
+Operación actual: 5_14.
+Operación actual: 6_14.
+Operación actual: 7_14.
+Operación actual: 8_14.
+Operación actual: 9_14.
+Operación actual: 10_14.
+Operación actual: 11_14.
+Operación actual: 12_14.
+Operación actual: 13_14.
+Operación actual: 14_14.
+Se detiene el backtracking en la operación: 14_14
+Operación actual: 0_15.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_15.
+Operación actual: 2_15.
+Operación actual: 3_15.
+Operación actual: 4_15.
+Operación actual: 5_15.
+Operación actual: 6_15.
+Operación actual: 7_15.
+Operación actual: 8_15.
+Operación actual: 9_15.
+Operación actual: 10_15.
+Operación actual: 11_15.
+Operación actual: 12_15.
+Operación actual: 13_15.
+Operación actual: 14_15.
+Se detiene el backtracking en la operación: 14_15
+Operación actual: 0_16.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_16.
+Operación actual: 2_16.
+Operación actual: 3_16.
+Operación actual: 4_16.
+Operación actual: 5_16.
+Operación actual: 6_16.
+Operación actual: 7_16.
+Operación actual: 8_16.
+Operación actual: 9_16.
+Operación actual: 10_16.
+Operación actual: 11_16.
+Operación actual: 12_16.
+Operación actual: 13_16.
+Operación actual: 14_16.
+Se detiene el backtracking en la operación: 14_16
+Operación actual: 0_17.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_17.
+Operación actual: 2_17.
+Operación actual: 3_17.
+Operación actual: 4_17.
+Operación actual: 5_17.
+Operación actual: 6_17.
+Operación actual: 7_17.
+Operación actual: 8_17.
+Operación actual: 9_17.
+Operación actual: 10_17.
+Operación actual: 11_17.
+Operación actual: 12_17.
+Operación actual: 13_17.
+Operación actual: 14_17.
+Se detiene el backtracking en la operación: 14_17
+Operación actual: 0_18.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_18.
+Operación actual: 2_18.
+Operación actual: 3_18.
+Operación actual: 4_18.
+Operación actual: 5_18.
+Operación actual: 6_18.
+Operación actual: 7_18.
+Operación actual: 8_18.
+Operación actual: 9_18.
+Operación actual: 10_18.
+Operación actual: 11_18.
+Operación actual: 12_18.
+Operación actual: 13_18.
+Operación actual: 14_18.
+Se detiene el backtracking en la operación: 14_18
+Operación actual: 0_19.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_19.
+Operación actual: 2_19.
+Operación actual: 3_19.
+Operación actual: 4_19.
+Operación actual: 5_19.
+Operación actual: 6_19.
+Operación actual: 7_19.
+Operación actual: 8_19.
+Operación actual: 9_19.
+Operación actual: 10_19.
+Operación actual: 11_19.
+Operación actual: 12_19.
+Operación actual: 13_19.
+Operación actual: 14_19.
+Se detiene el backtracking en la operación: 14_19
+Operación actual: 0_0.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_0.
+Operación actual: 2_0.
+Operación actual: 3_0.
+Operación actual: 4_0.
+Operación actual: 5_0.
+Operación actual: 6_0.
+Operación actual: 7_0.
+Operación actual: 8_0.
+Operación actual: 9_0.
+Operación actual: 10_0.
+Operación actual: 11_0.
+Operación actual: 12_0.
+Operación actual: 13_0.
+Operación actual: 14_0.
+Se detiene el backtracking en la operación: 14_0
+Operación actual: 0_1.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_1.
+Operación actual: 2_1.
+Operación actual: 3_1.
+Operación actual: 4_1.
+Operación actual: 5_1.
+Operación actual: 6_1.
+Operación actual: 7_1.
+Operación actual: 8_1.
+Operación actual: 9_1.
+Operación actual: 10_1.
+Operación actual: 11_1.
+Operación actual: 12_1.
+Operación actual: 13_1.
+Operación actual: 14_1.
+Se detiene el backtracking en la operación: 14_1
+Operación actual: 0_2.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_2.
+Operación actual: 2_2.
+Operación actual: 3_2.
+Operación actual: 4_2.
+Operación actual: 5_2.
+Operación actual: 6_2.
+Operación actual: 7_2.
+Operación actual: 8_2.
+Operación actual: 9_2.
+Operación actual: 10_2.
+Operación actual: 11_2.
+Operación actual: 12_2.
+Operación actual: 13_2.
+Operación actual: 14_2.
+Se detiene el backtracking en la operación: 14_2
+Operación actual: 0_3.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_3.
+Operación actual: 2_3.
+Operación actual: 3_3.
+Operación actual: 4_3.
+Operación actual: 5_3.
+Operación actual: 6_3.
+Operación actual: 7_3.
+Operación actual: 8_3.
+Operación actual: 9_3.
+Operación actual: 10_3.
+Operación actual: 11_3.
+Operación actual: 12_3.
+Operación actual: 13_3.
+Operación actual: 14_3.
+Se detiene el backtracking en la operación: 14_3
+Operación actual: 0_4.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_4.
+Operación actual: 2_4.
+Operación actual: 3_4.
+Operación actual: 4_4.
+Operación actual: 5_4.
+Operación actual: 6_4.
+Operación actual: 7_4.
+Operación actual: 8_4.
+Operación actual: 9_4.
+Operación actual: 10_4.
+Operación actual: 11_4.
+Operación actual: 12_4.
+Operación actual: 13_4.
+Operación actual: 14_4.
+Se detiene el backtracking en la operación: 14_4
+Operación actual: 0_5.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_5.
+Operación actual: 2_5.
+Operación actual: 3_5.
+Operación actual: 4_5.
+Operación actual: 5_5.
+Operación actual: 6_5.
+Operación actual: 7_5.
+Operación actual: 8_5.
+Operación actual: 9_5.
+Operación actual: 10_5.
+Operación actual: 11_5.
+Operación actual: 12_5.
+Operación actual: 13_5.
+Operación actual: 14_5.
+Se detiene el backtracking en la operación: 14_5
+Operación actual: 0_6.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_6.
+Operación actual: 2_6.
+Operación actual: 3_6.
+Operación actual: 4_6.
+Operación actual: 5_6.
+Operación actual: 6_6.
+Operación actual: 7_6.
+Operación actual: 8_6.
+Operación actual: 9_6.
+Operación actual: 10_6.
+Operación actual: 11_6.
+Operación actual: 12_6.
+Operación actual: 13_6.
+Operación actual: 14_6.
+Se detiene el backtracking en la operación: 14_6
+Operación actual: 0_7.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_7.
+Operación actual: 2_7.
+Operación actual: 3_7.
+Operación actual: 4_7.
+Operación actual: 5_7.
+Operación actual: 6_7.
+Operación actual: 7_7.
+Operación actual: 8_7.
+Operación actual: 9_7.
+Operación actual: 10_7.
+Operación actual: 11_7.
+Operación actual: 12_7.
+Operación actual: 13_7.
+Operación actual: 14_7.
+Se detiene el backtracking en la operación: 14_7
+Operación actual: 0_8.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_8.
+Operación actual: 2_8.
+Operación actual: 3_8.
+Operación actual: 4_8.
+Operación actual: 5_8.
+Operación actual: 6_8.
+Operación actual: 7_8.
+Operación actual: 8_8.
+Operación actual: 9_8.
+Operación actual: 10_8.
+Operación actual: 11_8.
+Operación actual: 12_8.
+Operación actual: 13_8.
+Operación actual: 14_8.
+Se detiene el backtracking en la operación: 14_8
+Operación actual: 0_9.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_9.
+Operación actual: 2_9.
+Operación actual: 3_9.
+Operación actual: 4_9.
+Operación actual: 5_9.
+Operación actual: 6_9.
+Operación actual: 7_9.
+Operación actual: 8_9.
+Operación actual: 9_9.
+Operación actual: 10_9.
+Operación actual: 11_9.
+Operación actual: 12_9.
+Operación actual: 13_9.
+Operación actual: 14_9.
+Se detiene el backtracking en la operación: 14_9
+Operación actual: 0_10.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_10.
+Operación actual: 2_10.
+Operación actual: 3_10.
+Operación actual: 4_10.
+Operación actual: 5_10.
+Operación actual: 6_10.
+Operación actual: 7_10.
+Operación actual: 8_10.
+Operación actual: 9_10.
+Operación actual: 10_10.
+Operación actual: 11_10.
+Operación actual: 12_10.
+Operación actual: 13_10.
+Operación actual: 14_10.
+Se detiene el backtracking en la operación: 14_10
+Operación actual: 0_11.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_11.
+Operación actual: 2_11.
+Operación actual: 3_11.
+Operación actual: 4_11.
+Operación actual: 5_11.
+Operación actual: 6_11.
+Operación actual: 7_11.
+Operación actual: 8_11.
+Operación actual: 9_11.
+Operación actual: 10_11.
+Operación actual: 11_11.
+Operación actual: 12_11.
+Operación actual: 13_11.
+Operación actual: 14_11.
+Se detiene el backtracking en la operación: 14_11
+Operación actual: 0_12.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_12.
+Operación actual: 2_12.
+Operación actual: 3_12.
+Operación actual: 4_12.
+Operación actual: 5_12.
+Operación actual: 6_12.
+Operación actual: 7_12.
+Operación actual: 8_12.
+Operación actual: 9_12.
+Operación actual: 10_12.
+Operación actual: 11_12.
+Operación actual: 12_12.
+Operación actual: 13_12.
+Operación actual: 14_12.
+Se detiene el backtracking en la operación: 14_12
+Operación actual: 0_13.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_13.
+Operación actual: 2_13.
+Operación actual: 3_13.
+Operación actual: 4_13.
+Operación actual: 5_13.
+Operación actual: 6_13.
+Operación actual: 7_13.
+Operación actual: 8_13.
+Operación actual: 9_13.
+Operación actual: 10_13.
+Operación actual: 11_13.
+Operación actual: 12_13.
+Operación actual: 13_13.
+Operación actual: 14_13.
+Se detiene el backtracking en la operación: 14_13
+Operación actual: 0_14.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_14.
+Operación actual: 2_14.
+Operación actual: 3_14.
+Operación actual: 4_14.
+Operación actual: 5_14.
+Operación actual: 6_14.
+Operación actual: 7_14.
+Operación actual: 8_14.
+Operación actual: 9_14.
+Operación actual: 10_14.
+Operación actual: 11_14.
+Operación actual: 12_14.
+Operación actual: 13_14.
+Operación actual: 14_14.
+Se detiene el backtracking en la operación: 14_14
+Operación actual: 0_15.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_15.
+Operación actual: 2_15.
+Operación actual: 3_15.
+Operación actual: 4_15.
+Operación actual: 5_15.
+Operación actual: 6_15.
+Operación actual: 7_15.
+Operación actual: 8_15.
+Operación actual: 9_15.
+Operación actual: 10_15.
+Operación actual: 11_15.
+Operación actual: 12_15.
+Operación actual: 13_15.
+Operación actual: 14_15.
+Se detiene el backtracking en la operación: 14_15
+Operación actual: 0_16.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_16.
+Operación actual: 2_16.
+Operación actual: 3_16.
+Operación actual: 4_16.
+Operación actual: 5_16.
+Operación actual: 6_16.
+Operación actual: 7_16.
+Operación actual: 8_16.
+Operación actual: 9_16.
+Operación actual: 10_16.
+Operación actual: 11_16.
+Operación actual: 12_16.
+Operación actual: 13_16.
+Operación actual: 14_16.
+Se detiene el backtracking en la operación: 14_16
+Operación actual: 0_17.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_17.
+Operación actual: 2_17.
+Operación actual: 3_17.
+Operación actual: 4_17.
+Operación actual: 5_17.
+Operación actual: 6_17.
+Operación actual: 7_17.
+Operación actual: 8_17.
+Operación actual: 9_17.
+Operación actual: 10_17.
+Operación actual: 11_17.
+Operación actual: 12_17.
+Operación actual: 13_17.
+Operación actual: 14_17.
+Se detiene el backtracking en la operación: 14_17
+Operación actual: 0_18.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_18.
+Operación actual: 2_18.
+Operación actual: 3_18.
+Operación actual: 4_18.
+Operación actual: 5_18.
+Operación actual: 6_18.
+Operación actual: 7_18.
+Operación actual: 8_18.
+Operación actual: 9_18.
+Operación actual: 10_18.
+Operación actual: 11_18.
+Operación actual: 12_18.
+Operación actual: 13_18.
+Operación actual: 14_18.
+Se detiene el backtracking en la operación: 14_18
+Operación actual: 0_19.
+Analizando operación...
+Operación sin asignación.
+Operación no es primera.
+Operación espera tiempo de máquina.
+Backtracking activado.
+Operación actual: 1_19.
+Operación actual: 2_19.
+Operación actual: 3_19.
+Operación actual: 4_19.
+Operación actual: 5_19.
+Operación actual: 6_19.
+Operación actual: 7_19.
+Operación actual: 8_19.
+Operación actual: 9_19.
+Operación actual: 10_19.
+Operación actual: 11_19.
+Operación actual: 12_19.
+Operación actual: 13_19.
+Operación actual: 14_19.
+Se detiene el backtracking en la operación: 14_19

@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*- 
-'''Job
+"""Job
 Clase con la información correspondiente a cada tarea
-'''
+a listas con máquinas, tareas y operaciones.
+José González Ayerdi - A01036121
+ITESM Campus Monterrey
+02/2017
+"""
 
 class Job:
     def __init__(self, job_id=0, start_time=0, end_time=0, operations=[]):
@@ -10,7 +14,7 @@ class Job:
         self.__end_time   = end_time
         self.__operations = operations
 
-    '''Sección para getters'''
+    """Sección para getters"""
 
     def get_operations(self):
         return self.__operations
@@ -27,7 +31,7 @@ class Job:
     def get_op_count(self):
         return len(self.__operations)
 
-    '''Sección para setters'''
+    """Sección para setters"""
 
     def set_operations(self, operations):
         self.__operations = operations
@@ -41,7 +45,7 @@ class Job:
     def set_end_time(self, end_time):
         self.__end_time = end_time
         
-    '''Se establecen la propiedades de la clase'''
+    """Se establecen la propiedades de la clase."""
     id_job     = property(get_id, set_id)
     start_time = property(get_start_time, set_start_time)
     end_time   = property(get_end_time, set_end_time)

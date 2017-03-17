@@ -1,13 +1,11 @@
 
 # -*- coding: utf-8 -*- 
-'''
-    José González Ayerdi
-    ITESM Campus Monterrey
-    23/02/2017
-
-    Sistema de clases para el problema JSSP
-'''
-
+"""
+Sistema de clases para el problema JSSP
+José González Ayerdi - A01036121
+ITESM Campus Monterrey
+02/2017  
+"""
 from machine   import Machine
 from job       import Job   
 from schedule  import Schedule
@@ -17,17 +15,22 @@ from disjunctive_graph import DisjunctiveGraph
 import sys
 import numpy as np
 
-'''Función main para comenzar a ejecutar el programa '''
+""" Función main para comenzar a ejecutar el programa """
 def main():
 
     times    = 'datos/times_sample_mat.txt' 
     machines = 'datos/machines_sample_mat.txt'
+    # archivos con datos benchmark.
+    # para estos archivos el programa no encuentra un grafo sin ciclos
+    # a menos que se comente la línea 224 de disjunctive_graph.py.
+    #times    = 'datos/times_mat.txt' 
+    #machines = 'datos/machines_mat.txt'
     # verifica que los archivos existan
     # IMPORTANTE: se asume que todas las tareas tienen la misma cantidad de operaciones
     try:
         times_mat, machines_mat = np.genfromtxt(times), np.genfromtxt(machines, dtype=None)
     except IOError as e:
-        print("No se encontró uno de los archivos.")
+        print("No se encontró alguno de los archivos.")
         print(e)
         sys.exit(0)
 
@@ -38,7 +41,9 @@ def main():
     # Se crea la lista de objetos
     f = Formatter()
     ops, jobs, machines = f.create_objects(no_machines, no_jobs, times_mat, machines_mat)
-    '''
+
+    """
+    # pruebas para verificar los contenidos de las listas
     # Se imprimen casos de prueba
     print '----Operaciones----'
     print 'operacion 17 (empieza Índice en 0)'
@@ -67,26 +72,20 @@ def main():
     else:
         print 
 
-    
-
-    #for op in ops:
-    #    print op.id
-    '''
+    for op in ops:
+        print op.id
+    """
     dg = DisjunctiveGraph()
     g = dg.find_makespan(jobs, ops, machines, no_machines)
-    # print g
     
 if __name__ == "__main__":
     main()
 
-'''
+"""
 TODO:
-
-ops, precedence, groups = generate_matrixes(ops, jobs, machines)
-
-g = DisjunctiveGraph(ops, precedence, groups)
 
 schedule = solver(g)
 
 schedule.print_result()
-'''
+
+"""
