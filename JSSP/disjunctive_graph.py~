@@ -154,7 +154,7 @@ class DisjunctiveGraph:
 					print('Se detiene el backtracking en la operación: ' + op_id)
 					backtracking = False
 
-		makespan = str(max(times))
+        makespan = str(max(times))
 		print("Makespan: " + makespan)
 		return graph, makespan
 

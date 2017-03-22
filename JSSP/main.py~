@@ -78,7 +78,7 @@ def main():
     dg = DisjunctiveGraph()
     g, ms = dg.find_makespan(jobs, ops, machines, no_machines)
     schedule = Schedule()
-    schedule.fit(g, no_machines, machines, ops, ms, no_jobs)
+    schedule.fit(g, no_machines, machines, ops, ms)
 
 if __name__ == "__main__":
     main()

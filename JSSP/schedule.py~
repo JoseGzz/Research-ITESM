@@ -43,7 +43,7 @@ class Schedule:
             patch_list.append(patches.Rectangle(coordinates, v[0].get_duration(), 1, facecolor='#'+str(color)))
 
         fig = plt.figure()
-        ax = fig.add_subplot(111, aspect='equal', label='?')
+        ax = fig.add_subplot(111, aspect='equal')
         ax.set_xlim(xmin=0,xmax=int(float(ms))+5)
         ax.set_ylim(ymin=0,ymax=int(float(no_machines+3)))
         for p in patch_list:
