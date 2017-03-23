@@ -14,17 +14,6 @@ class Schedule:
 
     def fit(self, graph, no_machines, machines, operations, ms, no_jobs):
 	
-        '''
-		machines_lst = [None]*no_machines
-
-        # agrupación por máquina
-        for i, m in enumerate(machines):
-            machines_tmp = []
-            for op in operations:
-                if op.get_machine_id() == m.get_id():
-                    machines_tmp.append(op)
-            machines_lst[i] = machines_tmp
-        '''
 
         max_value = 16581375 
         interval = int(max_value / no_jobs)
@@ -40,22 +29,32 @@ class Schedule:
             job_colors[v[0].get_job_id()] = color
             patch_list.append(patches.Rectangle(coordinates, v[0].get_duration(), 1, facecolor='#'+str(color)))
 
-
         color_patches = []
         labels = []
         for i, j_color in enumerate(job_colors):
-            labels.append('Job #' + str(i+1))
+            labels.append('Tarea ' + str(i))
             color_patch = patches.Patch(color="#"+str(j_color), label='Job #' + str(i))
             color_patches.append(color_patch)
 
-        #textstr = 'NSE=%.2f\nRMSE=%.2f\n'%(1, 2)
-        #plt.text(5, 5, textstr, fontsize=14)
-
         fig = plt.figure()
         fig.legend(labels=labels, handles=color_patches)
-        ax = fig.add_subplot(111, aspect='equal', label='hello')
-        ax.set_xlim(xmin=0,xmax=int(float(ms))+5)
+        ax = fig.add_subplot(111, aspect='equal', xlabel='Tiempo')
+        ax.set_xlim(xmin=0,xmax=int(float(ms))+1)
         ax.set_ylim(ymin=0,ymax=int(float(no_machines+3)))
+
+
+        import matplotlib.ticker as plticker
+
+        loc = plticker.MultipleLocator(base=1.0) # this locator puts ticks at regular intervals
+        ax.xaxis.set_major_locator(loc)
+
+        ax.get_yaxis().set_visible(False)
+
+        y_coor = 0.35
+        for i in range(no_machines):
+            ax.annotate('Maquina ' + str(i+1), xy=(-0.1, y_coor), 
+            xycoords=('axes fraction', 'figure fraction'), textcoords='offset points', size=14)
+            y_coor += 0.06
 
         for p in patch_list:
             ax.add_patch(p)        
