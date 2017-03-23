@@ -18,8 +18,10 @@ import numpy as np
 """ Función main para comenzar a ejecutar el programa """
 def main():
 
-    times    = 'datos/times_sample_mat.txt' 
-    machines = 'datos/machines_sample_mat.txt'
+    #times    = 'datos/times_sample_mat.txt' 
+    #machines = 'datos/machines_sample_mat.txt'
+    times    = 'datos/times_sample_mat2.txt' 
+    machines = 'datos/machines_sample_mat2.txt'
     # archivos con datos benchmark.
     # para estos archivos el programa no encuentra un grafo sin ciclos
     # a menos que se comente la línea 224 de disjunctive_graph.py.
@@ -78,7 +80,7 @@ def main():
     dg = DisjunctiveGraph()
     g, ms = dg.find_makespan(jobs, ops, machines, no_machines)
     schedule = Schedule()
-    schedule.fit(g, no_machines, machines, ops, ms)
+    schedule.fit(g, no_machines, machines, ops, ms, no_jobs)
 
 if __name__ == "__main__":
     main()

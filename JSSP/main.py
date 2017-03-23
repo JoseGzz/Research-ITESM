@@ -20,6 +20,8 @@ def main():
 
     times    = 'datos/times_sample_mat.txt' 
     machines = 'datos/machines_sample_mat.txt'
+    #times    = 'datos/times_sample_mat2.txt' 
+    #machines = 'datos/machines_sample_mat2.txt'
     # archivos con datos benchmark.
     # para estos archivos el programa no encuentra un grafo sin ciclos
     # a menos que se comente la línea 224 de disjunctive_graph.py.

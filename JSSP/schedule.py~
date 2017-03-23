@@ -4,6 +4,7 @@ Clase con la información correspondiente al calendario
 '''
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+import matplotlib.ticker as plticker
 import numpy as np
 import copy as cp
 
@@ -13,7 +14,6 @@ class Schedule:
         pass
 
     def fit(self, graph, no_machines, machines, operations, ms, no_jobs):
-	
 
         max_value = 16581375 
         interval = int(max_value / no_jobs)
@@ -40,21 +40,22 @@ class Schedule:
         fig.legend(labels=labels, handles=color_patches)
         ax = fig.add_subplot(111, aspect='equal', xlabel='Tiempo')
         ax.set_xlim(xmin=0,xmax=int(float(ms))+1)
-        ax.set_ylim(ymin=0,ymax=int(float(no_machines+3)))
+        ax.set_ylim(ymin=0,ymax=int(float(no_machines+1)))
 
-
-        import matplotlib.ticker as plticker
-
-        loc = plticker.MultipleLocator(base=1.0) # this locator puts ticks at regular intervals
+        loc = plticker.MultipleLocator(base=1.0)
         ax.xaxis.set_major_locator(loc)
 
         ax.get_yaxis().set_visible(False)
 
-        y_coor = 0.35
-        for i in range(no_machines):
-            ax.annotate('Maquina ' + str(i+1), xy=(-0.1, y_coor), 
-            xycoords=('axes fraction', 'figure fraction'), textcoords='offset points', size=14)
-            y_coor += 0.06
+        y_coor = 0
+        y_coor_incremento = 45.8
+        for i in range(no_machines+1):
+            ax.annotate('Maquina ' + str(i+1), xy=(-0.12, 0.1), 
+            xycoords=('axes fraction', 'axes fraction'), xytext=(10, y_coor), textcoords='offset points', size=20)
+            y_coor += y_coor_incremento
+
+        ax.annotate("Makespan: " + str(int(float(ms))), xy=(0.5, 0.2), xycoords=('axes fraction', 'figure fraction'),
+        xytext=(0, 10), textcoords='offset points', size=20, ha='center', va='bottom')
 
         for p in patch_list:
             ax.add_patch(p)        
