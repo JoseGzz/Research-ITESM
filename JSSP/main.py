@@ -22,13 +22,15 @@ def main():
     machines = 'datos/machines_sample_mat.txt'
     #times    = 'datos/times_sample_mat2.txt' 
     #machines = 'datos/machines_sample_mat2.txt'
+    #times    = 'datos/times_sample_mat3.txt' 
+    #machines = 'datos/machines_sample_mat3.txt'
     # archivos con datos benchmark.
     # para estos archivos el programa no encuentra un grafo sin ciclos
     # a menos que se comente la línea 224 de disjunctive_graph.py.
     #times    = 'datos/times_mat.txt' 
     #machines = 'datos/machines_mat.txt'
     # verifica que los archivos existan
-    # IMPORTANTE: se asume que todas las tareas tienen la misma cantidad de operaciones
+    """IMPORTANTE: se asume que todas las tareas tienen la misma cantidad de operaciones"""
     try:
         times_mat, machines_mat = np.genfromtxt(times), np.genfromtxt(machines, dtype=None)
     except IOError as e:
@@ -79,8 +81,16 @@ def main():
     """
     dg = DisjunctiveGraph()
     g, ms = dg.find_makespan(jobs, ops, machines, no_machines)
+
+    for op, lst in g.items():
+        print("operacion:", op)
+        print("empieza en:", g.get(op)[0].get_start_time())
+        print("termina en:", g.get(op)[0].get_end_time())
+
     schedule = Schedule()
     schedule.fit(g, no_machines, machines, ops, ms, no_jobs)
+
+
 
 if __name__ == "__main__":
     main()

@@ -14,7 +14,6 @@ class Schedule:
         pass
 
     def fit(self, graph, no_machines, machines, operations, ms, no_jobs):
-
         max_value = 16581375 
         interval = int(max_value / no_jobs)
         colors = [hex(I)[2:].zfill(6) for I in range(0, max_value, interval)]
@@ -49,7 +48,7 @@ class Schedule:
 
         y_coor = 0
         y_coor_incremento = 45.8
-        for i in range(no_machines+1):
+        for i in range(no_machines):
             ax.annotate('Maquina ' + str(i+1), xy=(-0.12, 0.1), 
             xycoords=('axes fraction', 'axes fraction'), xytext=(10, y_coor), textcoords='offset points', size=20)
             y_coor += y_coor_incremento

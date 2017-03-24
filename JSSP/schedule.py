@@ -14,7 +14,6 @@ class Schedule:
         pass
 
     def fit(self, graph, no_machines, machines, operations, ms, no_jobs):
-
         max_value = 16581375 
         interval = int(max_value / no_jobs)
         colors = [hex(I)[2:].zfill(6) for I in range(0, max_value, interval)]
@@ -33,7 +32,7 @@ class Schedule:
         labels = []
         for i, j_color in enumerate(job_colors):
             labels.append('Tarea ' + str(i))
-            color_patch = patches.Patch(color="#"+str(j_color), label='Job #' + str(i))
+            color_patch = patches.Patch(color="#"+str(j_color))
             color_patches.append(color_patch)
 
         fig = plt.figure()

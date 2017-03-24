@@ -11,6 +11,10 @@ import copy as cp
 
 """ Constructor de la clase """
 class DisjunctiveGraph:
+
+	global ls_ops
+	ls_ops = []
+
 	def __init__(self):
 		pass
 
@@ -102,6 +106,9 @@ class DisjunctiveGraph:
 							# le asignamos tiempo de inicio en cero
 							current_op.add_possible_start_time(0)
 							current_op.set_start_time()
+							global ls_ops
+							ls_ops.append(current_op.get_id()+"f")
+							print('-----------TIEMPO DE INICIO----:', current_op.get_start_time())
 							# le asignamos tiempo de finalización en base a su duración
 							current_op.set_end_time(current_op.get_start_time() + current_op.get_duration())
 							# establecemos un tiempo de finalización
@@ -156,17 +163,23 @@ class DisjunctiveGraph:
 
 		makespan = str(max(times))
 		print("Makespan: " + makespan)
+		print("LISTA:", ls_ops)
+		seen = set()
+		uniq = [x for x in ls_ops if x not in seen and not seen.add(x)] 
+		print("---------", uniq) 
 		return graph, makespan
 
 	""" Método propagate_times que añade el tiempo de finalización de la operación actual a la lista
 	de posibles tiempos de inicio de las operaciones adyacente. """
 	def propagate_times(self, graph, lst, end_time, current_op):
-		# si algún adyacente pertenece a otra tarea entonce se trata de un adyacente conectado
+		# si algún adyacente pertenece a otra tarea entonces se trata de un adyacente conectado
 		# por máquina, así que se prende su booleana
-		if len(lst) > 1:
+		if len(lst[1:]) >= 1:
 			for adjacent in lst[1:]:
+				global ls_ops
+				ls_ops.append(adjacent.get_id()+"f2")
 				graph[adjacent.get_id()][0].add_possible_start_time(end_time)
-				if graph[adjacent.get_id()][0].get_job_id() != current_op.get_job_id():
+				if current_op.get_machine_id() == adjacent.get_machine_id():
 					graph[adjacent.get_id()][0].set_machine_time_assigned(True)
 
 	""" Método merge_graphs para combinar grafo de operaciones finales con el resto de las operaciones. """
