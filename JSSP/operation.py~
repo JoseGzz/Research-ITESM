@@ -164,7 +164,7 @@ class Operation:
     self_id           = property(get_self_id, set_self_id)
     common_operations = property(get_common_operations, set_common_operations)
     duration          = property(get_duration, set_duration)
-    start_time        = property(get_start_time, set_start_time, add_possible_start_time)
+    start_time        = property(get_start_time, set_start_time, __add_possible_start_time__)
     end_time          = property(get_end_time, set_end_time)
     machine           = property(get_machine, set_machine)
     machine_id        = property(get_machine_id, set_machine_id)

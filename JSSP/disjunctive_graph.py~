@@ -105,10 +105,10 @@ class DisjunctiveGraph:
 							print('Operación es primera.')
 							# le asignamos tiempo de inicio en cero
 							current_op.add_possible_start_time(0)
-							current_op.set_start_time()
+							current_op.set_start_time(max(current_op.get_start_times()))
 							global ls_ops
 							ls_ops.append(current_op.get_id()+"f")
-							print('-----------TIEMPO DE INICIO----:', current_op.get_start_time())
+							print('-----------TIEMPO DE INICIO-----------', current_op.get_start_time())
 							# le asignamos tiempo de finalización en base a su duración
 							current_op.set_end_time(current_op.get_start_time() + current_op.get_duration())
 							# establecemos un tiempo de finalización
@@ -129,7 +129,7 @@ class DisjunctiveGraph:
 							    print('Operación espera tiempo de máquina.')
 							    # si esto depende de una operación adelante entonces seguimos al siguiente nodo
 							    if self.depends_on_posterior_op(graph, lst):
-							        print('Operación depente de nodos posteriores.')
+							        print('Operación depende de nodos posteriores.')
 							    else:
 							    	print('Backtracking activado.')
 							    	# si no depende de una operación posterior entonces activamos backtracking
@@ -142,12 +142,12 @@ class DisjunctiveGraph:
 								# entonces establecemos tiempo de inicio, lo marcamos como asignado, reemplazamos el objeto
 								# y agregamos su tiempo de inicio a la lista de tiempos
 								print('Operación no espera tiempo de máquina.')
-								current_op.set_start_time()
+								current_op.set_start_time(max(current_op.get_start_times()))
 								current_op.set_end_time(current_op.get_start_time() + current_op.get_duration())
 								current_op.set_fixed(True)
 								print('Se fija la operación ' + str(op_id) + '.')
 								end_time = current_op.get_end_time()
-								graph[current_op.get_id()][0] = current_op
+								graph[current_op.get_id()][0] = cp.copy(current_op)
 								times.append(current_op.get_end_time())
 								# se le asigna a los adjacentes un posible tiempo de inicio
 								# a partir del primer adyacente (si existe y la operación es final) se trata de un adyacente 
@@ -164,6 +164,9 @@ class DisjunctiveGraph:
 		makespan = str(max(times))
 		print("Makespan: " + makespan)
 		print("LISTA:", ls_ops)
+		seen = set()
+		uniq = [x for x in ls_ops if x not in seen and not seen.add(x)] 
+		print("---------", uniq) 
 		return graph, makespan
 
 	""" Método propagate_times que añade el tiempo de finalización de la operación actual a la lista
@@ -171,10 +174,12 @@ class DisjunctiveGraph:
 	def propagate_times(self, graph, lst, end_time, current_op):
 		# si algún adyacente pertenece a otra tarea entonces se trata de un adyacente conectado
 		# por máquina, así que se prende su booleana
+		print("Propagando desde:", current_op.get_id())
 		if len(lst[1:]) >= 1:
 			for adjacent in lst[1:]:
 				global ls_ops
 				ls_ops.append(adjacent.get_id()+"f2")
+				print("adjacente:", graph[adjacent.get_id()][0].get_id())
 				graph[adjacent.get_id()][0].add_possible_start_time(end_time)
 				if current_op.get_machine_id() == adjacent.get_machine_id():
 					graph[adjacent.get_id()][0].set_machine_time_assigned(True)
