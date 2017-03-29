@@ -240,7 +240,6 @@ class DisjunctiveGraph:
 	def assign_machine_order(self, graph):
 		# copiamos el grafo actual para que en caso de que tenga ciclos, repitamos el proceso con el grafo como estaba
 		graph2 = cp.deepcopy(graph)
-		contador = 0
 		while True:
 			for op_id, lst in graph.items():
 				if not lst[0].has_machine_order():
@@ -268,8 +267,6 @@ class DisjunctiveGraph:
 				break
 			else:
 				print('El grafo generado está ciclado. Generando un nuevo grafo...')
-				contador += 1
-				print('Iteracion no.', contador)
 				graph = cp.deepcopy(graph2)
 		print('Grafo sin ciclos.')
 		return graph
