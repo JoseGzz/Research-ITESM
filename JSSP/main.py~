@@ -83,7 +83,7 @@ def main():
     g, ms = dg.find_makespan(jobs, ops, machines, no_machines)
 
     schedule = Schedule()
-    schedule.draw_result(g, no_machines, machines, ops, ms, no_jobs)
+    schedule.plot_result(g, no_machines, machines, ops, ms, no_jobs)
     schedule.print_result(g)
 
 if __name__ == "__main__":

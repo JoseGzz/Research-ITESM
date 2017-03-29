@@ -24,7 +24,7 @@ class Schedule:
 
 
     """Método draw que dibuja en pantalla la gráfica representando la secuencia de ejecución de las operaciones en cada máquina"""
-    def draw_result(self, graph, no_machines, machines, operations, ms, no_jobs):
+    def plot_result(self, graph, no_machines, machines, operations, ms, no_jobs):
         # generación de colores para las operaciones
         max_value = 16581375 
         interval  = int(max_value / no_jobs)
@@ -69,7 +69,7 @@ class Schedule:
         m_indexes = list(reversed(list(range(1, no_machines+1))))
         for i in range(no_machines*2):
             if i%2 != 0:
-             ax.annotate('Maquina ' + str(m_indexes.pop()), xy=(0, i/2), xytext=(-2, i/2), size = 15)
+             ax.annotate('Maquina ' + str(m_indexes.pop()), xy=(0, i/2), xytext=(-1*ms/10, i/2), size = 15)
 
         # se agregan los patches rectángulos a la figura
         for p in patch_list:

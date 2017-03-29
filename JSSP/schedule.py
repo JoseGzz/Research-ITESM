@@ -69,7 +69,7 @@ class Schedule:
         m_indexes = list(reversed(list(range(1, no_machines+1))))
         for i in range(no_machines*2):
             if i%2 != 0:
-             ax.annotate('Maquina ' + str(m_indexes.pop()), xy=(0, i/2), xytext=(-2, i/2), size = 15)
+             ax.annotate('Maquina ' + str(m_indexes.pop()), xy=(0, i/2), xytext=(-1*int(float(ms))/10, i/2), size = 15)
 
         # se agregan los patches rectángulos a la figura
         for p in patch_list:

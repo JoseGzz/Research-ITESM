@@ -18,10 +18,10 @@ import numpy as np
 """ Función main para comenzar a ejecutar el programa """
 def main():
 
-    times    = 'datos/times_sample_mat.txt' 
-    machines = 'datos/machines_sample_mat.txt'
-    #times    = 'datos/times_sample_mat2.txt' 
-    #machines = 'datos/machines_sample_mat2.txt'
+    #times    = 'datos/times_sample_mat.txt' 
+    #machines = 'datos/machines_sample_mat.txt'
+    times    = 'datos/times_sample_mat2.txt' 
+    machines = 'datos/machines_sample_mat2.txt'
     #times    = 'datos/times_sample_mat3.txt' 
     #machines = 'datos/machines_sample_mat3.txt'
     # archivos con datos benchmark.
