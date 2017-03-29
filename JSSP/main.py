@@ -49,57 +49,44 @@ def main():
     """
     # pruebas para verificar los contenidos de las listas
     # Se imprimen casos de prueba
-    print '----Operaciones----'
-    print 'operacion 17 (empieza Índice en 0)'
-    print 'id: {} (operación_tarea)'.format(ops[17].get_id())
-    print 'Le pertenece a la tarea: {}.'.format(ops[17].get_job_id())
-    print 'Dura {} unidades de tiempo.'.format(ops[17].get_duration())
-    print 'Se ejecutará en la máquina: {}.'.format(ops[17].get_machine_id())
-    print
+    print('----Operaciones----')
+    print('operacion 17 (empieza Índice en 0)')
+    print('id: {} (operación_tarea)'.format(ops[17].get_id()))
+    print('Le pertenece a la tarea: {}.'.format(ops[17].get_job_id()))
+    print('Dura {} unidades de tiempo.'.format(ops[17].get_duration()))
+    print('Se ejecutará en la máquina: {}.'.format(ops[17].get_machine_id()))
+    print()
 
     ops_1j = jobs[1].get_operations()
-    print '----Tareas----'
-    print 'tarea 1 (empieza Índice en 0)'
-    print 'Contiene las operaciones (operación_tarea):'
+    print('----Tareas----')
+    print('tarea 1 (empieza Índice en 0)')
+    print('Contiene las operaciones (operación_tarea):')
     for op in ops_1j:
-        print op.get_id(),
+        print(op.get_id())
     else:
-        print
-    print
+        print()
+    print()
 
     ops_2m = machines[2].get_operations()
-    print '----Máquinas----'
-    print 'máquina 3 (empieza índice en 1)'
-    print 'Ejecutará las operaciones (operación_tarea): '
+    print('----Máquinas----')
+    print('máquina 3 (empieza índice en 1)')
+    print('Ejecutará las operaciones (operación_tarea): ')
     for op in ops_2m:
-        print op.get_id(),
+        print(op.get_id())
     else:
-        print 
+        print()
 
     for op in ops:
-        print op.id
+        print(op.id)
     """
     dg = DisjunctiveGraph()
     g, ms = dg.find_makespan(jobs, ops, machines, no_machines)
 
-    for op, lst in g.items():
-        print("operacion:", op)
-        print("empieza en:", g.get(op)[0].get_start_time())
-        print("termina en:", g.get(op)[0].get_end_time())
-
     schedule = Schedule()
-    schedule.fit(g, no_machines, machines, ops, ms, no_jobs)
-
-
+    schedule.plot_result(g, no_machines, machines, ops, ms, no_jobs)
+    schedule.print_result(g)
 
 if __name__ == "__main__":
     main()
 
-"""
-TODO:
 
-schedule = solver(g)
-
-schedule.print_result()
-
-"""

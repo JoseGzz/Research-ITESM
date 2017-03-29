@@ -38,7 +38,7 @@ class DisjunctiveGraph:
 		graph = self.merge_graphs(graph, graph_last, jobs)
 
 		"""
-		# imprime el grafo para testing
+		# imprime el grafo para probar
 		for k, v in graph.items():
 			print('key: ' + k)
 			for val in v:
@@ -227,7 +227,7 @@ class DisjunctiveGraph:
 			    # se agrergan las operaciones comunes (por máquina) a la lista de adjacentes de la actual operación
 			    for i in range(len(ops)-1):
 			          graph[ops[i].get_id()].append(ops[i+1])
-                # revisamos si existen ciclos en el grafo generado, en tal caso hay que ejecutar el procedimiento nuevamente
+        # revisamos si existen ciclos en el grafo generado (se viola restricción), en tal caso hay que ejecutar el procedimiento nuevamente
 		if self.cycle_exists(graph):
 			print('El grafo generado está ciclado. Generando un nuevo grafo...')
 			return self.assign_machine_order(graph2)
@@ -249,7 +249,7 @@ class DisjunctiveGraph:
 	    		break
 	    return found_cycle[0]
 
-	""" Método dfs_visit recursiva que ejecuta el algoritmo DFS. """
+	""" Método dfs_visit recursivo que ejecuta el algoritmo DFS """
 	def dfs_visit(self, G, u, color, found_cycle):
 		if found_cycle[0]:                          
 			return
@@ -262,7 +262,7 @@ class DisjunctiveGraph:
 				self.dfs_visit(G, v.get_id(), color, found_cycle)
 		color[u] = "black"                          
 
-	""" Método find_first_operations que regresa la lista con id de las operaciones que no tienen predecesores. """
+	""" Método find_first_operations que regresa la lista con id de las operaciones que no tienen predecesores """
 	def find_first_operations(self, graph, operations):
 		id_list = []
 		for op in operations:
