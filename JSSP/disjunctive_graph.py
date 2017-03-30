@@ -45,8 +45,11 @@ class DisjunctiveGraph:
 				print(val.get_id())
 			print('---')
 		"""
+
 		# asignamos orden de ejecución de las operaciones en las máquinas aleatoriamente por el momento 
-		graph = self.assign_machine_order(graph)
+		graph = self.assign_machine_order_iterative(graph)
+		#graph = self.assign_machine_order_recursive(graph)
+
 		# creamos la lista de operaciones que no tienen predecesores para poder fijarlas desde el principio
 		first_op_ids = self.find_first_operations(graph, operations)
 
@@ -58,7 +61,6 @@ class DisjunctiveGraph:
 				print(val.get_id())
 			print('---')
 		
-
 		# ALGORITHM 1 : Calculate Makespan
 		#
 		# while not all operations are fixed
@@ -84,6 +86,11 @@ class DisjunctiveGraph:
 		# repeat
 
 		# comienza algoritmo para calcular makespan
+
+		return self.forward_assignment(graph, first_op_ids)
+
+	"""Método para asignar tiempos a las operaciones por medio del recorrido hacia adelante"""
+	def forward_assignment(self, graph, first_op_ids):
 		times = []
 		print('Asignando tiempos...')
 		while not self.all_fixed(graph):
@@ -203,8 +210,7 @@ class DisjunctiveGraph:
 		return True
 
 	""" Método recursivo para asignar un orden de ejecución en máquinas a las operaciones """
-	"""
-	def assign_machine_order(self, graph):
+	def assign_machine_order_recursive(self, graph):
 		# copiamos el grafo actual para que en caso de que tenga ciclos, repitamos el proceso con el grafo como estaba
 		graph2 = cp.deepcopy(graph)
 		for op_id, lst in graph.items():
@@ -235,9 +241,9 @@ class DisjunctiveGraph:
 		else:
 			print('Grafo sin ciclos.')
 			return graph
-	"""
+	
 	""" Método iterativo para asignar un orden de ejecución en máquinas a las operaciones """
-	def assign_machine_order(self, graph):
+	def assign_machine_order_iterative(self, graph):
 		# copiamos el grafo actual para que en caso de que tenga ciclos, repitamos el proceso con el grafo como estaba
 		graph2 = cp.deepcopy(graph)
 		contador = 0
