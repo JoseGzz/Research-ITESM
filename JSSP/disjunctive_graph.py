@@ -33,7 +33,7 @@ class DisjunctiveGraph:
 		for op in operations:
 			if op.get_self_id() == (no_machines-1):
 				graph_last[op.get_id()] = [op]
-	
+
 		# agregamos los nodos finales ya con lista de adjacentes disponible
 		graph = self.merge_graphs(graph, graph_last, jobs)
 
@@ -61,36 +61,38 @@ class DisjunctiveGraph:
 				print(val.get_id())
 			print('---')
 		
-		# ALGORITHM 1 : Calculate Makespan
-		#
-		# while not all operations are fixed
-		#  for each operation
-		#    if not fixed then
-		#      if its a FIRST (no predecesors at all)
-		#        assign start-time 0 and end-time st + duration
-		#        then for all of its succesors add the end time of this node to their list of start times. From succesors 2 on, set those as machine time assigned.
-		#        Mark this node as 'fixed'.
-		#        continue to the next node and repeat.
-		#      else if not a FIRST node then 
-		#        if needs and waiting a start time based on machine order
-		#          if it depends on a posterior operation of the same job
-		#            continue to the next node and repeat
-		#          else 
-		#            then backtrack to the next job and repeat.
-		#        else if it has recived a start time based on machine order or it does not need one then
-		#          substract 1 from the pending machine times variable
-		#          calculate latest time from list of start times, add its duration and send to adyacents.
-		#          set to fixed.
-		#          continue to next node and repeat
-		#   else if fixed then continue to next node
-		# repeat
-
 		# comienza algoritmo para calcular makespan
 
 		return self.forward_assignment(graph, first_op_ids)
 
-	"""Método para asignar tiempos a las operaciones por medio del recorrido hacia adelante"""
+	"""Método para asignar tiempos a las operaciones por medio del recorrido hacia adelante:
+
+	 ALGORITHM 1 : Calculate Makespan
+	
+	 while not all operations are fixed
+	  for each operation
+	    if not fixed then
+	      if its a FIRST (no predecesors at all)
+	        assign start-time 0 and end-time st + duration
+	        then for all of its succesors add the end time of this node to their list of start times. From succesors 2 on, set those as machine time assigned.
+	        Mark this node as 'fixed'.
+	        continue to the next node and repeat.
+	      else if not a FIRST node then 
+	        if needs and waiting a start time based on machine order
+	          if it depends on a posterior operation of the same job
+	            continue to the next node and repeat
+	          else 
+	            then backtrack to the next job and repeat.
+	        else if it has recived a start time based on machine order or it does not need one then
+	          substract 1 from the pending machine times variable
+	          calculate latest time from list of start times, add its duration and send to adyacents.
+	          set to fixed.
+	          continue to next node and repeat
+	   else if fixed then continue to next node
+	 repeat
+	 """
 	def forward_assignment(self, graph, first_op_ids):
+
 		times = []
 		print('Asignando tiempos...')
 		while not self.all_fixed(graph):
