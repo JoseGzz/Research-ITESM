@@ -10,6 +10,7 @@ import numpy as np
 import sys
 from facility import Facility
 from location import Location
+from formatter import Formatter
 
 def main():
 	flow_mat      = []
@@ -22,15 +23,20 @@ def main():
 	#print('----------------------------------------')
 	#print(flow_mat)
 	#non_zero_val_coordinates = np.argwhere(flow_mat != 0)
-	fac1 = Facility()
-	fac1.set_flows(flow_mat)
-	print(fac1.flow_with(1))
+	
+	locations, facilities = Formatter().generate_lists(distance_mat, flow_mat)
 
-	location1 = Location()
-	location1.set_distances(distance_mat)
-	print(location1.distance_to(1))
+	# imprime las distancias entre ubicaciones para probar
+	for loc in locations:
+		print("location #", loc.loc_id)
+		for dis in loc.distances:
+			print(dis)
 
-
+	# imprime los flujos entre facilities para probar
+	for fac in facilities:
+		print("facility #", fac.fac_id)
+		for flow in fac.flows:
+			print(flow)
 
 def read_data(flow_mat, distance_mat, no_facilities, file_name):
 	try:
