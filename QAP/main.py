@@ -1,29 +1,36 @@
+
+# -*- coding: utf-8 -*- 
+"""
+Sistema de clases para el problema QAP
+José González Ayerdi - A01036121
+ITESM Campus Monterrey
+03/2017  
+"""
 import numpy as np
 import sys
+from facility import Facility
+from location import Location
 
 def main():
 	flow_mat      = []
 	distance_mat  = []
 	no_facilities = 0
-	file_name     = "chr15a.dat"
+	#file_name     = "test_data/chr15a.dat"
+	file_name     = "test_data/test.dat"
 	distance_mat, flow_mat = read_data(flow_mat, distance_mat, no_facilities, file_name)
 	#print(distance_mat)
 	#print('----------------------------------------')
 	#print(flow_mat)
-	non_zero_val_coordinates = np.argwhere(flow_mat != 0)
-	"""
-	found_vals = []
-	new_vals = []
-	for val in non_zero_val_coordinates:
-		new_0 = val[1]
-		new_1 = val[0]
-		lst = [new_0, new_1]
-		found_vals.append(lst)
-		if val in found_vals:
-			new_vals.append(val)
-	print(found_vals)
-	"""
-	#facilities, locations 
+	#non_zero_val_coordinates = np.argwhere(flow_mat != 0)
+	fac1 = Facility()
+	fac1.set_flows(flow_mat)
+	print(fac1.flow_with(1))
+
+	location1 = Location()
+	location1.set_distances(distance_mat)
+	print(location1.distance_to(1))
+
+
 
 def read_data(flow_mat, distance_mat, no_facilities, file_name):
 	try:
