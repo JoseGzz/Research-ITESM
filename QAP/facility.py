@@ -6,10 +6,10 @@ ITESM Campus Monterrey
 03/2017
 """
 class Facility():
-	def __init__(self, fac_id=0, flows=[], location=0):
+	def __init__(self, fac_id=0, flows=[], location=None):
 		self.fac_id   = fac_id
 		self.flows    = []
-		self.location = 0
+		self.location = location
 
 	def set_flows(self, flow_mat):
 		for fac in flow_mat[self.fac_id]:

@@ -12,6 +12,7 @@ from facility import Facility
 from location import Location
 from formatter import Formatter
 from solver import Solver
+from plotter import Plotter
 
 def main():
 	flow_mat      = []
@@ -42,8 +43,24 @@ def main():
 	"""
 
 	s = Solver(locations, facilities)
-	s.generate_permutation(len(locations))
+	locations, facilities = s.generate_permutation(len(locations))
 	print(s.calculate_cost())
+	p = Plotter(locations, facilities)
+	p.plot_results()
+
+	# imprime las distancias entre ubicaciones para probar
+	for loc in locations:
+		print("location #", loc.loc_id)
+		print("has fac #", loc.facility.fac_id)
+		for dis in loc.distances:
+			print(dis)
+
+	# imprime los flujos entre facilities para probar
+	for fac in facilities:
+		print("facility #", fac.fac_id)
+		print("has location #", fac.location.loc_id)
+		for flow in fac.flows:
+			print(flow)
 
 def read_data(flow_mat, distance_mat, no_facilities, file_name):
 	try:

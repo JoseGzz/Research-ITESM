@@ -9,18 +9,25 @@ class Solver():
 
 	def generate_permutation(self, no_locations):
 		print(random.sample(range(no_locations), no_locations))
-		self.p = random.sample(range(no_locations), no_locations)
-		#self.p = [1,0,3,2]
-
+		#self.p = random.sample(range(no_locations), no_locations)
+		self.p = [1,0,3,2]
+		locations = []
+		facilities = []
+		for i, fac in enumerate(self.p):
+			loc = self.search_location(i)
+			facility = self.search_facility(fac)
+			loc.facility = facility
+			facility.location = loc
+			locations.append(loc)
+			facilities.append(facility)
+		return locations, facilities
 
 	def calculate_cost(self):
 		flows, fac_ids 	  = self.calculate_flows()
 		distances         = self.calculate_distances(fac_ids)
 		flows = np.array(flows)
 		distances = np.array(distances)
-
 		return flows.dot(distances)
-
 
 	def calculate_flows(self):
 		flow_list = []
@@ -32,7 +39,6 @@ class Solver():
 					flow_list.append(current_flow)
 					fac_ids.append((i, j))
 		return flow_list, fac_ids
-
 
 	def calculate_distances(self, fac_ids):
 		distances = []
@@ -46,11 +52,14 @@ class Solver():
 		return distances
 
 	def search_location(self, loc_id):
-
 		for location in self.locations:
 			if location.loc_id == loc_id:
 				return location
 
+	def search_facility(self, fac_id):
+		for facility in self.facilities:
+			if facility.fac_id == fac_id:
+				return facility
 
 
 
