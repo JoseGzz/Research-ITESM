@@ -11,6 +11,7 @@ import sys
 from facility import Facility
 from location import Location
 from formatter import Formatter
+from solver import Solver
 
 def main():
 	flow_mat      = []
@@ -26,6 +27,7 @@ def main():
 	
 	locations, facilities = Formatter().generate_lists(distance_mat, flow_mat)
 
+	"""
 	# imprime las distancias entre ubicaciones para probar
 	for loc in locations:
 		print("location #", loc.loc_id)
@@ -37,8 +39,11 @@ def main():
 		print("facility #", fac.fac_id)
 		for flow in fac.flows:
 			print(flow)
+	"""
 
-	total_distance = solver(locations, facilities)
+	s = Solver(locations, facilities)
+	s.generate_permutation(len(locations))
+	print(s.get_total_time())
 
 def read_data(flow_mat, distance_mat, no_facilities, file_name):
 	try:
