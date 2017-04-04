@@ -38,6 +38,8 @@ def main():
 		for flow in fac.flows:
 			print(flow)
 
+	total_distance = solver(locations, facilities)
+
 def read_data(flow_mat, distance_mat, no_facilities, file_name):
 	try:
 		with open(file_name, "r+") as f:
