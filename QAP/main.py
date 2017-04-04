@@ -43,7 +43,7 @@ def main():
 
 	s = Solver(locations, facilities)
 	s.generate_permutation(len(locations))
-	print(s.get_total_time())
+	print(s.calculate_cost())
 
 def read_data(flow_mat, distance_mat, no_facilities, file_name):
 	try:

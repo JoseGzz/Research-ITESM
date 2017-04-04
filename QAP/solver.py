@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 class Solver():
 	def __init__(self, locations=[], facilities=[], p=[]):
@@ -7,12 +8,12 @@ class Solver():
 		self.p = p
 
 	def generate_permutation(self, no_locations):
-		print(np.random.randint(no_locations, size=no_locations))
-		self.p = np.random.randint(no_locations, size=no_locations)
+		print(random.sample(range(no_locations), no_locations))
+		self.p = random.sample(range(no_locations), no_locations)
 		#self.p = [1,0,3,2]
 
 
-	def get_total_time(self):
+	def calculate_cost(self):
 		flows, fac_ids 	  = self.calculate_flows()
 		distances         = self.calculate_distances(fac_ids)
 		flows = np.array(flows)
