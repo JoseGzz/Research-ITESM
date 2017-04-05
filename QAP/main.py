@@ -41,11 +41,11 @@ def main():
 		for flow in fac.flows:
 			print(flow)
 	"""
-
 	s = Solver(locations, facilities)
-	locations, facilities = s.generate_permutation(len(locations))
-	print(s.calculate_cost())
-	p = Plotter(locations, facilities)
+	locations, facilities, permutation = s.generate_permutation(len(locations))
+	cost = s.calculate_cost()
+	print(cost)
+	p = Plotter(locations, facilities, permutation, cost)
 	p.plot_results()
 
 	"""

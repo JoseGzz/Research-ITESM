@@ -9,8 +9,8 @@ class Solver():
 
 	def generate_permutation(self, no_locations):
 		print(random.sample(range(no_locations), no_locations))
-		#self.p = random.sample(range(no_locations), no_locations)
-		self.p = [1,0,3,2]
+		self.p = random.sample(range(no_locations), no_locations)
+		#self.p = [1,0,3,2]
 		locations = []
 		facilities = []
 		for i, fac in enumerate(self.p):
@@ -20,7 +20,7 @@ class Solver():
 			facility.location = loc
 			locations.append(loc)
 			facilities.append(facility)
-		return locations, facilities
+		return locations, facilities, self.p
 
 	def calculate_cost(self):
 		flows, fac_ids 	  = self.calculate_flows()

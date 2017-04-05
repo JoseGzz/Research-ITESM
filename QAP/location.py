@@ -13,5 +13,6 @@ class Location():
 	def distance_to(self, location_id):
 		return self.distances[location_id]
 
-
+	def get_adyacents_ids(self):
+		return [i for i, x in enumerate(self.distances) if x != 0 and x != -1]
 
