@@ -48,6 +48,7 @@ def main():
 	p = Plotter(locations, facilities)
 	p.plot_results()
 
+	"""
 	# imprime las distancias entre ubicaciones para probar
 	for loc in locations:
 		print("location #", loc.loc_id)
@@ -61,6 +62,10 @@ def main():
 		print("has location #", fac.location.loc_id)
 		for flow in fac.flows:
 			print(flow)
+	"""
+	pt = Plotter(locations, facilities)
+	pt.plot_results()
+
 
 def read_data(flow_mat, distance_mat, no_facilities, file_name):
 	try:
