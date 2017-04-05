@@ -43,7 +43,7 @@ class Schedule:
             job_colors[v[0].get_job_id()] = color
             patch_list.append(patches.Rectangle(coordinates, v[0].get_duration(), 1, facecolor='#'+str(color)))
 
-        # creamos las etiquetas que se colocarán en la ezquina superior derecha indicando el color de cada tarea
+        # creamos las etiquetas que se colocarán en la esquina superior derecha indicando el color de cada tarea
         color_patches = []
         labels = []
         for i, j_color in enumerate(job_colors):
