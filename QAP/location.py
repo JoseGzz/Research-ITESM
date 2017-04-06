@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*- 
+"""
+Clase para el objeto de ubicación del problema QAP.
+José González Ayerdi - A01036121
+ITESM Campus Monterrey
+03/2017  
+"""
 class Location():
 
 	def __init__(self, loc_id=0, facility=None, distances=[]):

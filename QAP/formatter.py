@@ -1,7 +1,7 @@
 
 # -*- coding: utf-8 -*- 
 """
-Sistema de clases para el problema QAP
+Clase para generar lista de objetos a manipular según QAP.
 José González Ayerdi - A01036121
 ITESM Campus Monterrey
 03/2017  

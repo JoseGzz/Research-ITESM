@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*- 
 """
 Sistema de clases para el problema QAP
@@ -18,15 +17,13 @@ def main():
 	flow_mat      = []
 	distance_mat  = []
 	no_facilities = 0
+	
 	#file_name     = "test_data/chr15a.dat"
 	file_name     = "test_data/test.dat"
+	# lectura de archivos de prueba
 	distance_mat, flow_mat = read_data(flow_mat, distance_mat, no_facilities, file_name)
-	#print(distance_mat)
-	#print('----------------------------------------')
-	#print(flow_mat)
-	#non_zero_val_coordinates = np.argwhere(flow_mat != 0)
-	
-	locations, facilities = Formatter().generate_lists(distance_mat, flow_mat)
+	# generamos listas de objetos para manipular mejor sus propiedades
+	locations, facilities  = Formatter().generate_lists(distance_mat, flow_mat)
 
 	"""
 	# imprime las distancias entre ubicaciones para probar
@@ -41,12 +38,16 @@ def main():
 		for flow in fac.flows:
 			print(flow)
 	"""
+
+	# incializamos la clase solver para generar una permutacion
+	# y obtener las listas de objetos con sus ubicaciones y facilities asignados.
+	# calculamos el costo total y graficamos los resultados.
 	s = Solver(locations, facilities)
 	locations, facilities, permutation = s.generate_permutation(len(locations))
 	cost = s.calculate_cost()
-	print(cost)
-	p = Plotter(locations, facilities, permutation, cost)
-	p.plot_results()
+	print("Costo total:", cost)
+	pt = Plotter(locations, facilities, permutation, cost)
+	pt.plot_results()
 
 	"""
 	# imprime las distancias entre ubicaciones para probar
@@ -63,10 +64,9 @@ def main():
 		for flow in fac.flows:
 			print(flow)
 	"""
-	pt = Plotter(locations, facilities)
-	pt.plot_results()
 
-
+"""read_data lee del archivo de pruebas el número de facilities/loactions y las matrices
+de distancia y flujo. """
 def read_data(flow_mat, distance_mat, no_facilities, file_name):
 	try:
 		with open(file_name, "r+") as f:
