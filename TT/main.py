@@ -8,21 +8,24 @@ ITESM Campus Monterrey
 from formatter import Formatter
 
 def main():
-	course_content = None
-	student_info    = None
+	course_content    = None
+	student_info      = None
 	courses_file_name = "data/car-f-92.crs"
 	student_file_name = "data/car-f-92.stu"
-	course_dict  = {}
-	student_dict = {}
+	course_dict       = {}
+	student_dict      = {}
 
+	# leemos el archivo con la informacion de los cursos (id, cantidad de estudiantes)
 	with open(courses_file_name, "r+") as f:
 		course_content = [course.split() for course in [line.rstrip('\n') for line in f]]
 	#print(studen_info)
 
+	# leemos el archivo con la información de los estudiantes (lista de cursos a los que está inscrito)
 	with open(student_file_name, "r+") as f:
 		student_info = [student.split() for student in [line.rstrip('\n') for line in f]]
 	#print(course_content)
 
+	# generamos diccioanrios de objetos que representan a los cursos y a los estudiantes con todos sus atributos
 	course_dict, student_dict = Formatter(course_content, student_info).format()
 
 	"""
@@ -34,10 +37,13 @@ def main():
 			print(student.student_id)
 	"""
 
+	""" 
+	# imprimie contenio de dicionario de estudiantes para probar
 	for student_id, student in student_dict.items():
 		print(student_id)
 		for course in student.course_list:
 			print(course.course_id)
+	"""
 
 if __name__ == "__main__":
     main()
