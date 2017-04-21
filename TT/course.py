@@ -11,3 +11,13 @@ class Course():
 		self.course_id    = course_id
 		self.no_students  = no_students
 		self.student_list = []
+
+	def get_numeric_id(self):
+		num_id    = ""
+		found_int = False
+		for char in self.course_id:
+			if char != '0':
+				found_int = True
+			if found_int:
+				num_id = num_id + char
+		return int(num_id)

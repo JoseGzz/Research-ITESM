@@ -6,6 +6,7 @@ ITESM Campus Monterrey
 04/2017  
 """
 from formatter import Formatter
+import numpy as np
 
 def main():
 	course_content    = None
@@ -14,6 +15,7 @@ def main():
 	student_file_name = "data/car-f-92.stu"
 	course_dict       = {}
 	student_dict      = {}
+
 
 	# leemos el archivo con la informacion de los cursos (id, cantidad de estudiantes)
 	with open(courses_file_name, "r+") as f:
@@ -27,6 +29,25 @@ def main():
 
 	# generamos diccioanrios de objetos que representan a los cursos y a los estudiantes con todos sus atributos
 	course_dict, student_dict = Formatter(course_content, student_info).format()
+
+	total_students  = len(student_dict)
+	total_courses   = len(course_dict)
+	conflict_matrix = np.zeros(total_courses * total_courses).reshape(total_courses, total_courses)
+	conflicts = 0
+
+	for course_id, course in course_dict.items():
+		students = course.student_list
+		for course_id2, course2 in course_dict.items():
+			students2 = course2.student_list
+			for student in students:
+				for student2 in students2:
+					if student.student_id == student2.student_id:
+						conflict_matrix[course.get_numeric_id() - 1][course2.get_numeric_id() - 1] = 1
+						conflicts += 1
+						print(conflicts)
+
+	print(conflict_matrix)
+	print("Conflict density:", conflicts/(total_courses*total_courses))
 
 	"""
 	# imprime contenido de diccionario de cursos para probar
