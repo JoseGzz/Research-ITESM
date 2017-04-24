@@ -27,7 +27,7 @@ def main():
 		student_info = [student.split() for student in [line.rstrip('\n') for line in f]]
 	#print(course_content)
 
-	# generamos diccioanrios de objetos que representan a los cursos y a los estudiantes con todos sus atributos
+	# generamos diccionarios de objetos que representan a los cursos y a los estudiantes con todos sus atributos
 	course_dict, student_dict = Formatter(course_content, student_info).format()
 
 	total_students  = len(student_dict)

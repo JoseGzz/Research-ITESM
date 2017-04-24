@@ -38,6 +38,8 @@ class Formatter():
 			student.student_id = i
 			for course in student_courses:
 				student.course_list.append(courses.get(course))
+				# TODO: preguntar si este curso ya estaba asignado a alguien mas
+				# pasar iccionario a funcion y curso actual
 				courses[course].student_list.append(student)
 			students[i] = student
 		return students
