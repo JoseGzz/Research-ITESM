@@ -244,6 +244,36 @@ class DisjunctiveGraph:
 			print('Grafo sin ciclos.')
 			return graph
 	
+
+	def machine_order(self, graph, operations):
+		# voltear diccionario
+		machines = {}
+		machine_ids = []
+		spr = []
+		firsts_lst = self.find_first_operations(graph, operations)
+		graph_aux = {}
+		for op, lst in graph.items():
+			if lst[0].get_id() in firsts_lst:
+				graph_aux[lst[0].get_id()] = []
+			else:
+				graph_aux[lst[1].get_id()] = lst[0]
+		counter = len(graph_aux) / len(firsts_lst)
+		for i in range(counter):
+			for op, lst in graph_aux:
+				if len(lst) <= 0:
+					spr.append(lst[0])
+			shuffle(spr)
+			if not spr[len(spr) - 1].get_machine_id() in machine_ids:
+				machines[spr[len(spr) - 1].get_machine_id()] = [spr[len(spr) - 1]]
+			else:
+				machines[spr[0].get_machine_id()].append(spr[len(spr) - 1])
+			lst.pop()
+
+
+
+
+
+
 	""" Método iterativo para asignar un orden de ejecución en máquinas a las operaciones """
 	def assign_machine_order_iterative(self, graph):
 		# copiamos el grafo actual para que en caso de que tenga ciclos, repitamos el proceso con el grafo como estaba
@@ -282,7 +312,7 @@ class DisjunctiveGraph:
 		print('Grafo sin ciclos.')
 		return graph
 
-	""" Método cycle_exists que tedecta ciclos en un grafo utilizando recorrido a profundidad (DFS)
+	""" Método cycle_exists que detecta ciclos en un grafo utilizando recorrido a profundidad (DFS)
 	con coloreo de nodos.
 	Código basado en: https://algocoding.wordpress.com/2015/04/02/detecting-cycles-in-a-directed-graph-with-dfs-python/
 	TODO: reemplazar con implementación propia."""
