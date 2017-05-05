@@ -7,6 +7,7 @@ ITESM Campus Monterrey
 """
 from collections import OrderedDict
 from random      import shuffle
+from collections import defaultdict as dd
 import copy as cp
 
 """ Constructor de la clase """
@@ -47,8 +48,9 @@ class DisjunctiveGraph:
 		"""
 
 		# asignamos orden de ejecución de las operaciones en las máquinas aleatoriamente por el momento 
-		graph = self.assign_machine_order_iterative(graph)
+		#graph = self.assign_machine_order_iterative(graph)
 		#graph = self.assign_machine_order_recursive(graph)
+		graph = self.set_machines(graph, operations)
 
 		# creamos la lista de operaciones que no tienen predecesores para poder fijarlas desde el principio
 		first_op_ids = self.find_first_operations(graph, operations)
@@ -250,21 +252,27 @@ class DisjunctiveGraph:
 		machine_ids = []
 		spr = []
 		firsts_lst = self.find_first_operations(graph, operations)
-		graph_aux = {}
+		for op in firsts_lst:
+			print(op)
+		graph_aux = dd(str)
 		# Se voltea el diccionario actual de operaciones
 		for _, lst in graph.items():
 			if lst[0].get_id() in firsts_lst:
 				graph_aux[lst[0].get_id()] = []
-			else:
-				graph_aux[lst[1].get_id()] = lst[0]
+			elif len(lst) > 1:
+				if graph_aux.get(lst[1].get_id()) is None:
+					graph_aux[lst[1].get_id()] = []
+					graph_aux[lst[1].get_id()].append(lst[0])
+				else:
+					graph_aux[lst[1].get_id()].append(lst[0])
 		
 		# Obtenemos las operaciones en orden de precedencias 
 		counter = len(graph_aux) / len(firsts_lst)
-		for i in range(counter):
-			for op, lst in graph_aux:
-				if len(lst) <= 0 and not lst[0].has_machine_order():
-					spr.append(lst[0])
-					lst[0].set_machine_order(True)
+		for i in range(int(counter)):
+			for op, lst in graph_aux.items():
+				if len(lst) <= 0 and not graph_aux[op].has_machine_order():
+						spr.append(lst[0])
+						lst[0].set_machine_order(True)
 			shuffle(spr)
 			if not spr[len(spr) - 1].get_machine_id() in machine_ids:
 				machines[spr[len(spr) - 1].get_machine_id()] = [spr[len(spr) - 1]]
@@ -281,6 +289,7 @@ class DisjunctiveGraph:
 			for i in range(len(lst)-1):
 				graph[lst[i].get_id()].append(lst[i+1])
 
+		return graph
 
 	""" Método iterativo para asignar un orden de ejecución en máquinas a las operaciones """
 	def assign_machine_order_iterative(self, graph):
