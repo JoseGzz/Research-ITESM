@@ -248,16 +248,29 @@ class DisjunctiveGraph:
 	
 
 	def machine_order(self, graph, operations):
-		machines = {}
+		# dd por default dict
+		machines = dd(str)
 		machine_ids = []
 		spr = []
 		firsts_lst = self.find_first_operations(graph, operations)
 		for op in firsts_lst:
 			print(op)
 		graph_aux = dd(str)
+		"""
+		print("diccionario normal.")
+		for k, v in graph.items():
+			print('key: ' + str(k))
+			for val in v:
+				print(val.get_id())
+			print('---')
+		print("termina diccionario normal.")
+		"""
 		# Se voltea el diccionario actual de operaciones
 		for _, lst in graph.items():
 			if lst[0].get_id() in firsts_lst:
+				if len(lst) > 1:
+					graph_aux[lst[1].get_id()] = []
+					graph_aux[lst[1].get_id()].append(lst[0])
 				graph_aux[lst[0].get_id()] = []
 			elif len(lst) > 1:
 				if graph_aux.get(lst[1].get_id()) is None:
@@ -265,30 +278,39 @@ class DisjunctiveGraph:
 					graph_aux[lst[1].get_id()].append(lst[0])
 				else:
 					graph_aux[lst[1].get_id()].append(lst[0])
-		
+		"""
+		print("diccionario voltado.")
+		for k, v in graph_aux.items():
+			print('key: ' + str(k))
+			for val in v:
+				print(val.get_id())
+			print('---')
+		print("termina diccionario voltado.")
+		"""
 		# Obtenemos las operaciones en orden de precedencias 
 		counter = len(graph_aux) / len(firsts_lst)
-		for i in range(int(counter)):
+		while True: #for i in range(int(counter)):
 			for op, lst in graph_aux.items():
-				if len(lst) <= 0 and not graph_aux[op].has_machine_order():
-						spr.append(lst[0])
-						lst[0].set_machine_order(True)
+				if len(lst) <= 0 and not graph[op][0].has_machine_order():
+						spr.append(graph[op][0])
+						graph[op][0].set_machine_order(True)
 			shuffle(spr)
 			if not spr[len(spr) - 1].get_machine_id() in machine_ids:
 				machines[spr[len(spr) - 1].get_machine_id()] = [spr[len(spr) - 1]]
 				machine_ids.append(spr[len(spr) - 1].get_machine_id())
+				graph_aux[spr[len(spr) - 1]] = []
 			else:
-				machines[spr[0].get_machine_id()].append(spr[len(spr) - 1])
-				graph_aux[spr[0]] = []
+				machines[spr[len(spr) - 1].get_machine_id()].append(spr[len(spr) - 1])
+				graph_aux[spr[len(spr) - 1]] = []
 			spr.pop()
+			if len(spr) == 0 : break
 		return machines
 
 	def set_machines(self, graph, operations):
 		graph_aux = self.machine_order(graph, operations)
-		for m_id, lst in graph_aux:
+		for m_id, lst in graph_aux.items():
 			for i in range(len(lst)-1):
 				graph[lst[i].get_id()].append(lst[i+1])
-
 		return graph
 
 	""" Método iterativo para asignar un orden de ejecución en máquinas a las operaciones """
