@@ -253,8 +253,6 @@ class DisjunctiveGraph:
 		machine_ids = []
 		spr = []
 		firsts_lst = self.find_first_operations(graph, operations)
-		for op in firsts_lst:
-			print(op)
 		graph_aux = dd(str)
 		"""
 		print("diccionario normal.")
@@ -291,20 +289,28 @@ class DisjunctiveGraph:
 		counter = len(graph_aux) / len(firsts_lst)
 		while True: #for i in range(int(counter)):
 			for op, lst in graph_aux.items():
-				if len(lst) <= 0 and not graph[op][0].has_machine_order():
+				if len(lst) == 0 and not graph[op][0].has_machine_order():
 						spr.append(graph[op][0])
 						graph[op][0].set_machine_order(True)
 			shuffle(spr)
 			if not spr[len(spr) - 1].get_machine_id() in machine_ids:
 				machines[spr[len(spr) - 1].get_machine_id()] = [spr[len(spr) - 1]]
 				machine_ids.append(spr[len(spr) - 1].get_machine_id())
-				graph_aux[spr[len(spr) - 1]] = []
 			else:
 				machines[spr[len(spr) - 1].get_machine_id()].append(spr[len(spr) - 1])
-				graph_aux[spr[len(spr) - 1]] = []
+			
+			used_op = spr[len(spr) - 1].get_id()
+			self.find_and_delete(graph_aux, used_op)
+			# TODO: la ultima operacion no alcanza a llegar a la M3
 			spr.pop()
 			if len(spr) == 0 : break
 		return machines
+
+	def find_and_delete(self, graph_aux, used_op):
+		for op, lst in graph_aux.items():
+			if len(lst) != 0:
+				if lst[0].get_id() == used_op:
+					graph_aux[op] = []
 
 	def set_machines(self, graph, operations):
 		graph_aux = self.machine_order(graph, operations)
