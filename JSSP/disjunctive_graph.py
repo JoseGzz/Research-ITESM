@@ -38,14 +38,14 @@ class DisjunctiveGraph:
 		# agregamos los nodos finales ya con lista de adjacentes disponible
 		graph = self.merge_graphs(graph, graph_last, jobs)
 
-		"""
+		print("Antes de asignacion de maquinas")
 		# imprime el grafo para probar
 		for k, v in graph.items():
 			print('key: ' + k)
 			for val in v:
 				print(val.get_id())
 			print('---')
-		"""
+		
 
 		# asignamos orden de ejecución de las operaciones en las máquinas aleatoriamente por el momento 
 		#graph = self.assign_machine_order_iterative(graph)
@@ -55,8 +55,8 @@ class DisjunctiveGraph:
 		# creamos la lista de operaciones que no tienen predecesores para poder fijarlas desde el principio
 		first_op_ids = self.find_first_operations(graph, operations)
 
-		
 		# imrpime diccionario después de asignación de máquinas para testing
+		print("Despues de asignacion de maquinas")
 		for k, v in graph.items():
 			print('key: ' + str(k))
 			for val in v:
@@ -94,7 +94,6 @@ class DisjunctiveGraph:
 	 repeat
 	 """
 	def forward_assignment(self, graph, first_op_ids):
-
 		times = []
 		print('Asignando tiempos...')
 		while not self.all_fixed(graph):
@@ -140,7 +139,7 @@ class DisjunctiveGraph:
 							    	# si no depende de una operación posterior entonces activamos backtracking
 							    	# para pasar a la sig. tarea. Si estamos en la última tarea
 							    	# pasamos a la primera, de lo contrario a la siguiente en el orden.
-							    	if not (int(lst[0].get_id()[0]) == (lst[0].get_job().get_op_count()-1)):
+							    	if (int(lst[0].get_self_id() != lst[0].get_job().get_op_count()-1)):
 							    		backtracking = True
 							else:
 								# si la operación no es primera y no espera un tiempo por máquina o ya lo tiene
@@ -253,7 +252,7 @@ class DisjunctiveGraph:
 		machine_ids = []
 		spr = []
 		firsts_lst = self.find_first_operations(graph, operations)
-		graph_aux = dd(str)
+		graph_aux = {}# dd(str)
 		"""
 		print("diccionario normal.")
 		for k, v in graph.items():
@@ -287,23 +286,45 @@ class DisjunctiveGraph:
 		"""
 		# Obtenemos las operaciones en orden de precedencias 
 		counter = len(graph_aux) / len(firsts_lst)
-		while True: #for i in range(int(counter)):
+		while True:
+			# buscamos las operaciones cuyo precedente ya haya sido asignado
 			for op, lst in graph_aux.items():
 				if len(lst) == 0 and not graph[op][0].has_machine_order():
+						# estas operaciones las agregamos a la lista spr 
 						spr.append(graph[op][0])
+						# y las consideramos asignadas
 						graph[op][0].set_machine_order(True)
+						del graph_aux[op]
+			# asignamos un orden aleatorio
 			shuffle(spr)
-			if not spr[len(spr) - 1].get_machine_id() in machine_ids:
-				machines[spr[len(spr) - 1].get_machine_id()] = [spr[len(spr) - 1]]
-				machine_ids.append(spr[len(spr) - 1].get_machine_id())
+			# se va armando el diccionario de maquinas
+			# siempre se utiliza el ultimo elemento de la lista
+			# despues de la asignacion aleatoria
+			if not spr[-1].get_machine_id() in machine_ids:
+				machines[spr[-1].get_machine_id()] = [spr[-1]]
+				machine_ids.append(spr[-1].get_machine_id())
+				graph[spr[-1].get_id()][0].set_waits_for_machine(False)
 			else:
-				machines[spr[len(spr) - 1].get_machine_id()].append(spr[len(spr) - 1])
-			
-			used_op = spr[len(spr) - 1].get_id()
+				machines[spr[-1].get_machine_id()].append(spr[-1])
+			# el antecesor de la operacion que ha sido asignada
+			# queda libre para poder ser asignado despues
+			used_op = spr[-1].get_id()
 			self.find_and_delete(graph_aux, used_op)
-			# TODO: la ultima operacion no alcanza a llegar a la M3
 			spr.pop()
-			if len(spr) == 0 : break
+			# si ya no hay operaciones que falten por considerar
+			# y las que estan en consideracion ya se asignaron todas
+			# entonces terminamos
+			if not graph_aux and len(spr) == 0 : break
+		"""
+		print("Comienza diccionario de maquinas")
+		for k, v in machines.items():
+			print('key: ' + str(k))
+			for val in v:
+				print("len:", len(v))
+				print(val.get_id())
+			print('---')
+		print("termina diccionario de maquinas.")
+		"""
 		return machines
 
 	def find_and_delete(self, graph_aux, used_op):
@@ -316,7 +337,15 @@ class DisjunctiveGraph:
 		graph_aux = self.machine_order(graph, operations)
 		for m_id, lst in graph_aux.items():
 			for i in range(len(lst)-1):
+				var = lst[i].get_id()
+				var2 = lst[i+1].get_id()
 				graph[lst[i].get_id()].append(lst[i+1])
+		if self.cycle_exists(graph) :
+			print("CICLADO")
+			#import sys
+			#sys.exit()
+		else:
+			print("NO CICLADO")
 		return graph
 
 	""" Método iterativo para asignar un orden de ejecución en máquinas a las operaciones """
@@ -397,4 +426,5 @@ class DisjunctiveGraph:
 				id_list.append(op.get_id())
 		return id_list
 
-
+	def verify_constraints(self, graph):
+		pass
