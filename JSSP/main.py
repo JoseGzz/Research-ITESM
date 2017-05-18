@@ -51,11 +51,27 @@ def main():
 
     # Se calcula el makespan solamente con el recorrido hacia adelante
     dg = DisjunctiveGraph()
-    g, ms, jg, mg = dg.find_makespan(jobs, ops, machines, no_machines)
-    dg.perturbate_solution(jg, mg)
-
     schedule = Schedule()
+    g, ms, jg, mg, ops = dg.find_makespan(jobs, ops, machines, no_machines)
     schedule.plot_result(g, no_machines, machines, ops, ms, no_jobs)
+    g, ms, jg, mg, ops = dg.perturbate_solution(jg, mg, ops)
+    schedule.plot_result(g, no_machines, machines, ops, ms, no_jobs)
+    g, ms, jg, mg, ops = dg.perturbate_solution(jg, mg, ops)
+    schedule.plot_result(g, no_machines, machines, ops, ms, no_jobs)
+    g, ms, jg, mg, ops = dg.perturbate_solution(jg, mg, ops)
+    schedule.plot_result(g, no_machines, machines, ops, ms, no_jobs)
+    g, ms, jg, mg, ops = dg.perturbate_solution(jg, mg, ops)
+    schedule.plot_result(g, no_machines, machines, ops, ms, no_jobs)
+    g, ms, jg, mg, ops = dg.perturbate_solution(jg, mg, ops)
+    schedule.plot_result(g, no_machines, machines, ops, ms, no_jobs)
+    g, ms, jg, mg, ops = dg.perturbate_solution(jg, mg, ops)
+    schedule.plot_result(g, no_machines, machines, ops, ms, no_jobs)
+    g, ms, jg, mg, ops = dg.perturbate_solution(jg, mg, ops)
+    schedule.plot_result(g, no_machines, machines, ops, ms, no_jobs)
+    g, ms, jg, mg, ops = dg.perturbate_solution(jg, mg, ops)
+    schedule.plot_result(g, no_machines, machines, ops, ms, no_jobs)
+
+    
     schedule.print_result(g)
 
 if __name__ == "__main__":

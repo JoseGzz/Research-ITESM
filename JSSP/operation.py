@@ -29,6 +29,7 @@ class Operation:
         self.__machine_time_assigned  = machine_time_assigned
         self.__self_id                = self_id
         self.__waits_for_m            = waits_for_m
+        self.debug = False
 
     """Regresa verdadero si la operación está esperando que se le asigne un tiempo por máquina."""
     def waits_for_machine(self):
@@ -138,9 +139,10 @@ class Operation:
     
     def set_start_time(self, time):
         self.__start_time = time
-        for time in self.__start_times:
-            print("tiempo::", time)
-    
+        if self.debug:
+            for time in self.__start_times:
+                print("tiempo::", time)
+        
     def set_duration(self, duration):
         self.__duration = duration
         

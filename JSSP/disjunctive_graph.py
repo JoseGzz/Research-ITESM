@@ -9,6 +9,7 @@ from collections import OrderedDict
 from random      import shuffle
 from collections import defaultdict as dd
 import copy as cp
+import random
 
 """ Constructor de la clase """
 class DisjunctiveGraph:
@@ -53,17 +54,9 @@ class DisjunctiveGraph:
 		#graph = self.assign_machine_order_recursive(graph)
 		graph, machines_graph = self.set_machines(graph, operations)
 		
-		# imrpime diccionario después de asignación de máquinas para testing
-		if self.debug : print("Despues de asignacion de maquinas")
-		for k, v in graph.items():
-			if self.debug : print('key: ' + str(k))
-			for val in v:
-				if self.debug : print(val.get_id())
-			if self.debug : print('---')
-		
-		# Ejecuta algoritmo para calcular makespan
 
-		return self.forward_assignment(graph, jobs_graph, machines_graph, operations)
+		# Ejecuta algoritmo para calcular makespan
+		return self.forward_traversal(graph, jobs_graph, machines_graph, operations)
 
 	"""Método para asignar tiempos a las operaciones por medio del recorrido hacia adelante:
 
@@ -91,7 +84,17 @@ class DisjunctiveGraph:
 	   else if fixed then continue to next node
 	 repeat
 	 """
-	def forward_assignment(self, graph, jobs_graph, machines_graph, operations):
+	def forward_traversal(self, original_graph, jobs_graph, machines_graph, operations):
+		graph = cp.deepcopy(original_graph)
+		# imrpime diccionario después de asignación de máquinas para testing
+		if self.debug :
+			print("Despues de asignacion de maquinas")
+			for k, v in graph.items():
+				if self.debug : print('key: ' + str(k))
+				for val in v:
+					if self.debug : print(val.get_id())
+				if self.debug : print('---')
+
 		# creamos la lista de operaciones que no tienen predecesores para poder fijarlas desde el principio
 		first_op_ids = self.find_first_operations(graph, operations)
 		times = []
@@ -102,7 +105,7 @@ class DisjunctiveGraph:
 				if self.debug : print('Operación actual: ' + str(op_id) + '.')
 				current_op = lst[0]
 				# si no estamos buscando la siguiente tarea
-				if not backtracking: 
+				if not backtracking:
 					if self.debug : print('Analizando operación...')
 					# si la operación actual no tiene asignado un tiempo
 					if not current_op.is_fixed():
@@ -159,14 +162,14 @@ class DisjunctiveGraph:
 								# en otros casos a partir del tercer elemento tenemos adyacentes por máquinas
 								self.propagate_times(graph, lst, end_time, current_op)
 								# se prende booleana de fijación para la operación actual
-								graph[current_op.get_id()][0].set_fixed(True)
+								graph[current_op.get_id()][0].set_fixed(True) 
 				# si la siguiente operación corresponde a la primera operación de una tarea entonces nos detenemos 
 				elif int(lst[0].get_self_id()) == (lst[0].get_job().get_op_count()-1):
 					if self.debug : print('Se detiene el backtracking en la operación: ' + op_id)
 					backtracking = False
-		makespan = str(max(times))
+		makespan = str(max(times)) 
 		print("Makespan: " + makespan)
-		return graph, makespan, jobs_graph, machines_graph
+		return graph, makespan, jobs_graph, machines_graph, operations
 
 	""" Método propagate_times que añade el tiempo de finalización de la operación actual a la lista
 	de posibles tiempos de inicio de las operaciones adyacente. """
@@ -264,8 +267,8 @@ class DisjunctiveGraph:
 					graph_aux[lst[1].get_id()].append(lst[0])
 				else:
 					graph_aux[lst[1].get_id()].append(lst[0])
+		graph_copy = cp.deepcopy(graph_aux)
 		# Obtenemos las operaciones en orden de precedencias 
-		counter = len(graph_aux) / len(firsts_lst)
 		while True:
 			# buscamos las operaciones cuyo precedente ya haya sido asignado
 			for op, lst in graph_aux.items():
@@ -274,11 +277,11 @@ class DisjunctiveGraph:
 						spr.append(graph[op][0])
 						# y las consideramos asignadas
 						graph[op][0].set_machine_order(True)
-						del graph_aux[op]
+						del graph_copy[op]
 			# asignamos un orden aleatorio para comenzar
 			shuffle(spr)
-			# se va armando el diccionario de maquinas
-			# siempre se utiliza el ultimo elemento de la lista
+			# Se va armando el diccionario de maquinas
+			# Siempre se utiliza el ultimo elemento de la lista
 			# despues de la asignacion aleatoria
 			if not spr[-1].get_machine_id() in machine_ids:
 				machines[spr[-1].get_machine_id()] = [spr[-1]]
@@ -294,7 +297,7 @@ class DisjunctiveGraph:
 			# si ya no hay operaciones que falten por considerar
 			# y las que estan en consideracion ya se asignaron todas
 			# entonces terminamos
-			if (not graph_aux) and len(spr) == 0 : return machines
+			if (not graph_copy) and len(spr) == 0 : return machines
 		
 	def find_and_delete(self, graph_aux, used_op):
 		for op, lst in graph_aux.items():
@@ -310,11 +313,13 @@ class DisjunctiveGraph:
 				var2 = lst[i+1].get_id()
 				graph[lst[i].get_id()].append(lst[i+1])
 		if self.cycle_exists(graph) :
-			print("CICLADO")
+			pass
+			#if print("CICLADO")
 			#import sys
 			#sys.exit()
 		else:
-			print("NO CICLADO")
+			pass
+			#print("NO CICLADO")
 		return graph, graph_aux
 
 	""" Método iterativo para asignar un orden de ejecución en máquinas a las operaciones """
@@ -368,12 +373,6 @@ class DisjunctiveGraph:
 	    	if found_cycle[0]:
 	    		break
 	    return found_cycle[0]
-
-	
-	
-	
-	
-	
 	
 	""" Método dfs_visit recursivo que ejecuta el algoritmo DFS """
 	def dfs_visit(self, G, u, color, found_cycle):
@@ -402,8 +401,9 @@ class DisjunctiveGraph:
 		return id_list
 
 	"""Funcion para perturbar la solucion actual y obtener un vecino."""
-	def perturbate_solution(self, jobs_graph, m_graph):
+	def perturbate_solution(self, jobs_graph, m_graph, operations):
 		displacements = []
+		# Se genera la cantidad de desplazamientos posibles para cada operacion
 		for m_id, ops in m_graph.items():
 			pos = []
 			for i in range(len(ops)):
@@ -416,49 +416,90 @@ class DisjunctiveGraph:
 					move_right = len(ops) - 1 - i 
 					pos.append((move_left, move_right))
 			displacements.append(pos)
+		
 		# Se escoge una maquina al azar
 		machine = random.choice(range(len(displacements)))
-		ops = displacements[machine]
-		operation = random.choice(range(len(ops)))
-		# Cantidad de movimientos posibles
-		disp = displacements[machine][operation]
-		if disp is tuple:
-			disp = random.choice(disp)
-		# Indice de la operacion a desplazar
-		index = lst.index(op)
-		# Operacion a desplazar
-		op = c[operation]
+		# Agarramos la lista de desplazamientos para las operaciones de esa maquina
+		disps = displacements[machine]
+		# Escogemos una operacion al azar para desplazarla
+		operation_index = random.choice(range(len(disps)))
+		# Agarramos la cantidad de movimientos posibles para la operacion obtenida
+		moves = displacements[machine][operation_index]
+		# Si la operacion no es ni la primera ni la segunda
+		# agarramos una direccion de movimiento al azar
+		if type(moves) == tuple:
+			moves = int(random.choice(moves))
 		# Lista con las operaciones de la maquina
-		lst = m_graph[str(machine)]
+		lst = m_graph[machine]
+		# Operacion a desplazar
+		operation = lst[operation_index]
+		# Indice de la operacion a desplazar
+		index = lst.index(operation)
 		# Cantidad de espacios a moverse
-		move = random.choice(abs(disp))
+		print("Moves:", moves)
+		move = 1 if abs(moves) == 1 else random.choice(range(1, abs(moves)))
 		# Determinar direccion del desplazamiento
-		term = 1 if disp >= 0 else -1
+		term = 1 if moves >= 0 else -1
 		# Llevar a cabo el desplazamiento
+		print("Move: ", move)
 		for i in range(move):
-			op = m_graph[str(machine)][index]
-			op2 = m_graph[str(machine)][index + term]
-			m_graph[str(machine)][index] = op2
-			m_graph[str(machine)][index + term] = op
+			# Obtenemos la operacion a mover
+			operation = m_graph[machine][index]
+			# Obtenemos la operacion con la que se hara el shift
+			operation_aux = m_graph[machine][index + term]
+			# Se asignan las operaciones a sus nuevas ubicaciones
+			m_graph[machine][index] = operation_aux
+			m_graph[machine][index + term] = operation
+			# Actualizamos el indice
 			index += term
-			if not self.verify_constraints(graph, m_graph):
+			# Si se violo alguna restriccion en el plan generado
+			jobs_graph_aux = cp.deepcopy(jobs_graph)
+			m_graph_aux = cp.deepcopy(m_graph)
+			if self.violates_constraints(jobs_graph_aux, m_graph_aux):
+				print("---CICLADO ADENTRO---")
+				# Regresamos las operaciones a la ultima posicion factible
 				index -= term
-				op2 = m_graph[str(machine)][index]
-				op = m_graph[str(machine)][index + term]
-				m_graph[str(machine)][index] = op
-				m_graph[str(machine)][index + term] = op2
-				graph = self.fill_graph(graph, machines_graph)
-				return self.forward_assignment(graph, jobs_graph, m_graph)
-		graph = self.fill_graph(graph, machines_graph)
-		return self.forward_assignment(graph, jobs_graph, machines_graph)
+				operation_aux = m_graph[machine][index]
+				operation = m_graph[machine][index + term]
+				m_graph[machine][index] = operation
+				m_graph[machine][index + term] = operation_aux
+				# Y salimos del ciclo
+				break
+		
+		# Generamos el grafo con las maquinas acomodadas
+		m_graph, jobs_graph = self.set_machine_precedence(m_graph, jobs_graph)
+		jobs_graph_aux = cp.deepcopy(jobs_graph)
+		m_graph_aux = cp.deepcopy(m_graph)
+		graph = self.fill_graph(jobs_graph_aux, m_graph_aux)
+		# Hacemos el recorrido hacia adelante para calcular el makespan con la
+		# posiblemente nueva configuracion
+		if self.cycle_exists(graph):
+			print("CICLADO2")
+			import sys
+			sys.exit()
+		else:
+			print("NO CICLADO2")
 
-	def verify_constraints(self, graph, m_graph):
-		return self.cycle_exists(self.fill_graph(graph, graph_aux))
+		return self.forward_traversal(graph, jobs_graph, m_graph, operations)
+
+	def violates_constraints(self, jobs_graph, m_graph):
+		return self.cycle_exists(self.fill_graph(jobs_graph, m_graph))
 	
-	def fill_graph(self, graph, machines_graph):
+	def fill_graph(self, jobs_graph, machines_graph):
 		for m_id, lst in machines_graph.items():
+			op = lst[0]
+			jobs_graph[op.get_id()][0].set_waits_for_machine(False)
 			for i in range(len(lst)-1):
 				var = lst[i].get_id()
 				var2 = lst[i+1].get_id()
-				graph[lst[i].get_id()].append(lst[i+1])
-		return graph
+				jobs_graph[lst[i].get_id()].append(lst[i+1])
+		return jobs_graph
+
+	def set_machine_precedence(self, m_graph, jobs_graph):
+		for m, lst in m_graph.items():
+			lst[0].set_waits_for_machine(False)
+			lst[0].set_machine_time_assigned(False)
+			for op in lst[1:]:
+				op.set_waits_for_machine(True)
+				op.set_machine_time_assigned(False)
+		return m_graph, jobs_graph
