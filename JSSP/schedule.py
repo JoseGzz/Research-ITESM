@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*- 
 '''Schedule
-Clase cresponsable de generar el calendario
+Clase responsable de generar el calendario
 José González - A01036121
 ITESM Campus Monterrey
 29/03/2017
@@ -75,7 +75,7 @@ class Schedule:
         for p in patch_list:
             ax.add_patch(p)        
 
-         # mostramos la gráfica con la figura y los patches
+        # mostramos la gráfica con la figura y los patches
         plt.show()
 
 
