@@ -47,7 +47,7 @@ class DisjunctiveGraph:
 				if self.debug : print(val.get_id())
 			if self.debug : print('---')
 		
-		jobs_graph = copy.deepcopy(graph)
+		jobs_graph = cp.deepcopy(graph)
 		# asignamos orden de ejecución de las operaciones en las máquinas aleatoriamente por el momento 
 		#graph = self.assign_machine_order_iterative(graph)
 		#graph = self.assign_machine_order_recursive(graph)
@@ -63,7 +63,7 @@ class DisjunctiveGraph:
 		
 		# Ejecuta algoritmo para calcular makespan
 
-		return self.forward_assignment(graph, jobs_graph, machines_graph)
+		return self.forward_assignment(graph, jobs_graph, machines_graph, operations)
 
 	"""Método para asignar tiempos a las operaciones por medio del recorrido hacia adelante:
 
@@ -91,7 +91,7 @@ class DisjunctiveGraph:
 	   else if fixed then continue to next node
 	 repeat
 	 """
-	def forward_assignment(self, graph, jobs_graph, machines_graph):
+	def forward_assignment(self, graph, jobs_graph, machines_graph, operations):
 		# creamos la lista de operaciones que no tienen predecesores para poder fijarlas desde el principio
 		first_op_ids = self.find_first_operations(graph, operations)
 		times = []
@@ -404,7 +404,7 @@ class DisjunctiveGraph:
 	"""Funcion para perturbar la solucion actual y obtener un vecino."""
 	def perturbate_solution(self, jobs_graph, m_graph):
 		displacements = []
-		for m_id, ops in m_graph:
+		for m_id, ops in m_graph.items():
 			pos = []
 			for i in range(len(ops)):
 				if i == 0:
