@@ -97,9 +97,10 @@ class DisjunctiveGraph:
 
 		# creamos la lista de operaciones que no tienen predecesores para poder fijarlas desde el principio
 		first_op_ids = self.find_first_operations(graph, operations)
+		graph_aux = cp.deepcopy(graph)
 		times = []
 		if self.debug : print('Asignando tiempos...')
-		while not self.all_fixed(graph):
+		while graph_aux: #not self.all_fixed(graph):
 			backtracking = False
 			for op_id, lst in graph.items():
 				if self.debug : print('Operación actual: ' + str(op_id) + '.')
@@ -122,13 +123,13 @@ class DisjunctiveGraph:
 							end_time = current_op.get_end_time()
 							# remplazamos el objeto ya con el tiempo asignado
 							if self.debug : print('Se fija la operación ' + str(op_id) + '.')
+							# se prende booleana de fijación para la operación actual
 							current_op.set_fixed(True)
+							del graph_aux[current_op.get_id()]
 							times.append(end_time)
 							graph[current_op.get_id()][0] = current_op
 							# se le asigna a los adjacentes siguientes (si tiene) un posible tiempo de inicio
 							self.propagate_times(graph, lst, end_time, current_op)
-							# se prende booleana de fijación para la operación actual
-							graph[current_op.get_id()][0].set_fixed(True)
 						else:
 							if self.debug : print('Operación no es primera.')
 							# si la operación actual espera una asignación de tiempo por máquina que no ha ocurrido
@@ -152,6 +153,7 @@ class DisjunctiveGraph:
 								current_op.set_start_time(max(current_op.get_start_times()))
 								current_op.set_end_time(current_op.get_start_time() + current_op.get_duration())
 								current_op.set_fixed(True)
+								del graph_aux[current_op.get_id()]
 								if self.debug : print('Se fija la operación ' + str(op_id) + '.')
 								end_time = current_op.get_end_time()
 								graph[current_op.get_id()][0] = cp.copy(current_op)
@@ -162,13 +164,12 @@ class DisjunctiveGraph:
 								# en otros casos a partir del tercer elemento tenemos adyacentes por máquinas
 								self.propagate_times(graph, lst, end_time, current_op)
 								# se prende booleana de fijación para la operación actual
-								graph[current_op.get_id()][0].set_fixed(True) 
 				# si la siguiente operación corresponde a la primera operación de una tarea entonces nos detenemos 
 				elif int(lst[0].get_self_id()) == (lst[0].get_job().get_op_count()-1):
 					if self.debug : print('Se detiene el backtracking en la operación: ' + op_id)
 					backtracking = False
 		makespan = str(max(times)) 
-		print("Makespan: " + makespan)
+		print("Makespan:", int(float(makespan)))
 		return graph, makespan, jobs_graph, machines_graph, operations
 
 	""" Método propagate_times que añade el tiempo de finalización de la operación actual a la lista
@@ -183,7 +184,7 @@ class DisjunctiveGraph:
 				if current_op.get_machine_id() == adjacent.get_machine_id():
 					graph[adjacent.get_id()][0].set_machine_time_assigned(True)
 
-	""" Método merge_graphs para combinar grafo de operaciones finales con el resto de las operaciones. """
+	"""Método merge_graphs para combinar grafo de operaciones finales con el resto de las operaciones."""
 	def merge_graphs(self, first, second, jobs):
 		graph_new = OrderedDict()
 		for op_id, vals in first.items():
@@ -400,89 +401,98 @@ class DisjunctiveGraph:
 				id_list.append(op.get_id())
 		return id_list
 
-	"""Funcion para perturbar la solucion actual y obtener un vecino."""
 	def perturbate_solution(self, jobs_graph, m_graph, operations):
+		"""Funcion para perturbar la solucion actual y obtener un vecino."""
+		# Lista para almacenar todos los posibles movimientos de todas las operaciones
 		displacements = []
-		# Se genera la cantidad de desplazamientos posibles para cada operacion
+		# Se genera la cantidad de desplazamientos posibles para cada operacion,
+		# numeros negativos es movimiento a la izquierda,
+		# numeros positivos es movimiento a la derecha
 		for m_id, ops in m_graph.items():
-			pos = []
+			possible_disps = []
 			for i in range(len(ops)):
+				# Para la primera operacion en la maquina
 				if i == 0:
-					pos.append(len(ops) - 1)
+					possible_disps.append(len(ops) - 1)
+				# Para la ultima operacion en la maquina
 				elif i == len(ops) - 1:
-					pos.append(-1 * (len(ops) - 1))
+					possible_disps.append(-1 * (len(ops) - 1))
+				# Para las operaciones intermedias
 				else:
 					move_left = -i
 					move_right = len(ops) - 1 - i 
-					pos.append((move_left, move_right))
-			displacements.append(pos)
-		
+					possible_disps.append((move_left, move_right))
+			displacements.append(possible_disps)
 		# Se escoge una maquina al azar
-		machine = random.choice(range(len(displacements)))
+		#lst = random.choice(list(m_graph))
+		machine_index = random.choice(range(1, len(m_graph)))
 		# Agarramos la lista de desplazamientos para las operaciones de esa maquina
-		disps = displacements[machine]
+		disps = displacements[machine_index]
 		# Escogemos una operacion al azar para desplazarla
-		operation_index = random.choice(range(len(disps)))
+		operation_index = random.choice(range(len(disps)-1))
 		# Agarramos la cantidad de movimientos posibles para la operacion obtenida
-		moves = displacements[machine][operation_index]
+		moves = displacements[machine_index][operation_index]
 		# Si la operacion no es ni la primera ni la segunda
 		# agarramos una direccion de movimiento al azar
 		if type(moves) == tuple:
 			moves = int(random.choice(moves))
+		# Las maquinas en el diccionario tienen indice que empieza en 1
+		#machine_index += 1
 		# Lista con las operaciones de la maquina
-		lst = m_graph[machine]
+		lst = m_graph.get(machine_index)
 		# Operacion a desplazar
+		#print("op_i:", operation_index)
+		#print("len lst:", len(lst))
 		operation = lst[operation_index]
 		# Indice de la operacion a desplazar
 		index = lst.index(operation)
 		# Cantidad de espacios a moverse
-		print("Moves:", moves)
+		if self.debug : print("Moves:", moves)
 		move = 1 if abs(moves) == 1 else random.choice(range(1, abs(moves)))
 		# Determinar direccion del desplazamiento
 		term = 1 if moves >= 0 else -1
 		# Llevar a cabo el desplazamiento
-		print("Move: ", move)
+		if self.debug : print("Move: ", move)
 		for i in range(move):
 			# Obtenemos la operacion a mover
-			operation = m_graph[machine][index]
+			operation = m_graph[machine_index][index]
 			# Obtenemos la operacion con la que se hara el shift
-			operation_aux = m_graph[machine][index + term]
+			operation_aux = m_graph[machine_index][index + term]
 			# Se asignan las operaciones a sus nuevas ubicaciones
-			m_graph[machine][index] = operation_aux
-			m_graph[machine][index + term] = operation
+			m_graph[machine_index][index] = operation_aux
+			m_graph[machine_index][index + term] = operation
 			# Actualizamos el indice
 			index += term
 			# Si se violo alguna restriccion en el plan generado
 			jobs_graph_aux = cp.deepcopy(jobs_graph)
 			m_graph_aux = cp.deepcopy(m_graph)
 			if self.violates_constraints(jobs_graph_aux, m_graph_aux):
-				print("---CICLADO ADENTRO---")
+				if self.debug : print("---CICLADO EN PERTURBACION---")
 				# Regresamos las operaciones a la ultima posicion factible
 				index -= term
-				operation_aux = m_graph[machine][index]
-				operation = m_graph[machine][index + term]
-				m_graph[machine][index] = operation
-				m_graph[machine][index + term] = operation_aux
+				operation_aux = m_graph[machine_index][index]
+				operation = m_graph[machine_index][index + term]
+				m_graph[machine_index][index] = operation
+				m_graph[machine_index][index + term] = operation_aux
 				# Y salimos del ciclo
 				break
-		
 		# Generamos el grafo con las maquinas acomodadas
-		m_graph, jobs_graph = self.set_machine_precedence(m_graph, jobs_graph)
 		jobs_graph_aux = cp.deepcopy(jobs_graph)
 		m_graph_aux = cp.deepcopy(m_graph)
 		graph = self.fill_graph(jobs_graph_aux, m_graph_aux)
-		# Hacemos el recorrido hacia adelante para calcular el makespan con la
-		# posiblemente nueva configuracion
+		# Verificamos que no existan ciclos debido a un error en el codigo
 		if self.cycle_exists(graph):
-			print("CICLADO2")
+			raise ValueError("Se produjo un ciclo en el" +
+			" grafo disyuntivo al momento de perturbar la solucion.")
 			import sys
 			sys.exit()
-		else:
-			print("NO CICLADO2")
-
+		# Hacemos el recorrido hacia adelante para calcular el makespan con la
+		# posiblemente nueva configuracion
 		return self.forward_traversal(graph, jobs_graph, m_graph, operations)
 
 	def violates_constraints(self, jobs_graph, m_graph):
+		"""Recorremos todo el grafo en busca de ciclos para verificar la
+		factibilidad del plan."""
 		return self.cycle_exists(self.fill_graph(jobs_graph, m_graph))
 	
 	def fill_graph(self, jobs_graph, machines_graph):
@@ -494,12 +504,3 @@ class DisjunctiveGraph:
 				var2 = lst[i+1].get_id()
 				jobs_graph[lst[i].get_id()].append(lst[i+1])
 		return jobs_graph
-
-	def set_machine_precedence(self, m_graph, jobs_graph):
-		for m, lst in m_graph.items():
-			lst[0].set_waits_for_machine(False)
-			lst[0].set_machine_time_assigned(False)
-			for op in lst[1:]:
-				op.set_waits_for_machine(True)
-				op.set_machine_time_assigned(False)
-		return m_graph, jobs_graph

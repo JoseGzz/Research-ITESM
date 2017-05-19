@@ -18,16 +18,15 @@ import numpy as np
 """ Función main para comenzar a ejecutar el programa """
 def main():
 
-    times    = 'datos/times_sample_mat.txt' 
-    machines = 'datos/machines_sample_mat.txt'
-    #times    = 'datos/times_sample_mat2.txt' 
-    #machines = 'datos/machines_sample_mat2.txt'
+    #times    = 'datos/times_sample_mat.txt' 
+    #machines = 'datos/machines_sample_mat.txt'
+    times    = 'datos/times_sample_mat2.txt' 
+    machines = 'datos/machines_sample_mat2.txt'
     #times    = 'datos/times_sample_mat3.txt' 
     #machines = 'datos/machines_sample_mat3.txt'
     #times    = "datos/times_mat4.txt"
     #machines = "datos/machines_mat4.txt"
-    # archivos con datos benchmark.
-    # para estos archivos el programa no encuentra un grafo sin ciclos
+    """Archivos con datos benchmark"""
     #times    = 'datos/times_mat.txt' 
     #machines = 'datos/machines_mat.txt'
     #times    = "datos/times_mat5.txt"
@@ -51,28 +50,14 @@ def main():
 
     # Se calcula el makespan solamente con el recorrido hacia adelante
     dg = DisjunctiveGraph()
-    schedule = Schedule()
+    #schedule = #schedule()
     g, ms, jg, mg, ops = dg.find_makespan(jobs, ops, machines, no_machines)
-    schedule.plot_result(g, no_machines, machines, ops, ms, no_jobs)
-    g, ms, jg, mg, ops = dg.perturbate_solution(jg, mg, ops)
-    schedule.plot_result(g, no_machines, machines, ops, ms, no_jobs)
-    g, ms, jg, mg, ops = dg.perturbate_solution(jg, mg, ops)
-    schedule.plot_result(g, no_machines, machines, ops, ms, no_jobs)
-    g, ms, jg, mg, ops = dg.perturbate_solution(jg, mg, ops)
-    schedule.plot_result(g, no_machines, machines, ops, ms, no_jobs)
-    g, ms, jg, mg, ops = dg.perturbate_solution(jg, mg, ops)
-    schedule.plot_result(g, no_machines, machines, ops, ms, no_jobs)
-    g, ms, jg, mg, ops = dg.perturbate_solution(jg, mg, ops)
-    schedule.plot_result(g, no_machines, machines, ops, ms, no_jobs)
-    g, ms, jg, mg, ops = dg.perturbate_solution(jg, mg, ops)
-    schedule.plot_result(g, no_machines, machines, ops, ms, no_jobs)
-    g, ms, jg, mg, ops = dg.perturbate_solution(jg, mg, ops)
-    schedule.plot_result(g, no_machines, machines, ops, ms, no_jobs)
-    g, ms, jg, mg, ops = dg.perturbate_solution(jg, mg, ops)
-    schedule.plot_result(g, no_machines, machines, ops, ms, no_jobs)
 
-    
-    schedule.print_result(g)
+    for i in range(10):
+        for i in range(40):
+            g, ms, jg, mg, ops = dg.perturbate_solution(jg, mg, ops)
+            #schedule.plot_result(g, no_machines, machines, ops, ms, no_jobs)
+        #schedule.print_result(g)
 
 if __name__ == "__main__":
     main()
