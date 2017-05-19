@@ -8,14 +8,15 @@ ITESM Campus Monterrey
 import matplotlib.pyplot  as plt
 import matplotlib.patches as patches
 import matplotlib.ticker  as plticker
+import numpy as np
 
-class Schedule:
+class Solution:
     """Método de inicialización"""
     def __init__(self):
         pass
 
     """Método para imprimir los resultados en forma de texto."""
-    def print_result(self, g):
+    def print_solution(self, g):
         # desplegamos los tiempos de cada operación.
         for op, lst in g.items():
             print("operacion:", op)
@@ -23,7 +24,7 @@ class Schedule:
             print("termina en:", g.get(op)[0].get_end_time())
 
     """Método draw que dibuja en pantalla la gráfica representando la secuencia de ejecución de las operaciones en cada máquina"""
-    def plot_result(self, graph, no_machines, machines, operations, ms, no_jobs):
+    def plot_solution(self, graph, no_machines, machines, operations, ms, no_jobs):
         # generación de colores para las operaciones
         max_value = 16581375 
         interval  = int(max_value / no_jobs)
@@ -88,9 +89,28 @@ class Schedule:
         # mostramos la gráfica con la figura y los patches
         plt.show()
 
+    def generate_solution_file(self, graph):
+        machines = {}
+        machine_ids = []
+        result = []
+        for op_id, lst in graph.items():
+            for op in lst:
+                m_id = op.get_machine_id()
+                if m_id not in machine_ids:
+                    machine_ids.append(m_id)
+                    machines[m_id-1] = [op.get_job_id()]
+                else:
+                    machines[m_id-1].append(op.get_job_id())
+        
+        #for _, jobs
+            result = [jobs for _, jobs in machines.items()]
 
+        solution_matrix = []
+        for m in result:
+            solution_matrix.append(m)
 
-
+        solution_matrix = np.array(solution_matrix)
+        print(solution_matrix)
 
 
 

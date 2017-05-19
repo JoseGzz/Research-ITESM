@@ -8,7 +8,7 @@ ITESM Campus Monterrey
 """
 from machine   import Machine
 from job       import Job   
-from schedule  import Schedule
+from solution  import Solution
 from operation import Operation
 
 class Formatter:
