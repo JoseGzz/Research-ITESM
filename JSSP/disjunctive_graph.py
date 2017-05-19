@@ -152,18 +152,18 @@ class DisjunctiveGraph:
 								if self.debug : print('Operación no espera tiempo de máquina.')
 								current_op.set_start_time(max(current_op.get_start_times()))
 								current_op.set_end_time(current_op.get_start_time() + current_op.get_duration())
+								# se prende booleana de fijación para la operación actual
 								current_op.set_fixed(True)
 								del graph_aux[current_op.get_id()]
 								if self.debug : print('Se fija la operación ' + str(op_id) + '.')
+								# obtenemos el tiempo de finalizacion y lo agregamos a la lista
 								end_time = current_op.get_end_time()
 								graph[current_op.get_id()][0] = cp.copy(current_op)
 								times.append(current_op.get_end_time())
-								# se le asigna a los adjacentes un posible tiempo de inicio
+								# Se le asigna a los adjacentes un posible tiempo de inicio
 								# a partir del primer adyacente (si existe y la operación es final) se trata de un adyacente 
-								# conectado por máquina, así que se prende su booleana
-								# en otros casos a partir del tercer elemento tenemos adyacentes por máquinas
+								# conectado por máquina.
 								self.propagate_times(graph, lst, end_time, current_op)
-								# se prende booleana de fijación para la operación actual
 				# si la siguiente operación corresponde a la primera operación de una tarea entonces nos detenemos 
 				elif int(lst[0].get_self_id()) == (lst[0].get_job().get_op_count()-1):
 					if self.debug : print('Se detiene el backtracking en la operación: ' + op_id)

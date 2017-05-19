@@ -22,13 +22,22 @@ class Schedule:
             print("empieza en:", g.get(op)[0].get_start_time())
             print("termina en:", g.get(op)[0].get_end_time())
 
-
     """Método draw que dibuja en pantalla la gráfica representando la secuencia de ejecución de las operaciones en cada máquina"""
     def plot_result(self, graph, no_machines, machines, operations, ms, no_jobs):
         # generación de colores para las operaciones
         max_value = 16581375 
         interval  = int(max_value / no_jobs)
         colors    = [hex(I)[2:].zfill(6) for I in range(0, max_value, interval)]
+
+        if int(float(ms)) > 1000:
+            base = 1000.0
+        elif int(float(ms)) > 50:
+            base = 50.0
+        elif int(float(ms)) > 10:
+            base = 10.0
+        else:
+            base = 1.0
+
 
         # recorremos el grafo disyuntivo obteniendo tiempos de inicio, duración y finalización para mostrar las operaciones como rectángulos
         # los tiempos se guardan como coordenadas en los patches de Matplotlib para después graficar las figuras
@@ -57,7 +66,8 @@ class Schedule:
         ax = fig.add_subplot(111, aspect='equal', xlabel='Tiempo')
         ax.set_xlim(xmin=0,xmax=int(float(ms))+1)
         ax.set_ylim(ymin=0,ymax=int(float(no_machines+1)))
-        loc = plticker.MultipleLocator(base=1.0)
+
+        loc = plticker.MultipleLocator(base=base)
         ax.xaxis.set_major_locator(loc)
         ax.get_yaxis().set_visible(False)
 
