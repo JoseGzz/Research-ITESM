@@ -2,6 +2,11 @@
 # Author: Santiago E. Conant-Pablos, January 30, 2017
 
 from jssp import JSSP
+import matplotlib.pyplot as plt
+import time
+import copy
+import math
+import random
 
 def create_neighbor(current):
     """modifies the current solution"""
@@ -66,7 +71,7 @@ if __name__ == "__main__":
     # algorithm configuration
     max_temp =  30.0   # initial temperature
     min_temp = 4.0     # final temperature
-    eq_iter = 30         # iterations at same temperature
+    eq_iter = 30       # iterations at same temperature
     temp_change = 0.9  # temperature reduction factor
     # execute the algorithm    
     filename = input("Nombre del archivo del problema? ")
