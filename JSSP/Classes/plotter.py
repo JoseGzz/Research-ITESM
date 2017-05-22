@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
 '''Schedule
 Clase responsable de generar el calendario
-José González Ayerdi
+José González - A01036121
 ITESM Campus Monterrey
 29/03/2017
 '''

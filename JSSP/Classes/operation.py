@@ -8,12 +8,8 @@ ITESM Campus Monterrey
 
 class Operation:
     
-    """Función para imprimir el id de la operación cuando se imprima el objeto.
-    TODO: no está funcionando."""
-    def __str__(self):
-        return str(self.__op_id)
-
     def __init__(self, op_id='0_0', common_operations=[], start_times=[], waits_for_m = True, self_id = 0, duration=0, start_time=0, end_time=0, machine=0, job=0, job_id=0, machine_id=0, fixed=False, machine_time_assigned=False):
+        """constructor de la clase operation"""
         self.__op_id                  = op_id
         self.__duration               = duration
         self.__start_time             = start_time

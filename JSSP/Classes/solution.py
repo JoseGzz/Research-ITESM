@@ -200,47 +200,8 @@ class Solution:
 				return True
 		return False
 
-	""" Método all_fixed para saber si todas las operaciones en el grafo han sido fijadas. """
-	def all_fixed(self, graph):
-		for op_id, lst in graph.items():
-			if not lst[0].is_fixed():
-				return False
-		return True
-
-	""" Método recursivo para asignar un orden de ejecución en máquinas a las operaciones """
-	def assign_machine_order_recursive(self, graph):
-		# copiamos el grafo actual para que en caso de que tenga ciclos, repitamos el proceso con el grafo como estaba
-		graph2 = cp.deepcopy(graph)
-		for op_id, lst in graph.items():
-			if not lst[0].has_machine_order():
-			    machine_id = lst[0].get_machine_id()
-			    # obtenemos los objetos operaciones que comparten máquina y no se ha establecido su orden de ejecución
-			    ops_with_common_machine = [
-			    	lst2[0] for op_id2, lst2 in graph.items()
-			    	if lst2[0].get_machine_id() == machine_id and not lst2[0].has_machine_order()
-			    ]
-			    ops_cm = ops_with_common_machine
-			    vals = []
-			    # a todas las operaciones obtenidas se les marca que ya se les asignó una máquina
-			    for val in ops_cm:
-			    	val.set_machine_order(True)
-			    	vals.append(val)
-			    ops = vals
-			    # IMPORTANTE: la asignación del orden de ejecución en las máquinas se hace de manera aleatoria
-			    shuffle(ops)
-			    ops[0].set_waits_for_machine(False)
-			    # se agrergan las operaciones comunes (por máquina) a la lista de adjacentes de la actual operación
-			    for i in range(len(ops)-1):
-			          graph[ops[i].get_id()].append(ops[i+1])
-        # revisamos si existen ciclos en el grafo generado (se viola restricción), en tal caso hay que ejecutar el procedimiento nuevamente
-		if self.cycle_exists(graph):
-			if self.debug : print('El grafo generado está ciclado. Generando un nuevo grafo...')
-			return self.assign_machine_order(graph2)
-		else:
-			if self.debug : print('Grafo sin ciclos.')
-			return graph
-	
 	def machine_order(self, graph, operations):
+		"""generamos un grafo para la asignacion de orden de ejecucion en las maquinas"""
 		# dd por default dict
 		machines = dd(str)
 		machine_ids = []
@@ -293,61 +254,23 @@ class Solution:
 			if (not graph_copy) and len(spr) == 0 : return machines
 		
 	def find_and_delete(self, graph_aux, used_op):
+		"""helper para vaciar diccioanrio de operaciones sin asignacion"""
 		for op, lst in graph_aux.items():
 			if len(lst) != 0:
 				if lst[0].get_id() == used_op:
 					graph_aux[op] = []
 
 	def set_machines(self, graph, operations):
+		"""genera el orden de ejecucion inicial en las maquinas"""
 		self.m_graph = self.machine_order(graph, operations)
 		for m_id, lst in self.m_graph.items():
 			for i in range(len(lst)-1):
-				var = lst[i].get_id()
-				var2 = lst[i+1].get_id()
 				graph[lst[i].get_id()].append(lst[i+1])
 		if self.cycle_exists(graph) :
 			raise ValueError("Se produjo un ciclo durante la asignacion de maquinas.")
 			import sys
 			sys.exit()
 		return graph, self.m_graph
-
-	""" Método iterativo para asignar un orden de ejecución en máquinas a las operaciones """
-	def assign_machine_order_iterative(self, graph):
-		# copiamos el grafo actual para que en caso de que tenga ciclos, repitamos el proceso con el grafo como estaba
-		graph2 = cp.deepcopy(graph)
-		contador = 0
-		while True:
-			for op_id, lst in graph.items():
-				if not lst[0].has_machine_order():
-					machine_id = lst[0].get_machine_id()
-					# obtenemos los objetos operaciones que comparten máquina y no se ha establecido su orden de ejecución
-					ops_with_common_machine = [
-						lst2[0] for op_id2, lst2 in graph.items()
-						if lst2[0].get_machine_id() == machine_id and not lst2[0].has_machine_order()
-					]
-					ops_cm = ops_with_common_machine
-					vals = []
-					# a todas las operaciones obtenidas se les marca que ya se les asignó una máquina
-					for val in ops_cm:
-						val.set_machine_order(True)
-						vals.append(val)
-					ops = vals
-					# IMPORTANTE: la asignación del orden de ejecución en las máquinas se hace de manera aleatoria
-					shuffle(ops)
-					ops[0].set_waits_for_machine(False)
-					# se agrergan las operaciones comunes (por máquina) a la lista de adjacentes de la actual operación
-					for i in range(len(ops)-1):
-					      graph[ops[i].get_id()].append(ops[i+1])
-			# revisamos si existen ciclos en el grafo generado (se viola restricción), en tal caso hay que ejecutar el procedimiento nuevamente
-			if not self.cycle_exists(graph):
-				break
-			else:
-				if self.debug : print('El grafo generado está ciclado. Generando un nuevo grafo...')
-				contador += 1
-				if self.debug : print('Iteracion no.', contador)
-				graph = cp.deepcopy(graph2)
-		if self.debug : print('Grafo sin ciclos.')
-		return graph
 
 	""" Método cycle_exists que detecta ciclos en un grafo utilizando recorrido a profundidad (DFS)
 	con coloreo de nodos.
@@ -390,7 +313,7 @@ class Solution:
 		return id_list
 
 	def create_neighbor(self):
-		"""Funcion para perturbar la solucion actual y obtener un vecino."""
+		"""perturba la solucion actual y genera un vecino"""
 		# Lista para almacenar todos los posibles movimientos de todas las operaciones
 		displacements = []
 		# Se genera la cantidad de desplazamientos posibles para cada operacion,
@@ -424,13 +347,9 @@ class Solution:
 		# agarramos una direccion de movimiento al azar
 		if type(moves) == tuple:
 			moves = int(random.choice(moves))
-		# Las maquinas en el diccionario tienen indice que empieza en 1
-		#machine_index += 1
 		# Lista con las operaciones de la maquina
 		lst = self.m_graph.get(machine_index)
 		# Operacion a desplazar
-		#print("op_i:", operation_index)
-		#print("len lst:", len(lst))
 		operation = lst[operation_index]
 		# Indice de la operacion a desplazar
 		index = lst.index(operation)
@@ -464,7 +383,7 @@ class Solution:
 				self.m_graph[machine_index][index + term] = operation_aux
 				# Y salimos del ciclo
 				break
-		# Generamos el grafo con las maquinas acomodadas
+		# Generamos el grafo con orden de maquinas asignadas
 		jobs_graph_aux = cp.deepcopy(self.jobs_graph)
 		m_graph_aux = cp.deepcopy(self.m_graph)
 		graph = self.fill_graph(jobs_graph_aux, m_graph_aux)
@@ -475,18 +394,20 @@ class Solution:
 			import sys
 			sys.exit()
 		# Hacemos el recorrido hacia adelante para calcular el makespan con la
-		# posiblemente nueva configuracion
+		# nueva configuracion generada
 		new_solution = Solution(no_machines=self.no_machines, machines=self.machines,
 		no_jobs=self.no_jobs, m_graph=self.m_graph, jobs_graph=self.jobs_graph, operations=self.operations)
 		new_solution.forward_traversal(graph, self.jobs_graph, self.m_graph, self.operations)
 		return new_solution
 
 	def violates_constraints(self, jobs_graph, m_graph):
-		"""Recorremos todo el grafo en busca de ciclos para verificar la
-		factibilidad del plan."""
+		"""recorremos todo el grafo en busca de ciclos para verificar la
+		factibilidad del plan actual"""
 		return self.cycle_exists(self.fill_graph(jobs_graph, m_graph))
 	
 	def fill_graph(self, jobs_graph, machines_graph):
+		"""a un grafo conectado por operaciones unicamente lo une
+		con un grafo conectado por maquinas"""
 		for m_id, lst in machines_graph.items():
 			op = lst[0]
 			jobs_graph[op.get_id()][0].set_waits_for_machine(False)
@@ -496,11 +417,13 @@ class Solution:
 				jobs_graph[lst[i].get_id()].append(lst[i+1])
 		return jobs_graph
 
-	def plot(self, flag=False):
+	def plot(self, flag=True):
+		"""grafica, imprime y genera archivo con resultados"""
 		if flag :
-			g = self.plotter.plot_solution(self.g, self.no_machines, self.machines, self.operations, self.ms, self.no_jobs)
+			self.plotter.plot_solution(self.g, self.no_machines, self.machines, self.operations, self.ms, self.no_jobs)
 			#self.plotter.print_solution(g)
 			#self.solution.generate_solution_file(g)
 
 	def cost(self):
+		"""regresa el costo de la solucion actual"""
 		return int(float(self.ms))
