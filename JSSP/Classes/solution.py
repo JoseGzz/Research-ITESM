@@ -28,14 +28,14 @@ class Solution:
 		self.jobs_graph = jobs_graph
 		self.m_graph = m_graph
 
-	""" Método find_makespan que calcula el makespan dadas listas de tareas, operaciones y máquinas,
+	def find_makespan(self, jobs, operations, machines, no_machines):
+		""" Método find_makespan que calcula el makespan dadas listas de tareas, operaciones y máquinas,
 		y regresa el grafo encontrado. El makespan es el tiempo en el que todas las operaciones terminan de ser
 		procesadas por la máquina a la que fueron asignadas.
 
 	    El objeto graph es un diccionario que tiene como llaves los id de las operaciones, y como valores
 	    tenemos la lista de operaciones (objetos) adjacentes (incluyendo la operación misma al principio).
-	""" 
-	def find_makespan(self, jobs, operations, machines, no_machines):
+		""" 
 		# creamos el diccionario ordenado (para facilitar el recorrido) en base a las listas recibidas
 		graph = OrderedDict((operations[i].get_id(), [operations[i], operations[i + 1]])
 			for i in range(len(operations) - 1) if operations[i].get_job_id() == operations[i+1].get_job_id())
@@ -64,10 +64,11 @@ class Solution:
 				if self.debug : print(val.get_id())
 			if self.debug : print('---')
 		
+		# creamos una copia del grafo sin orden de maquinas para ser usado
+		# en soluciones posteriores
 		self.jobs_graph = cp.deepcopy(graph)
+
 		# asignamos orden de ejecución de las operaciones en las máquinas aleatoriamente por el momento 
-		#graph = self.assign_machine_order_iterative(graph)
-		#graph = self.assign_machine_order_recursive(graph)
 		graph, machines_graph = self.set_machines(graph, operations)
 		
 		# Ejecuta algoritmo para calcular makespan
@@ -159,14 +160,21 @@ class Solution:
 					if self.debug : print('Se detiene el backtracking en la operación: ' + op_id)
 					backtracking = False
 		makespan = str(max(times)) 
-		#print("Makespan:", int(float(makespan)))
 		self.ms = makespan
 		self.g = graph
+		if self.debug:
+			print("total:",len(self.g))
+			for k, v in graph.items():
+				print('key: ' + str(k))
+				for val in v:
+					print(val.get_id(), "st:", val.get_start_time(), "et:", val.get_end_time(),
+					"dur:", val.get_duration())
+				print('---')
 		return graph, makespan, jobs_graph, machines_graph, operations
 
-	""" Método propagate_times que añade el tiempo de finalización de la operación actual a la lista
-	de posibles tiempos de inicio de las operaciones adyacente. """
 	def propagate_times(self, graph, lst, end_time, current_op):
+		""" Método propagate_times que añade el tiempo de finalización de la operación actual a la lista
+		de posibles tiempos de inicio de las operaciones adyacente. """
 		# si algún adyacente pertenece a otra tarea entonces se trata de un adyacente conectado
 		# por máquina, así que se prende su booleana
 		if self.debug : print("Propagando desde:", current_op.get_id())
@@ -299,8 +307,9 @@ class Solution:
 				self.dfs_visit(G, v.get_id(), color, found_cycle)
 		color[u] = "black"                          
 
-	""" Método find_first_operations que regresa la lista con id de las operaciones que no tienen predecesores """
 	def find_first_operations(self, graph, operations):
+		""" Método find_first_operations que regresa la lista con id de
+		las operaciones que no tienen predecesores """
 		id_list = []
 		for op in operations:
 			found = False
@@ -316,10 +325,12 @@ class Solution:
 		"""perturba la solucion actual y genera un vecino"""
 		# Lista para almacenar todos los posibles movimientos de todas las operaciones
 		displacements = []
+		m_graph_aux = OrderedDict(self.m_graph)
 		# Se genera la cantidad de desplazamientos posibles para cada operacion,
 		# numeros negativos es movimiento a la izquierda,
 		# numeros positivos es movimiento a la derecha
-		for m_id, ops in self.m_graph.items():
+		displacements = {}
+		for m_id, ops in m_graph_aux.items():
 			possible_disps = []
 			for i in range(len(ops)):
 				# Para la primera operacion en la maquina
@@ -333,16 +344,15 @@ class Solution:
 					move_left = -i
 					move_right = len(ops) - 1 - i 
 					possible_disps.append((move_left, move_right))
-			displacements.append(possible_disps)
-		# Se escoge una maquina al azar
-		#lst = random.choice(list(self.m_graph))
+			displacements[m_id] = possible_disps
+		# Se escoge una maquina al azar (los inices de las maquinas empiezan en 1)
 		machine_index = random.choice(range(1, len(self.m_graph)))
 		# Agarramos la lista de desplazamientos para las operaciones de esa maquina
 		disps = displacements[machine_index]
 		# Escogemos una operacion al azar para desplazarla
 		operation_index = random.choice(range(len(disps)-1))
 		# Agarramos la cantidad de movimientos posibles para la operacion obtenida
-		moves = displacements[machine_index][operation_index]
+		moves = displacements.get(machine_index)[operation_index]
 		# Si la operacion no es ni la primera ni la segunda
 		# agarramos una direccion de movimiento al azar
 		if type(moves) == tuple:

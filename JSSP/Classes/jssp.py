@@ -27,6 +27,8 @@ class JSSP():
         self.no_jobs = 0             # cantidad de tareas
 
     def read_data(self, filename=""):
+        #TODO: eliminar
+        filename="../Instances/taillard instances/50x15/Ta51.txt" #"../Instances/taillard instances/15x15/Ta01.txt"
         """lee datos del archivo de entrada"""
         # IMPORTANTE: se asume que todas las tareas tienen la misma cantidad de operaciones
         # leemos los datos 
@@ -58,6 +60,7 @@ class JSSP():
     #../Instances/toy/3x3_demo.txt
     #../Instances/toy/4x4_demo.txt
     #../Instances/toy/5x5_demo.txt 
+    #../Instances/toy/10x10_demo.txt
     """Archivos con datos benchmark (tareas x maquinas)"""
     #../Instances/taillard instances/15x15/Ta01.txt
     #../Instances/taillard instances/20x15/Ta11.txt

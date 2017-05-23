@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
 """Operation
 Clase con la información correspondiente a cada operación
-José González Ayerdi - A01036121
+José González Ayerdi
 ITESM Campus Monterrey
 02/2017
 """

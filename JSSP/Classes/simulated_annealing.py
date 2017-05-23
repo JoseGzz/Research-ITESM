@@ -52,9 +52,9 @@ def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
             if candidate.cost() < best.cost():
                 best = copy.deepcopy(candidate)
                 if trace:
-                    best.plot()
-                    fig.canvas.draw()
-                    plt.pause(0.0001)
+                   best.plot()
+                   fig.canvas.draw()
+                   plt.pause(0.0001)
             if trace:
                 print(" > iteration=%d, temp=%g, curr= %g, best=%g" %
                       (i,temp,candidate.cost(), best.cost()))
@@ -69,12 +69,13 @@ def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
 
 if __name__ == "__main__":
     # algorithm configuration
-    max_temp =  30.0   # initial temperature
-    min_temp = 4.0     # final temperature
-    eq_iter = 30       # iterations at same temperature
+    max_temp =  0.50   # initial temperature
+    min_temp = 0.10     # final temperature
+    eq_iter = 5       # iterations at same temperature
     temp_change = 0.9  # temperature reduction factor
     # execute the algorithm    
-    filename = input("Nombre del archivo del problema? ")
+    filename = ""#input("Nombre del archivo del problema? ")
     best = simulated_annealing(filename, max_temp, min_temp, eq_iter,
                                temp_change, True)
     print(best.cost())
+    plt.pause(1000)
