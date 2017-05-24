@@ -63,7 +63,7 @@ class Solution:
 			for val in v:
 				if self.debug : print(val.get_id())
 			if self.debug : print('---')
-		
+
 		# creamos una copia del grafo sin orden de maquinas para ser usado
 		# en soluciones posteriores
 		self.jobs_graph = cp.deepcopy(graph)
@@ -162,14 +162,16 @@ class Solution:
 		makespan = str(max(times)) 
 		self.ms = makespan
 		self.g = graph
-		if self.debug:
-			print("total:",len(self.g))
-			for k, v in graph.items():
-				print('key: ' + str(k))
-				for val in v:
-					print(val.get_id(), "st:", val.get_start_time(), "et:", val.get_end_time(),
-					"dur:", val.get_duration())
-				print('---')
+		
+		"""	
+		print("total:",len(self.g))
+		for k, v in graph.items():
+			print('key: ' + str(k))
+			for val in v:
+				print(val.get_id(), "st:", val.get_start_time(), "et:", val.get_end_time(),
+				"dur:", val.get_duration())
+			print('---')
+		"""
 		return graph, makespan, jobs_graph, machines_graph, operations
 
 	def propagate_times(self, graph, lst, end_time, current_op):
@@ -199,6 +201,8 @@ class Solution:
 	""" Método depends_on_posterior para saber si una operación debe de esperar a que una operación
 	posterior termine de ser procesada por la máquina que se le asignó a ambas. """
 	def depends_on_posterior_op(self, graph, op_lst):
+		pass
+		"""
 		current_op = op_lst[0]
 		iterops = iter(op_lst)
 		next(iterops)
@@ -207,6 +211,7 @@ class Solution:
 			if current_op in adjacents:
 				return True
 		return False
+		"""
 
 	def machine_order(self, graph, operations):
 		"""generamos un grafo para la asignacion de orden de ejecucion en las maquinas"""
@@ -262,7 +267,7 @@ class Solution:
 			if (not graph_copy) and len(spr) == 0 : return machines
 		
 	def find_and_delete(self, graph_aux, used_op):
-		"""helper para vaciar diccioanrio de operaciones sin asignacion"""
+		"""helper para vaciar diccionario de operaciones sin asignacion"""
 		for op, lst in graph_aux.items():
 			if len(lst) != 0:
 				if lst[0].get_id() == used_op:
@@ -347,9 +352,10 @@ class Solution:
 			displacements[m_id] = possible_disps
 		# Se escoge una maquina al azar (los inices de las maquinas empiezan en 1)
 		machine_index = random.choice(range(1, len(self.m_graph)))
+		if self.debug : print("Selected machine:", machine)
 		# Agarramos la lista de desplazamientos para las operaciones de esa maquina
 		disps = displacements[machine_index]
-		# Escogemos una operacion al azar para desplazarla
+		# Escogemos el indice de una operacion al azar para desplazarla
 		operation_index = random.choice(range(len(disps)-1))
 		# Agarramos la cantidad de movimientos posibles para la operacion obtenida
 		moves = displacements.get(machine_index)[operation_index]
@@ -370,14 +376,15 @@ class Solution:
 		term = 1 if moves >= 0 else -1
 		# Llevar a cabo el desplazamiento
 		if self.debug : print("Move: ", move)
+		
 		for i in range(move):
 			# Obtenemos la operacion a mover
-			operation = self.m_graph[machine_index][index]
+			operation = cp.deepcopy((self.m_graph[machine_index][index]))
 			# Obtenemos la operacion con la que se hara el shift
-			operation_aux = self.m_graph[machine_index][index + term]
+			operation_aux = cp.deepcopy((self.m_graph[machine_index][index + term]))
 			# Se asignan las operaciones a sus nuevas ubicaciones
-			self.m_graph[machine_index][index] = operation_aux
-			self.m_graph[machine_index][index + term] = operation
+			self.m_graph[machine_index][index] = cp.deepcopy(operation_aux)
+			self.m_graph[machine_index][index + term] = cp.deepcopy(operation)
 			# Actualizamos el indice
 			index += term
 			# Si se violo alguna restriccion en el plan generado
@@ -427,10 +434,10 @@ class Solution:
 				jobs_graph[lst[i].get_id()].append(lst[i+1])
 		return jobs_graph
 
-	def plot(self, flag=True):
+	def plot(self,fig,flag=True):
 		"""grafica, imprime y genera archivo con resultados"""
 		if flag :
-			self.plotter.plot_solution(self.g, self.no_machines, self.machines, self.operations, self.ms, self.no_jobs)
+			self.plotter.plot_solution(fig, self.g, self.no_machines, self.machines, self.operations, self.ms, self.no_jobs)
 			#self.plotter.print_solution(g)
 			#self.solution.generate_solution_file(g)
 

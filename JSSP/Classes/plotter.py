@@ -8,6 +8,7 @@ ITESM Campus Monterrey
 import matplotlib.pyplot  as plt
 import matplotlib.patches as patches
 import matplotlib.ticker  as plticker
+#import simulated_annealing as sa
 import numpy as np
 
 class Plotter:
@@ -24,7 +25,7 @@ class Plotter:
             print("termina en:", g.get(op)[0].get_end_time())
 
     """Método draw que dibuja en pantalla la gráfica representando la secuencia de ejecución de las operaciones en cada máquina"""
-    def plot_solution(self, graph, no_machines, machines, operations, ms, no_jobs):
+    def plot_solution(self, fig, graph, no_machines, machines, operations, ms, no_jobs):
         # generación de colores para las operaciones
         max_value = 16581375 
         interval  = int(max_value / no_jobs)
@@ -65,12 +66,12 @@ class Plotter:
 
         # creamos el espacio de la gráfica como figura y establecemos características
         fs = 10 if no_jobs > 20 else 15
-        fig = plt.figure()
+        #fig = plt.figure()
+        plt.clf()
         fig.legend(labels=labels, fontsize=fs, handles=color_patches)
         ax = fig.add_subplot(111, aspect='equal', xlabel='Tiempo')
         ax.set_xlim(xmin=0,xmax=int(float(ms)/shortener)+1)
         ax.set_ylim(ymin=0,ymax=int(float(no_machines+1)))
-
 
         loc = plticker.MultipleLocator(base=separation)
         majorFormatter = plticker.FormatStrFormatter('%d'+formatter)

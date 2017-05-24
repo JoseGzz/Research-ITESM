@@ -7,11 +7,14 @@ import time
 import copy
 import math
 import random
+import cProfile
+
+fig = plt.figure()
 
 def create_neighbor(current):
     """modifies the current solution"""
     candidate = copy.deepcopy(current)
-    # escribir el código que perturba a la solución candidata
+    candidate = copy.deepcopy(candidate.create_neighbor())
     return candidate
 
 def should_accept(candidate, current, temperature):
@@ -29,7 +32,6 @@ def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
     if trace:
         global fig
         plt.ion()
-        fig = plt.figure()
         fig.canvas.set_window_title('Simulated Annealing')
     problem = JSSP()
     problem.read_data(filename)
@@ -39,7 +41,7 @@ def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
     temp = max_temp
     best = copy.deepcopy(current)
     if trace:
-        best.plot()
+        best.plot(fig)
         fig.canvas.draw()
         plt.pause(0.0001)
     i = 0
@@ -47,12 +49,12 @@ def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
         eiter = 0
         while eiter < eq_iter:
             i += 1
-            candidate = current.create_neighbor() #create_neighbor(current)
+            candidate = create_neighbor(current)
             if should_accept(candidate, current, temp): current = candidate
             if candidate.cost() < best.cost():
                 best = copy.deepcopy(candidate)
                 if trace:
-                   best.plot()
+                   best.plot(fig)
                    fig.canvas.draw()
                    plt.pause(0.0001)
             if trace:
@@ -63,19 +65,23 @@ def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
     end_time = time.time()
     print("Execution time", end_time - start_time)
     if trace:
-        best.plot(True)
+        best.plot(fig, True)
         plt.ioff()
     return best
 
 if __name__ == "__main__":
     # algorithm configuration
-    max_temp =  0.50   # initial temperature
-    min_temp = 0.10     # final temperature
-    eq_iter = 5       # iterations at same temperature
+    max_temp =  10.0  # initial temperature
+    min_temp = 4.5    # final temperature
+    eq_iter = 50     # iterations at same temperature
     temp_change = 0.9  # temperature reduction factor
     # execute the algorithm    
     filename = ""#input("Nombre del archivo del problema? ")
-    best = simulated_annealing(filename, max_temp, min_temp, eq_iter,
+    best = simulated_annealing(filename, max_temp, min_temp, eq_iter,\
                                temp_change, True)
+  
+    #cProfile.run('simulated_annealing(filename, max_temp, min_temp, eq_iter,\
+    #                           temp_change, True)')
+    #fig
     print(best.cost())
     plt.pause(1000)
