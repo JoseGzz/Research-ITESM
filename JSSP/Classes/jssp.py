@@ -28,7 +28,7 @@ class JSSP():
 
     def read_data(self, filename=""):
         # TODO: eliminar
-        filename="../Instances/taillard instances/15x15/Ta01.txt" #"../Instances/taillard instances/15x15/Ta01.txt"
+        filename="../Instances/toy/3x3_demo.txt" #"../Instances/taillard instances/15x15/Ta01.txt"
         """lee datos del archivo de entrada"""
         # IMPORTANTE: se asume que todas las tareas tienen la misma cantidad de operaciones
         # leemos los datos 

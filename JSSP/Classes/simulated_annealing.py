@@ -71,7 +71,7 @@ def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
 
 if __name__ == "__main__":
     # algorithm configuration
-    max_temp =  10.0  # initial temperature
+    max_temp = 10.0  # initial temperature
     min_temp = 4.5    # final temperature
     eq_iter = 50     # iterations at same temperature
     temp_change = 0.9  # temperature reduction factor

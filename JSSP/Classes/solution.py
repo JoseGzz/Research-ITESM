@@ -377,39 +377,45 @@ class Solution:
 		# Llevar a cabo el desplazamiento
 		if self.debug : print("Move: ", move)
 		
+		jobs_graph_aux3 = cp.deepcopy(self.jobs_graph)
+		m_graph_aux3 = cp.deepcopy(self.m_graph)
+
 		for i in range(move):
 			# Obtenemos la operacion a mover
-			operation = cp.deepcopy((self.m_graph[machine_index][index]))
+			operation = self.m_graph[machine_index][index]
 			# Obtenemos la operacion con la que se hara el shift
-			operation_aux = cp.deepcopy((self.m_graph[machine_index][index + term]))
+			operation_aux = self.m_graph[machine_index][index + term]
 			# Se asignan las operaciones a sus nuevas ubicaciones
-			self.m_graph[machine_index][index] = cp.deepcopy(operation_aux)
-			self.m_graph[machine_index][index + term] = cp.deepcopy(operation)
+			self.m_graph[machine_index][index] = operation_aux
+			self.m_graph[machine_index][index + term] = operation
 			# Actualizamos el indice
 			index += term
-			# Si se violo alguna restriccion en el plan generado
-			jobs_graph_aux = cp.deepcopy(self.jobs_graph)
-			m_graph_aux = cp.deepcopy(self.m_graph)
-			if self.violates_constraints(jobs_graph_aux, m_graph_aux):
-				if self.debug : print("---CICLADO EN PERTURBACION---")
-				# Regresamos las operaciones a la ultima posicion factible
-				index -= term
-				operation_aux = self.m_graph[machine_index][index]
-				operation = self.m_graph[machine_index][index + term]
-				self.m_graph[machine_index][index] = operation
-				self.m_graph[machine_index][index + term] = operation_aux
-				# Y salimos del ciclo
-				break
-		# Generamos el grafo con orden de maquinas asignadas
+
 		jobs_graph_aux = cp.deepcopy(self.jobs_graph)
 		m_graph_aux = cp.deepcopy(self.m_graph)
+
+		jobs_graph_aux2 = cp.deepcopy(jobs_graph_aux)
+		m_graph_aux2 = cp.deepcopy(m_graph_aux)
+		
+		# Si se violo alguna restriccion en el plan generado
+		if self.violates_constraints(jobs_graph_aux2, m_graph_aux2):
+			#print("---CICLADO EN PERTURBACION---")
+			self.jobs_graph = cp.deepcopy(jobs_graph_aux3)
+			self.m_graph = cp.deepcopy(m_graph_aux3)
+			return self
+
+		# Generamos el grafo con orden de maquinas asignadas
+		#jobs_graph_aux = cp.deepcopy(self.jobs_graph)
+		#m_graph_aux = cp.deepcopy(self.m_graph)
 		graph = self.fill_graph(jobs_graph_aux, m_graph_aux)
 		# Verificamos que no existan ciclos debido a un error en el codigo
+		
 		if self.cycle_exists(graph):
 			raise ValueError("Se produjo un ciclo en el" +
 			" grafo disyuntivo al momento de perturbar la solucion.")
 			import sys
 			sys.exit()
+		
 		# Hacemos el recorrido hacia adelante para calcular el makespan con la
 		# nueva configuracion generada
 		new_solution = Solution(no_machines=self.no_machines, machines=self.machines,
