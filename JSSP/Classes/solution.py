@@ -380,6 +380,8 @@ class Solution:
 		jobs_graph_aux3 = cp.deepcopy(self.jobs_graph)
 		m_graph_aux3 = cp.deepcopy(self.m_graph)
 
+		# TODO: que se modifique una copia de m_graph
+
 		for i in range(move):
 			# Obtenemos la operacion a mover
 			operation = self.m_graph[machine_index][index]
@@ -400,13 +402,13 @@ class Solution:
 		# Si se violo alguna restriccion en el plan generado
 		if self.violates_constraints(jobs_graph_aux2, m_graph_aux2):
 			#print("---CICLADO EN PERTURBACION---")
-			self.jobs_graph = cp.deepcopy(jobs_graph_aux3)
-			self.m_graph = cp.deepcopy(m_graph_aux3)
+			self.jobs_graph = jobs_graph_aux3
+			self.m_graph = m_graph_aux3
 			return self
 
 		# Generamos el grafo con orden de maquinas asignadas
-		#jobs_graph_aux = cp.deepcopy(self.jobs_graph)
-		#m_graph_aux = cp.deepcopy(self.m_graph)
+		jobs_graph_aux = cp.deepcopy(self.jobs_graph)
+		m_graph_aux = cp.deepcopy(self.m_graph)
 		graph = self.fill_graph(jobs_graph_aux, m_graph_aux)
 		# Verificamos que no existan ciclos debido a un error en el codigo
 		

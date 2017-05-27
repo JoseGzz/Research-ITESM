@@ -1,11 +1,11 @@
 from copy import deepcopy as dc
 from copy import copy as c
-from solution import Solution
+#from solution import Solution
 
 class Custom_copy():
     def __init_(self):
         pass
-
+    """
     def copy(current_solution):
         new_solution = Solution()
         new_solution.g = dc(current_solution.g)
@@ -17,3 +17,10 @@ class Custom_copy():
         new_solution.jobs_graph = dc(current_solution.jobs_graph)
         new_solution.m_graph = dc(current_solution.m_graph)
         return new_solution
+    """
+    def deepcopy(self, obj):
+        if isinstance(obj, dict):
+            return {self.deepcopy(key): self.deepcopy(value) for key, value in obj.items()}
+        if hasattr(obj, '__iter__'):
+            return type(obj)(self.deepcopy(item) for item in obj)
+        return obj
