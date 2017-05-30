@@ -12,21 +12,19 @@ import matplotlib.ticker  as plticker
 import numpy as np
 
 class Plotter:
-    """Método de inicialización"""
     def __init__(self):
+        """Método de inicialización"""
         pass
 
-    """Método para imprimir los resultados en forma de texto."""
     def print_solution(self, g):
-        # desplegamos los tiempos de cada operación.
+        """Método para imprimir los resultados en forma de texto."""
         for op, lst in g.items():
             print("operacion:", op)
             print("empieza en:", g.get(op)[0].get_start_time())
             print("termina en:", g.get(op)[0].get_end_time())
 
-    """Método draw que dibuja en pantalla la gráfica representando la secuencia de ejecución de las operaciones en cada máquina"""
     def plot_solution(self, fig, graph, no_machines, machines, operations, ms, no_jobs):
-        # generación de colores para las operaciones
+        """Método draw que dibuja en pantalla la gráfica representando la secuencia de ejecución de las operaciones en cada máquina"""
         max_value = 16581375 
         interval  = int(max_value / no_jobs)
         colors    = [hex(I)[2:].zfill(6) for I in range(0, max_value, interval)]
@@ -66,7 +64,6 @@ class Plotter:
 
         # creamos el espacio de la gráfica como figura y establecemos características
         fs = 10 if no_jobs > 20 else 15
-        #fig = plt.figure()
         plt.clf()
         fig.legend(labels=labels, fontsize=fs, handles=color_patches)
         ax = fig.add_subplot(111, aspect='equal', xlabel='Tiempo')
@@ -100,27 +97,17 @@ class Plotter:
         return graph
 
     def generate_solution_file(self, graph):
-        machines = {}
-        machine_ids = []
-        result = []
-        for op_id, lst in graph.items():
-            for op in lst:
-                m_id = op.get_machine_id()
-                if m_id not in machine_ids:
-                    machine_ids.append(m_id)
-                    machines[m_id-1] = [op.get_job_id()]
-                else:
-                    machines[m_id-1].append(op.get_job_id())
-        
-        for _, jobs in graph.items():
-            result = [jobs for _, jobs in machines.items()]
+        """genera el archivo de salida con la solución en el formato 
+        especificado en http://optimizizer.com/TA.php para subirlo en la misma página. 
+        El formato es: cada renglón representa una máquina y cada elemento del renglón
+        representa la tarea a la que pertenece la operación en esa posición.
+        El diccionario que se recibe como parámetro es tal que las llaves son los id
+        de las máquinas mientras que los valores son listas con las operaciones en el oden
+        que se ejecutarán."""
 
-        solution_matrix = []
-        for m in result:
-            solution_matrix.append(m)
+        solution_matrix = np.array([[op.get_job_id() for op in lst] for _, lst in graph.items()])
+        np.savetxt('test.out', solution_matrix.astype(int), fmt='%i', delimiter=' ')
 
-        solution_matrix = np.array(solution_matrix)
-        print(solution_matrix)
 
 
 

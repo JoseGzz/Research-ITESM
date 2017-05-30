@@ -27,6 +27,7 @@ class Solution:
 		self.no_jobs = no_jobs
 		self.jobs_graph = jobs_graph
 		self.m_graph = m_graph
+		self.latest_machine = None
 
 	def find_makespan(self, jobs, operations, machines, no_machines):
 		""" Método find_makespan que calcula el makespan dadas listas de tareas, operaciones y máquinas,
@@ -72,10 +73,13 @@ class Solution:
 		graph, machines_graph = self.set_machines(graph, operations)
 		
 		# Ejecuta algoritmo para calcular makespan
-		return self.forward_traversal(graph, self.jobs_graph, self.m_graph, self.operations)
+		return self.forward_traversal(graph, self.operations)
 
-	def forward_traversal(self, original_graph, jobs_graph, machines_graph, operations):
-		graph = cp.deepcopy(original_graph)
+	def forward_traversal(self, graph, operations):
+		"""Recorre el grafo hace adelante propagando tiempos entre operaciones y encontrando el makespan
+		de la solución actual"""
+
+		graph = cp.deepcopy(graph)
 		# imrpime diccionario después de asignación de máquinas para testing
 		if self.debug :
 			print("Despues de asignacion de maquinas")
@@ -159,20 +163,23 @@ class Solution:
 				elif int(lst[0].get_self_id()) == (lst[0].get_job().get_op_count()-1):
 					if self.debug : print('Se detiene el backtracking en la operación: ' + op_id)
 					backtracking = False
-		makespan = str(max(times)) 
+		makespan = str(max(times))
+		
+		self.latest_machine = self.operation_with_highest_time(graph).get_machine_id()
 		self.ms = makespan
 		self.g = graph
-		
-		"""	
-		print("total:",len(self.g))
-		for k, v in graph.items():
-			print('key: ' + str(k))
-			for val in v:
-				print(val.get_id(), "st:", val.get_start_time(), "et:", val.get_end_time(),
-				"dur:", val.get_duration())
-			print('---')
-		"""
-		return graph, makespan, jobs_graph, machines_graph, operations
+
+		return graph, makespan
+
+	def operation_with_highest_time(self, graph):
+		"""encuentra la operacion que termina hasta el final"""
+		latest_operation = None
+		latest_time = 0
+		for op, lst in graph.items():
+			if lst[0].get_end_time() > latest_time:
+				latest_time = lst[0].get_end_time()
+				latest_operation = lst[0]
+		return latest_operation
 
 	def propagate_times(self, graph, lst, end_time, current_op):
 		""" Método propagate_times que añade el tiempo de finalización de la operación actual a la lista
@@ -186,8 +193,8 @@ class Solution:
 				if current_op.get_machine_id() == adjacent.get_machine_id():
 					graph[adjacent.get_id()][0].set_machine_time_assigned(True)
 
-	"""Método merge_graphs para combinar grafo de operaciones finales con el resto de las operaciones."""
 	def merge_graphs(self, first, second, jobs):
+		"""Método merge_graphs para combinar grafo de operaciones finales con el resto de las operaciones."""
 		graph_new = OrderedDict()
 		for op_id, vals in first.items():
 			if vals[0].get_self_id() == (jobs[vals[0].get_job_id()].get_op_count())-2:
@@ -198,11 +205,9 @@ class Solution:
 				graph_new[op_id] = vals
 		return graph_new
 
-	""" Método depends_on_posterior para saber si una operación debe de esperar a que una operación
-	posterior termine de ser procesada por la máquina que se le asignó a ambas. """
 	def depends_on_posterior_op(self, graph, op_lst):
-		pass
-		"""
+		""" Método depends_on_posterior para saber si una operación debe de esperar a que una operación
+		posterior termine de ser procesada por la máquina que se le asignó a ambas. """
 		current_op = op_lst[0]
 		iterops = iter(op_lst)
 		next(iterops)
@@ -211,7 +216,6 @@ class Solution:
 			if current_op in adjacents:
 				return True
 		return False
-		"""
 
 	def machine_order(self, graph, operations):
 		"""generamos un grafo para la asignacion de orden de ejecucion en las maquinas"""
@@ -285,22 +289,22 @@ class Solution:
 			sys.exit()
 		return graph, self.m_graph
 
-	""" Método cycle_exists que detecta ciclos en un grafo utilizando recorrido a profundidad (DFS)
-	con coloreo de nodos.
-	Código basado en: https://algocoding.wordpress.com/2015/04/02/detecting-cycles-in-a-directed-graph-with-dfs-python/
-	TODO: reemplazar con implementación propia."""
 	def cycle_exists(self, G):
-	    color = { u : "white" for u in G  }
-	    found_cycle = [False]
-	    for u, lst in G.items():
-	    	if color[u] == "white":
-	    		self.dfs_visit(G, lst[0].get_id(), color, found_cycle)
-	    	if found_cycle[0]:
-	    		break
-	    return found_cycle[0]
+		""" Método cycle_exists que detecta ciclos en un grafo utilizando recorrido a profundidad (DFS)
+		con coloreo de nodos.
+		Código basado en: https://algocoding.wordpress.com/2015/04/02/detecting-cycles-in-a-directed-graph-with-dfs-python/
+		TODO: reemplazar con implementación propia."""
+		color = { u : "white" for u in G  }
+		found_cycle = [False]
+		for u, lst in G.items():
+			if color[u] == "white":
+				self.dfs_visit(G, lst[0].get_id(), color, found_cycle)
+			if found_cycle[0]:
+				break
+		return found_cycle[0]
 	
-	""" Método dfs_visit recursivo que ejecuta el algoritmo DFS """
 	def dfs_visit(self, G, u, color, found_cycle):
+		""" Método dfs_visit recursivo que ejecuta el algoritmo DFS """
 		if found_cycle[0]:                          
 			return
 		color[u] = "gray"
@@ -350,8 +354,11 @@ class Solution:
 					move_right = len(ops) - 1 - i 
 					possible_disps.append((move_left, move_right))
 			displacements[m_id] = possible_disps
-		# Se escoge una maquina al azar (los inices de las maquinas empiezan en 1)
+		# Se escoge una maquina al azar (los indices de las maquinas empiezan en 1)
+		#threshold = random.random()
+		#machine_index = self.latest_machine if threshold > 0.7 else random.choice(range(1, len(self.m_graph)))
 		machine_index = random.choice(range(1, len(self.m_graph)))
+		#print("indice:",machine_index)
 		if self.debug : print("Selected machine:", machine)
 		# Agarramos la lista de desplazamientos para las operaciones de esa maquina
 		disps = displacements[machine_index]
@@ -377,10 +384,9 @@ class Solution:
 		# Llevar a cabo el desplazamiento
 		if self.debug : print("Move: ", move)
 		
-		jobs_graph_aux3 = cp.deepcopy(self.jobs_graph)
-		m_graph_aux3 = cp.deepcopy(self.m_graph)
-
-		# TODO: que se modifique una copia de m_graph
+		# guardamos los estados de los grafos antes de modificarlos
+		jobs_graph_original = cp.deepcopy(self.jobs_graph)
+		m_graph_original = cp.deepcopy(self.m_graph)
 
 		for i in range(move):
 			# Obtenemos la operacion a mover
@@ -393,36 +399,34 @@ class Solution:
 			# Actualizamos el indice
 			index += term
 
-		jobs_graph_aux = cp.deepcopy(self.jobs_graph)
-		m_graph_aux = cp.deepcopy(self.m_graph)
-
-		jobs_graph_aux2 = cp.deepcopy(jobs_graph_aux)
-		m_graph_aux2 = cp.deepcopy(m_graph_aux)
+		# copiamos los grafos para poder hacer la validacion de restricciones
+		jobs_graph_verify = cp.deepcopy(self.jobs_graph)
+		m_graph_verify = cp.deepcopy(self.m_graph)
 		
 		# Si se violo alguna restriccion en el plan generado
-		if self.violates_constraints(jobs_graph_aux2, m_graph_aux2):
-			#print("---CICLADO EN PERTURBACION---")
-			self.jobs_graph = jobs_graph_aux3
-			self.m_graph = m_graph_aux3
+		if self.violates_constraints(jobs_graph_verify, m_graph_verify):
+			if self.debug : print("---CICLADO EN PERTURBACION---")
+			# regresamos los grafos a su estado anterior y regresamos la solucion anterior
+			self.jobs_graph = jobs_graph_original
+			self.m_graph = m_graph_original
 			return self
 
 		# Generamos el grafo con orden de maquinas asignadas
 		jobs_graph_aux = cp.deepcopy(self.jobs_graph)
 		m_graph_aux = cp.deepcopy(self.m_graph)
 		graph = self.fill_graph(jobs_graph_aux, m_graph_aux)
+
 		# Verificamos que no existan ciclos debido a un error en el codigo
-		
 		if self.cycle_exists(graph):
 			raise ValueError("Se produjo un ciclo en el" +
 			" grafo disyuntivo al momento de perturbar la solucion.")
 			import sys
 			sys.exit()
 		
-		# Hacemos el recorrido hacia adelante para calcular el makespan con la
-		# nueva configuracion generada
+		# Creamos una nueva solucion y hacemos el recorrido hacia adelante para calcular el makespan
 		new_solution = Solution(no_machines=self.no_machines, machines=self.machines,
-		no_jobs=self.no_jobs, m_graph=self.m_graph, jobs_graph=self.jobs_graph, operations=self.operations)
-		new_solution.forward_traversal(graph, self.jobs_graph, self.m_graph, self.operations)
+			no_jobs=self.no_jobs, m_graph=self.m_graph, jobs_graph=self.jobs_graph, operations=self.operations)
+		new_solution.forward_traversal(graph, self.operations)
 		return new_solution
 
 	def violates_constraints(self, jobs_graph, m_graph):
@@ -442,12 +446,13 @@ class Solution:
 				jobs_graph[lst[i].get_id()].append(lst[i+1])
 		return jobs_graph
 
-	def plot(self,fig,flag=True):
-		"""grafica, imprime y genera archivo con resultados"""
+	def plot(self, fig, flag=True):
+		"""grafica, imprime y genera archivo con solución.
+		NOTA: descomentar útlima línea para generar archivo de solución."""
 		if flag :
 			self.plotter.plot_solution(fig, self.g, self.no_machines, self.machines, self.operations, self.ms, self.no_jobs)
 			#self.plotter.print_solution(g)
-			#self.solution.generate_solution_file(g)
+			#self.plotter.generate_solution_file(self.m_graph)
 
 	def cost(self):
 		"""regresa el costo de la solucion actual"""
