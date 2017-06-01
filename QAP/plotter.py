@@ -10,26 +10,17 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 
 class Plotter:
-	"""Inicialización de objeto."""
 	def __init__(self, locations=[], facilities=[], permutation=[], cost=0):
+		"""Inicialización de objeto."""
 		self.locations   = locations
 		self.facilities  = facilities
 		self.permutation = permutation
 		self.cost        = cost
 
-	"""plot_results grafica nodos numerados con etiquetas numeradas representando las ubicaciones
-	y las facilities respectivamente"""
 	def plot_results(self, fig):
-		"""
-		# generación de colores en hexdadecimal para colorear los nodos.
-		max_value = 16581375 
-		interval  = int(max_value / len(self.locations))
-		node_colors    = [hex(I)[2:].zfill(6) for I in range(0, max_value, interval)]
-		node_colors.pop()
-		# cramos diccionario y lista para la asignación de colores
-		val_map = {str(i+1): int(val, 16) for i, val in enumerate(node_colors)}
-		values = [val_map.get(node, 0.25) for node in G.nodes()]
-		"""
+		"""plot_results grafica nodos numerados con etiquetas numeradas representando las ubicaciones
+		y las facilities respectivamente"""
+
 		fig.clf()
 		# generamos una lista de tuplas que representan las conexiones entre la ubicación a y b
 		# (+1 para presentar resultados desde índice 1).
