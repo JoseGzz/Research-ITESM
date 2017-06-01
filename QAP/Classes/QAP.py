@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
 """
-Sistema de clases para el problema QAP
-José González Ayerdi - A01036121
+Clase de representación problema QAP
+José González Ayerdi
 ITESM Campus Monterrey
 03/2017  
 """
@@ -31,8 +31,8 @@ class QAP():
 
 	def read_data(self, filename=""):
 		"""read_data lee del archivo de pruebas el número de facilities/loactions y las matrices
-		de distancia y flujo. """
-		filename = "test_data/tai15b.dat"
+		de distancia y flujo.
+		Instances recuperadas de: http://anjos.mgi.polymtl.ca/qaplib//inst.html#EW"""
 		try:
 			with open(filename, 'r') as f:
 				# leemos la cantidad de facilities
@@ -51,9 +51,11 @@ class QAP():
 					self.flow_mat.append(line)
 				# ignoramos un salto de línea  
 				# comentar cuando se lean archivos descargados de la pagina .
-				# descomentar cuando copy-paste           
+				last_pos = f.tell()
+				nlines_skip = 1
+				# ignoramos el salto de línea que existe entre ambas matrices en el archivo
 				f.readline()
-				# repetimos para la segunda matriz                          
+				# repetimos para la segunda matriz                         
 				for i in range(int(self.no_facilities)):   
 					line = []
 					for num in f.readline().split():
@@ -61,6 +63,7 @@ class QAP():
 					self.distance_mat.append(line)
 				self.distance_mat = np.array(self.distance_mat)
 				self.flow_mat = np.array(self.flow_mat)
+
 		except IOError as e:
 			print("No se encontró el archivo.")
 			sys.exit(0)

@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*- 
 """
 Grafica resultados del problema QAP.
-José González Ayerdi - A01036121
+José González Ayerdi
 ITESM Campus Monterrey
 03/2017  
 """
 import networkx as nx
 import matplotlib.pyplot as plt
-import matplotlib.colors as colors
 
 class Plotter:
 	def __init__(self, locations=[], facilities=[], permutation=[], cost=0):

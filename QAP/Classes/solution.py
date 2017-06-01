@@ -25,21 +25,31 @@ class Solution():
 		ubicaciones y facilities a los objetos."""
 		"""IMPORTANTE: para problemas benchmark en http://anjos.mgi.polymtl.ca/qaplib//inst.html#EW 
 		los indices de la lista representan los id de los facilities, y los valores las locations."""
+
+		# generación de permutación aleatoria
 		self.p = random.sample(range(no_locations), no_locations)
 
-		#self.p = [1,9,4,6,8,15,7,11,3,5,2,14,13,12,10]
-		if self.debug:
-			for i, _ in enumerate(self.p):
-				self.p[i] = self.p[i] - 1
-		
+		# se puede ejecutar una permutación especificada manualmente
+		# self.set_test_permutation()
+		# generamos objetos para graficación
 		self.generate_lists_for_plot()
 
+
+	def set_test_permutation(self):
+		# se pude especificar una permutación específica para verificar resultados
+		# es necesario también especificar la permutación en la función de perturbación.
+		# Se necesita también prender la bandera de debug para cambiar a índice 0.
+		# por ejemplo: self.p = [12,7,9,3,4,8,11,1,5,6,10,2]
+		self.p = []
+		for i, _ in enumerate(self.p):
+			self.p[i] = self.p[i] - 1
+
 	def generate_lists_for_plot(self):
-		"""llena listas que se usaran para graficar"""
+		"""llena listas que se usarán para graficar"""
 		locations = []
 		facilities = []
 		for i, fac in enumerate(self.p):
-			loc = self.search_location(i)
+			loc = self.search_location_obj(i)
 			facility = self.search_facility(fac)
 			loc.facility = facility
 			facility.location = loc
@@ -47,23 +57,23 @@ class Solution():
 			facilities.append(facility)
 
 	def create_neighbor(self):
-		"""perturbamos la solucion actual"""
+		"""perturbamos la solución actual"""
 		# escogemos dos facilities al azar
 		fac1, fac2 = random.sample(self.p, 2)
 		# las intercambiamos
 		fac1_index, fac2_index = self.p.index(fac1), self.p.index(fac2)
 		self.p[fac2_index], self.p[fac1_index] = self.p[fac1_index], self.p[fac2_index]
-		#self.p = [1,9,4,6,8,15,7,11,3,5,2,14,13,12,10]
-		if self.debug:
-			for i, _ in enumerate(self.p):
-				self.p[i] = self.p[i] - 1
+
+		# se puede especificar una permutación particular para verificar resultados
+		# set test permutation
 		# generamos las nuevas listas de objetos para graficar
 		self.generate_lists_for_plot()
+		# calculamos el nuevo costo
 		self.calculate_cost()
 		return self
 
 	def calculate_cost(self):
-		"""calculate_cost multiplica los vectores de flujos y distancias y regresa el resultado."""
+		"""calculate_cost hace el producto punto entre los vectores de flujos y distancias y regresa el resultado."""
 		flows, fac_ids = self.calculate_flows()
 		distances      = self.calculate_distances(fac_ids)
 		flows          = np.array(flows)
@@ -76,8 +86,7 @@ class Solution():
 		fac_ids   = []
 		for i in range(len(self.facilities)):
 			for j in range(i, len(self.facilities)):
-				current_flow = self.facilities[i].flow_with(self.facilities[j].fac_id)
-				flow_list.append(current_flow)
+				flow_list.append(self.facilities[i].flow_with(self.facilities[j].fac_id))
 				fac_ids.append((i, j))
 		return flow_list, fac_ids
 
@@ -87,14 +96,15 @@ class Solution():
 		for ids in fac_ids:
 			fac1_loc = self.p[ids[0]] if self.benchmark else self.p.index(ids[0])
 			fac2_loc = self.p[ids[1]] if self.benchmark else self.p.index(ids[1])
-			loc1 = self.search_location(fac1_loc)
-			loc2 = self.search_location(fac2_loc)
+			loc1 = self.search_location_obj(fac1_loc)
+			loc2 = self.search_location_obj(fac2_loc)
+			# hay que sumar las distancias de ida y de vuelta
 			distance = loc1.distance_to(loc2.loc_id) + loc2.distance_to(loc1.loc_id)
 			distances.append(distance)
 		return distances
 
-	def search_location(self, loc_id):
-		"""search_location regresa un objeto location dado su id."""
+	def search_location_obj(self, loc_id):
+		"""search_location_obj regresa un objeto location dado su id."""
 		for location in self.locations:
 			if location.loc_id == loc_id:
 				return location
@@ -112,11 +122,11 @@ class Solution():
 			pt.plot_results(fig)
 
 	def cost(self):
-		"""regresa el costo de la solucion actual"""
+		"""regresa el costo de la solución actual"""
 		return self.travel_cost
 
 	def permutation(self):
-		"""muestra la permutacion final con inice 1"""
+		"""muestra la permutación final con inice 1"""
 		for i, _ in enumerate(self.p):
 			self.p[i] = self.p[i] + 1
 		return self.p

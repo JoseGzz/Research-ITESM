@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
 """
 Clase para el objeto facility del problema QAP.
-José González Ayerdi - A01036121
+José González Ayerdi
 ITESM Campus Monterrey
 03/2017
 """
