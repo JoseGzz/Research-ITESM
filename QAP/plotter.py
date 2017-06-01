@@ -7,7 +7,6 @@ ITESM Campus Monterrey
 """
 import networkx as nx
 import matplotlib.pyplot as plt
-import matplotlib.cm as cmx
 import matplotlib.colors as colors
 
 class Plotter:

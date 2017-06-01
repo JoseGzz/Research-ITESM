@@ -16,6 +16,7 @@ class Solution():
 		self.locations	 = locations
 		self.p           = p
 		self.travel_cost = 0
+		self.debug = False
 
 	def generate_permutation(self, no_locations):
 		"""generate_permutation genera una permutación acomodando facilities (valores de la lista p)
@@ -29,10 +30,13 @@ class Solution():
 		#self.p = [0,1,2,3]
 		#self.p = [5,10,8,13,12,11,14,2,4,6,7,15,3,1,9]
 		#self.p = [8,1,6,2,11,10,3,5,9,7,12,4]
-		"""
-		for i, _ in enumerate(self.p):
-			self.p[i] = self.p[i] - 1
-		"""
+		#self.p = [0,1,2,3]
+		#self.p = [4,1,5,0,3,2]
+		#self.p = [3,10,11,2,12,5,6,7,8,1,4,9]
+		if self.debug:
+			for i, _ in enumerate(self.p):
+				self.p[i] = self.p[i] - 1
+
 		
 		self.generate_lists_for_plot()
 
@@ -52,9 +56,13 @@ class Solution():
 		fac1, fac2 = random.sample(self.p, 2)
 		fac1_index, fac2_index = self.p.index(fac1), self.p.index(fac2)
 		self.p[fac2_index], self.p[fac1_index] = self.p[fac1_index], self.p[fac2_index]
+		#self.p = [3,10,11,2,12,5,6,7,8,1,4,9]
+		if self.debug:
+			for i, _ in enumerate(self.p):
+				self.p[i] = self.p[i] - 1
+
 		self.generate_lists_for_plot()
 		self.calculate_cost()
-		print(self.p)
 		return self
 
 
@@ -64,6 +72,8 @@ class Solution():
 		distances      = self.calculate_distances(fac_ids)
 		flows          = np.array(flows)
 		distances      = np.array(distances)
+		print("f:",flows)
+		print("d:", distances)
 		self.travel_cost = flows.dot(distances)
 
 	def calculate_flows(self):
@@ -73,7 +83,7 @@ class Solution():
 		for i in range(len(self.facilities)):
 			for j in range(i, len(self.facilities)):
 				current_flow = self.facilities[i].flow_with(self.facilities[j].fac_id)
-				if current_flow != -1:
+				if current_flow != -1 and current_flow != 0:
 					flow_list.append(current_flow)
 					fac_ids.append((i, j))
 		return flow_list, fac_ids
@@ -104,11 +114,18 @@ class Solution():
 
 	def plot(self, fig, flag=True):
 		"""plot grafica la solución actual."""
+		"""
 		if flag:
 			pt = Plotter(self.locations, self.facilities, self.p, self.travel_cost)
 			pt.plot_results(fig)
+		"""
+		pass
 
 	def cost(self):
 		return self.travel_cost
 
-
+	def sequence(self):
+		for i, _ in enumerate(self.p):
+			self.p[i] = self.p[i] + 1
+		
+		return self.p

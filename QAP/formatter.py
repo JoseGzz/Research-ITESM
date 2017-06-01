@@ -18,6 +18,8 @@ class Formatter():
 	def generate_lists(self, distance_mat, flow_mat):
 		location_list = self.generate_locations(distance_mat)
 		facility_list  = self.generate_facilities(flow_mat)
+		#print(distance_mat)
+		#print(flow_mat)
 		return location_list, facility_list
 
 	"""generate_locations regresa la lista de objetos location con su id y distancias"""

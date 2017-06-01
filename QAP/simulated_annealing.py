@@ -72,7 +72,7 @@ if __name__ == "__main__":
     # algorithm configuration
     max_temp = 30.0  # initial temperature
     min_temp = 4.5    # final temperature
-    eq_iter = 100     # iterations at same temperature
+    eq_iter = 1     # iterations at same temperature
     temp_change = 0.9  # temperature reduction factor
     # execute the algorithm    
     filename = ""#input("Nombre del archivo del problema? ")
@@ -82,5 +82,6 @@ if __name__ == "__main__":
     #cProfile.run('simulated_annealing(filename, max_temp, min_temp, eq_iter,\
     #                           temp_change, True)')
 
+    print(best.sequence())
     print(best.cost())
     plt.pause(1000)

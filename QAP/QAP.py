@@ -12,8 +12,6 @@ from location import Location
 from formatter import Formatter
 from solution import Solution
 
-
-
 class QAP():
 	def __init__(self):
 		self.locations = []
@@ -34,7 +32,7 @@ class QAP():
 	"""read_data lee del archivo de pruebas el número de facilities/loactions y las matrices
 	de distancia y flujo. """
 	def read_data(self, filename=""):
-		filename = "test_data/test9.dat"
+		filename = "test_data/had12.dat"
 		try:
 			with open(filename, 'r') as f:
 				# leemos la cantidad de facilities
