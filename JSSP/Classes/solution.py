@@ -11,15 +11,16 @@ from plotter import Plotter
 from collections import defaultdict as dd
 import copy as cp
 import random
+import settings
 
 
 class Solution:
-	def __init__(self, debug=False, plotter=None, g=None, no_machines=0,
+	def __init__(self, plotter=None, g=None, no_machines=0,
 	             machines=None, operations=None, ms=0, no_jobs=0, jobs_graph=None,
 	             m_graph=None):
 
 		""" Constructor de la clase """
-		self.debug = False
+		self.debug = settings.options.debug
 		self.plotter = Plotter()
 		self.g = g
 		self.no_machines = no_machines

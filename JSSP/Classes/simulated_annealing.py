@@ -8,7 +8,7 @@ import math
 import random
 import cProfile
 import matplotlib.pyplot as plt
-from optparse import OptionParser as OP
+import settings
 
 
 def create_neighbor(current):
@@ -83,18 +83,16 @@ def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
 
 
 if __name__ == "__main__":
-    parser = OP()
-    parser.add_option("-c", "--collect", action="store_true", dest="collect_data")
-
+    settings.init()
     # algorithm configuration
     max_temp = 10.0  # initial temperature
     min_temp = 4.5    # final temperature
     eq_iter = 100     # iterations at same temperature
     temp_change = 0.9  # temperature reduction factor
-    # execute the algorithm    
+    # execute the algorithm
     filename = input("Nombre del archivo del problema? ")
     best = simulated_annealing(filename, max_temp, min_temp, eq_iter,
-                               temp_change, True)
+                               temp_change, settings.options.trace)
   
     #cProfile.run('simulated_annealing(filename, max_temp, min_temp, eq_iter,\
     #                           temp_change, True)')
