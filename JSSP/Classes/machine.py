@@ -14,7 +14,7 @@ class Machine:
         self.__total_operations = len(operations)
     
     """Se agrega una operacion para ser ejecutada por esa máquina"""
-    def add_operation(operation):
+    def add_operation(self, operation):
         self.__operations.append(operation)
 
     """Elimina la operación especificada"""

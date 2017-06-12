@@ -2,12 +2,12 @@
 # Author: Santiago E. Conant-Pablos, January 30, 2017
 
 from jssp import JSSP
-import matplotlib.pyplot as plt
 import time
 import copy
 import math
 import random
 import cProfile
+import matplotlib.pyplot as plt
 
 def create_neighbor(current):
     """modifies the current solution"""
@@ -17,7 +17,10 @@ def create_neighbor(current):
 
 def should_accept(candidate, current, temperature):
     """decides if candidate solution should substitute the current solution"""
+
+    # the new cost
     ncost = candidate.cost()
+    # the current cost
     ccost = current.cost()
     if ncost <= ccost:
         return True
@@ -32,9 +35,11 @@ def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
         fig = plt.figure()
         plt.ion()
         fig.canvas.set_window_title('Simulated Annealing')
+
     problem = JSSP()
     problem.read_data(filename)
     start_time = time.time()
+
     # current parece ser de tipo Solution
     current = problem.random_solution() #random_solution(problem)
     temp = max_temp
@@ -49,13 +54,17 @@ def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
         while eiter < eq_iter:
             i += 1
             candidate = create_neighbor(current)
-            if should_accept(candidate, current, temp): current = candidate
+
+            if should_accept(candidate, current, temp):
+                current = candidate
+
             if candidate.cost() < best.cost():
                 best = copy.deepcopy(candidate)
                 if trace:
                    best.plot(fig)
                    fig.canvas.draw()
                    plt.pause(0.0001)
+
             if trace:
                 print(" > iteration=%d, temp=%g, curr= %g, best=%g" %
                       (i,temp,candidate.cost(), best.cost()))
@@ -76,7 +85,7 @@ if __name__ == "__main__":
     temp_change = 0.9  # temperature reduction factor
     # execute the algorithm    
     filename = input("Nombre del archivo del problema? ")
-    best = simulated_annealing(filename, max_temp, min_temp, eq_iter,\
+    best = simulated_annealing(filename, max_temp, min_temp, eq_iter,
                                temp_change, True)
   
     #cProfile.run('simulated_annealing(filename, max_temp, min_temp, eq_iter,\

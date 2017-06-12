@@ -39,7 +39,7 @@ class Job:
     def set_id(self, job_id):
         self.__job_id = job_id
         
-    def set_start_time(sef, start_time):
+    def set_start_time(self, start_time):
         self.__start_time = start_time
         
     def set_end_time(self, end_time):
