@@ -8,12 +8,15 @@ import math
 import random
 import cProfile
 import matplotlib.pyplot as plt
+from optparse import OptionParser as OP
+
 
 def create_neighbor(current):
     """modifies the current solution"""
     candidate = copy.deepcopy(current)
     candidate = copy.deepcopy(candidate.create_neighbor())
     return candidate
+
 
 def should_accept(candidate, current, temperature):
     """decides if candidate solution should substitute the current solution"""
@@ -26,6 +29,7 @@ def should_accept(candidate, current, temperature):
         return True
     else:
         return math.exp((ccost - ncost) / temperature) >= random.random()
+
 
 def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
                         trace=True):
@@ -77,7 +81,11 @@ def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
         plt.ioff()
     return best
 
+
 if __name__ == "__main__":
+    parser = OP()
+    parser.add_option("-c", "--collect", action="store_true", dest="collect_data")
+
     # algorithm configuration
     max_temp = 10.0  # initial temperature
     min_temp = 4.5    # final temperature
