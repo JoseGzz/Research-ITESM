@@ -9,6 +9,7 @@ import random
 import cProfile
 import matplotlib.pyplot as plt
 import settings
+from data_collector import DataCollector
 
 
 def create_neighbor(current):
@@ -43,6 +44,15 @@ def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
     problem = JSSP()
     problem.read_data(filename)
     start_time = time.time()
+    
+    ###################### START DATA COLLECTION ########################
+    collector.new_entry()
+    collector.add_data("iteration_number", 0)
+    collector.add_data("max_temperature", max_temp)
+    collector.add_data("min_temperature", min_temp)
+    collector.add_data("iter_per_temp", eq_iter)
+    collector.add_data("temp_change_ratio", temp_change)
+    ###################### END DATA COLLECTION ##########################
 
     # current parece ser de tipo Solution
     current = problem.random_solution() #random_solution(problem)
@@ -57,6 +67,16 @@ def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
         eiter = 0
         while eiter < eq_iter:
             i += 1
+
+            ###################### START DATA COLLECTION ########################
+            collector.new_entry()
+            collector.add_data("iter_number_in_temp", eiter)
+            collector.add_data("max_temperature", max_temp)
+            collector.add_data("min_temperature", min_temp)
+            collector.add_data("iter_per_temp", eq_iter)
+            collector.add_data("temp_change_ratio", temp_change)
+            ###################### END DATA COLLECTION ##########################
+            
             candidate = create_neighbor(current)
 
             if should_accept(candidate, current, temp):
@@ -84,15 +104,24 @@ def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
 
 if __name__ == "__main__":
     settings.init()
+    # data collector configuration
+    global collector
+    collector = DataCollector()
+
     # algorithm configuration
     max_temp = 10.0  # initial temperature
     min_temp = 4.5    # final temperature
     eq_iter = 100     # iterations at same temperature
     temp_change = 0.9  # temperature reduction factor
+    
     # execute the algorithm
     filename = input("Nombre del archivo del problema? ")
     best = simulated_annealing(filename, max_temp, min_temp, eq_iter,
                                temp_change, settings.options.trace)
+
+    # store the data
+    data_filename = "collect_JSSP_1.csv"
+    collector.write_to_file(data_filename)
   
     #cProfile.run('simulated_annealing(filename, max_temp, min_temp, eq_iter,\
     #                           temp_change, True)')
