@@ -43,7 +43,6 @@ class Operation:
     """Se agrega un tiempo tentativo de inicio para la oepración."""
 
     def add_possible_start_time(self, time):
-        #print("Soy", self.__op_id, " y recibí tiempo:", time)
         self.__start_times.append(time)
 
     """Pregunta si ya se le asignó un orden de ejecución en la máquina."""

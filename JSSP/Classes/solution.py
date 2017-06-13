@@ -22,6 +22,7 @@ class Solution:
 		""" Constructor de la clase """
 		self.debug = settings.options.debug
 		self.plotter = Plotter()
+		#TODO: find what g means
 		self.g = g
 		self.no_machines = no_machines
 		self.machines = machines
@@ -65,13 +66,11 @@ class Solution:
 			print("Antes de asignacion de maquinas")
 
 		# imprime el grafo para probar
-		for k, v in graph.items():
-			if self.debug:
+		if self.debug:
+			for k, v in graph.items():
 				print('key: ' + k)
-			for val in v:
-				if self.debug:
+				for val in v:
 					print(val.get_id())
-			if self.debug:
 				print('---')
 
 		# creamos una copia del grafo sin orden de maquinas para ser usado
@@ -86,17 +85,17 @@ class Solution:
 
 	def forward_traversal(self, graph, operations):
 		"""Recorre el grafo hace adelante propagando tiempos entre operaciones y encontrando el makespan
-        de la solución actual"""
+		de la solución actual"""
 
 		graph = cp.deepcopy(graph)
 		# imrpime diccionario después de asignación de máquinas para testing
 		if self.debug:
 			print("Despues de asignacion de maquinas")
 			for k, v in graph.items():
-				if self.debug: print('key: ' + str(k))
+				print('key: ' + str(k))
 				for val in v:
-					if self.debug: print(val.get_id())
-				if self.debug: print('---')
+					print(val.get_id())
+				print('---')
 
 		# creamos la lista de operaciones que no tienen predecesores para poder fijarlas desde el principio
 		first_op_ids = self.find_first_operations(graph, operations)
@@ -131,7 +130,9 @@ class Solution:
 							# establecemos un tiempo de finalización
 							end_time = current_op.get_end_time()
 							# remplazamos el objeto ya con el tiempo asignado
-							if self.debug: print('Se fija la operación ' + str(op_id) + '.')
+							if self.debug:
+								print('Se fija la operación ' + str(op_id) + '.')
+
 							# se prende booleana de fijación para la operación actual
 							current_op.set_fixed(True)
 							setted_operations += 1
@@ -201,10 +202,12 @@ class Solution:
 
 	def propagate_times(self, graph, lst, end_time, current_op):
 		""" Método propagate_times que añade el tiempo de finalización de la operación actual a la lista
-        de posibles tiempos de inicio de las operaciones adyacente. """
+		de posibles tiempos de inicio de las operaciones adyacente. """
 		# si algún adyacente pertenece a otra tarea entonces se trata de un adyacente conectado
 		# por máquina, así que se prende su booleana
-		if self.debug: print("Propagando desde:", current_op.get_id())
+		if self.debug:
+			print("Propagando desde:", current_op.get_id())
+
 		if len(lst[1:]) >= 1:
 			for adjacent in lst[1:]:
 				graph[adjacent.get_id()][0].add_possible_start_time(end_time)
@@ -298,13 +301,16 @@ class Solution:
 	def set_machines(self, graph, operations):
 		"""genera el orden de ejecucion inicial en las maquinas"""
 		self.m_graph = self.machine_order(graph, operations)
+
 		for m_id, lst in self.m_graph.items():
 			for i in range(len(lst) - 1):
 				graph[lst[i].get_id()].append(lst[i + 1])
+
 		if self.cycle_exists(graph):
 			raise ValueError("Se produjo un ciclo durante la asignacion de maquinas.")
 			import sys
 			sys.exit()
+
 		return graph, self.m_graph
 
 	def cycle_exists(self, G):
@@ -373,11 +379,10 @@ class Solution:
 					possible_disps.append((move_left, move_right))
 			displacements[m_id] = possible_disps
 		# Se escoge una maquina al azar (los indices de las maquinas empiezan en 1)
-		# threshold = random.random()
+
 		# machine_index = self.latest_machine if threshold > 0.7 else random.choice(range(1, len(self.m_graph)))
 		machine_index = random.choice(range(1, len(self.m_graph)))
-		# print("indice:",machine_index)
-		# if self.debug: print("Selected machine:", machine)
+
 		# Agarramos la lista de desplazamientos para las operaciones de esa maquina
 		disps = displacements[machine_index]
 		# Escogemos el indice de una operacion al azar para desplazarla
@@ -394,8 +399,11 @@ class Solution:
 		operation = lst[operation_index]
 		# Indice de la operacion a desplazar
 		index = lst.index(operation)
+		
 		# Cantidad de espacios a moverse
-		if self.debug: print("Moves:", moves)
+		if self.debug:
+			print("Moves:", moves)
+
 		move = 1 if abs(moves) == 1 else random.choice(range(1, abs(moves)))
 		# Determinar direccion del desplazamiento
 		term = 1 if moves >= 0 else -1
