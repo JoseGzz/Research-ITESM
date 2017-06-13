@@ -10,6 +10,7 @@ from machine   import Machine
 from job       import Job   
 from solution  import Solution
 from operation import Operation
+import settings
 
 class Formatter:
     """constructor para la clase formatter"""
@@ -22,6 +23,13 @@ class Formatter:
         jobs       = self.create_job_list(times_matrix, operations)
         machines   = self.create_machine_list(no_machines, machines_matrix, operations)
         operations = self.assign_jobs_to_operations(jobs, operations)
+
+        ###################### START DATA COLLECTION ########################
+        # Just called once
+        if settings.options.collect_data:
+            settings.collector.add_data("num_operations", len(operations) / len(jobs))
+        ###################### END DATA COLLECTION ##########################
+        
         return operations, jobs, machines
     
     def assign_jobs_to_operations(self, jobs, operations):
@@ -31,6 +39,7 @@ class Formatter:
             for i in range(job.get_op_count()):
                 operations[count].set_job(job)
                 count += 1
+        
         return operations
 
     def create_machine_list(self, no_machines, machines_matrix, operations):

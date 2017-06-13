@@ -48,7 +48,7 @@ class DataCollector:
             for column in self._columns:
                 file.write(str(column).rstrip('\n'))
                 file.write(", ".rstrip('\n'))
-            file.write("")
+            file.write("\n")
         
             # for each entry, write its content in the column order speified above
             index = 0
@@ -63,4 +63,4 @@ class DataCollector:
                         file.write(", ".rstrip('\n'))
                     else:
                         file.write(", ".rstrip('\n'))
-                file.write("")
+                file.write("\n")

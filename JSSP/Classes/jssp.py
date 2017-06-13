@@ -14,6 +14,7 @@ from formatter import Formatter
 from plotter   import Plotter
 import sys
 import numpy as np
+import settings
 
 class JSSP():
     def __init__(self):
@@ -44,6 +45,14 @@ class JSSP():
         # Establecemos cantidades necesarias
         no_jobs = len(times_mat[:])
         no_machines = len(times_mat[0])
+
+        ###################### START DATA COLLECTION ########################
+        # just called once
+        if settings.options.collect_data:
+            settings.collector.add_data("num_jobs", no_jobs)
+            settings.collector.add_data("num_machines", no_machines)
+        ###################### END DATA COLLECTION ##########################
+        
         self.no_machines = no_machines
         self.no_jobs = no_jobs
         # Se crean las listas de objetos
