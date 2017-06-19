@@ -13,6 +13,10 @@ def init():
     parser.add_option("-d", "--debug", action="store_true", dest="debug", default=False)
     # set trace display to false, since it is a default option
     parser.add_option("-t", "--trace", action="store_true", dest="trace", default=False)
+    # set file to which the input data should be obtained
+    parser.add_option("--df", action="store", type="string", dest="data_filename")
+    # set file to which the collected data should be stored
+    parser.add_option("--cf", action="store", type="string", dest="collect_filename")
 
     global options
     (options, _) = parser.parse_args()

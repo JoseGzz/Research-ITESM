@@ -1,3 +1,5 @@
+import os
+
 class DataCollector:
     def __init__(self):
         """The default constructor of the class.
@@ -34,7 +36,11 @@ class DataCollector:
     def append_to_file(self, filename):
         """Calling this method appends the stored data into the specified file (if it does not
          exists it just creates a new one) and then closes it to free program resources."""
-        self._write_to_file(filename, "a")
+        if os.path.exists(filename):
+            self._write_to_file(filename, "a")  # append if already exists
+        else:
+            self._write_to_file(filename)  # make a new file if not
+        
 
     def _write_to_file(self, filename, mode="w"):
         """adds the stored data into the specified file via the specified open mode
@@ -42,22 +48,14 @@ class DataCollector:
         for the index."""
         with open(filename, mode) as file:
             # write the column names in the first line of the file
-            file.write("index".rstrip('\n'))
-            file.write(", ".rstrip('\n'))
-            
-            for column in self._columns:
+            for column in sorted(self._columns):
                 file.write(str(column).rstrip('\n'))
                 file.write(", ".rstrip('\n'))
             file.write("\n")
         
             # for each entry, write its content in the column order speified above
-            index = 0
             for entry in self._entries:
-                file.write(str(index).rstrip('\n'))
-                file.write(", ".rstrip('\n'))
-                index += 1
-                
-                for column in self._columns:
+                for column in sorted(self._columns):
                     if column in entry:
                         file.write(str(entry[column]).rstrip('\n'))
                         file.write(", ".rstrip('\n'))

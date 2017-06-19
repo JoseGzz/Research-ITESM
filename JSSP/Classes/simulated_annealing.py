@@ -35,6 +35,7 @@ def should_accept(candidate, current, temperature):
     else:
         result = math.exp((ccost - ncost) / temperature) >= random.random()
         
+        #TODO: FIX WHEN POSSIBLE, RESULT IS A BOOLEAN NOT A NUMBER
         ###################### START DATA COLLECTION ########################
         if settings.options.collect_data:
             settings.collector.add_data("should_accept", result)
@@ -130,7 +131,8 @@ def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
             eiter += 1
         temp *= temp_change
     end_time = time.time()
-    print("Execution time", end_time - start_time)
+    #print("Execution time", end_time - start_time)
+    
     if trace:
         best.plot(fig, True)
         plt.ioff()
@@ -141,21 +143,25 @@ if __name__ == "__main__":
     
     # algorithm configuration
     max_temp = 10.0  # initial temperature
-    min_temp = 8  # final temperature 4.5
-    eq_iter = 10  # iterations at same temperature 100
+    min_temp = 4.5  # final temperature 4.5
+    eq_iter = 100  # iterations at same temperature
     temp_change = 0.9  # temperature reduction factor
     
     # execute the algorithm
-    filename = input("Nombre del archivo del problema? ")
+    filename = settings.options.data_filename
+    if not filename:
+        raise UserWarning("enter data filename through the -df flag.")
+        exit(1)
+        
     best = simulated_annealing(filename, max_temp, min_temp, eq_iter,
                                temp_change, settings.options.trace)
     
     # store the data
-    data_filename = "collect_JSSP_1.csv"
-    settings.collector.write_to_file(data_filename)
+    if settings.options.collect_filename:
+        settings.collector.write_to_file(settings.options.collect_filename)
     
     # cProfile.run('simulated_annealing(filename, max_temp, min_temp, eq_iter,\
     #                           temp_change, True)')
     
     print(best.cost())
-    plt.pause(1000)
+    #plt.pause(1000)

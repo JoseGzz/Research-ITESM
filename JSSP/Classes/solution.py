@@ -22,7 +22,6 @@ class Solution:
         """ Constructor de la clase """
         self.debug = settings.options.debug
         self.plotter = Plotter()
-        #TODO: find what g means
         self.g = g
         self.no_machines = no_machines
         self.machines = machines
@@ -344,6 +343,7 @@ class Solution:
         """ Método find_first_operations que regresa la lista con id de
         las operaciones que no tienen predecesores """
         id_list = []
+        
         for op in operations:
             found = False
             for k, v in graph.items():
@@ -357,7 +357,6 @@ class Solution:
     def create_neighbor(self):
         """perturba la solucion actual y genera un vecino"""
         # Lista para almacenar todos los posibles movimientos de todas las operaciones
-        displacements = []
         m_graph_aux = OrderedDict(self.m_graph)
         # Se genera la cantidad de desplazamientos posibles para cada operacion,
         # numeros negativos es movimiento a la izquierda,
@@ -388,10 +387,29 @@ class Solution:
         operation_index = random.choice(range(len(disps) - 1))
         # Agarramos la cantidad de movimientos posibles para la operacion obtenida
         moves = displacements.get(machine_index)[operation_index]
+
+        ###################### START DATA COLLECTION ########################
+        if settings.options.collect_data:
+            if type(moves) == tuple:
+                settings.collector.add_data("first_op_moved", False)
+                settings.collector.add_data("last_op_moved", False)
+            else:
+                if moves > 0:
+                    settings.collector.add_data("first_op_moved", True)
+                else:
+                    settings.collector.add_data("first_op_moved", False)
+    
+                if moves < 0:
+                    settings.collector.add_data("last_op_moved", True)
+                else:
+                    settings.collector.add_data("last_op_moved", False)
+        ###################### END DATA COLLECTION ##########################
+        
         # Si la operacion no es ni la primera ni la segunda
         # agarramos una direccion de movimiento al azar
         if type(moves) == tuple:
             moves = int(random.choice(moves))
+        
         # Lista con las operaciones de la maquina
         lst = self.m_graph.get(machine_index)
         # Operacion a desplazar
@@ -402,7 +420,8 @@ class Solution:
         ###################### START DATA COLLECTION ########################
         if settings.options.collect_data:
             settings.collector.add_data("selected_machine", machine_index)
-            settings.collector.add_data("switch_operation_1", operation.get_self_id())
+            settings.collector.add_data("switch_operation_1", operation_index)
+            settings.collector.add_data("operation_duration", operation.get_duration())
         ###################### END DATA COLLECTION ##########################
         
         # Cantidad de espacios a moverse
@@ -422,6 +441,15 @@ class Solution:
         ###################### START DATA COLLECTION ########################
         if settings.options.collect_data:
             settings.collector.add_data("selected_machine", machine_index)
+            settings.collector.add_data("moves", move)
+            if term > 0:
+                settings.collector.add_data("move_direction", "right")
+            else:
+                settings.collector.add_data("move_direction", "left")
+                
+        shorter_count = 0
+        longer_count = 0
+        equal_count = 0
         ###################### END DATA COLLECTION ##########################
 
         for i in range(move):
@@ -432,18 +460,27 @@ class Solution:
             # Se asignan las operaciones a sus nuevas ubicaciones
             self.m_graph[machine_index][index] = operation_aux
             self.m_graph[machine_index][index + term] = operation
-            
-            #TODO: check if it is useful
+
             ###################### START DATA COLLECTION ########################
             if settings.options.collect_data:
-                settings.collector.add_data("switch_operation_2", operation.get_id)
+                if operation_aux.get_duration() == operation.get_duration():
+                    equal_count += 1
+                elif operation_aux.get_duration() > operation.get_duration():
+                    longer_count += 1
+                else:
+                    shorter_count += 1
             ###################### END DATA COLLECTION ##########################
             
             # Actualizamos el indice
             index += term
-            
-        
 
+        ###################### START DATA COLLECTION ########################
+        if settings.options.collect_data:
+            settings.collector.add_data("equal_count", equal_count)
+            settings.collector.add_data("longer_count", longer_count)
+            settings.collector.add_data("shorter_count", shorter_count)
+        ###################### END DATA COLLECTION ##########################
+        
         # copiamos los grafos para poder hacer la validacion de restricciones
         jobs_graph_verify = cp.deepcopy(self.jobs_graph)
         m_graph_verify = cp.deepcopy(self.m_graph)
@@ -499,8 +536,6 @@ class Solution:
             op = lst[0]
             jobs_graph[op.get_id()][0].set_waits_for_machine(False)
             for i in range(len(lst) - 1):
-                var = lst[i].get_id()
-                var2 = lst[i + 1].get_id()
                 jobs_graph[lst[i].get_id()].append(lst[i + 1])
         return jobs_graph
 
