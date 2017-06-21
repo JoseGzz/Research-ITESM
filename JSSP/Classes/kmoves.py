@@ -2,7 +2,6 @@ from abc import abstractmethod
 from heuristic import Heuristic
 import copy as cp
 import random
-import Solution
 
 
 class KMoves(Heuristic):

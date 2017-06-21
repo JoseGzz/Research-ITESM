@@ -354,6 +354,365 @@ class Solution:
                 id_list.append(op.get_id())
         return id_list
 
+    # # RANDOM SELECTION
+    # def create_neighbor(self):
+    #     """perturba la solucion actual y genera un vecino"""
+    #     # Lista para almacenar todos los posibles movimientos de todas las operaciones
+    #     m_graph_aux = OrderedDict(self.m_graph)
+    #     # Se genera la cantidad de desplazamientos posibles para cada operacion,
+    #     # numeros negativos es movimiento a la izquierda,
+    #     # numeros positivos es movimiento a la derecha
+    #     displacements = {}
+    #     for m_id, ops in m_graph_aux.items():
+    #         possible_disps = []
+    #         for i in range(len(ops)):
+    #             # Para la primera operacion en la maquina
+    #             if i == 0:
+    #                 possible_disps.append(len(ops) - 1)
+    #             # Para la ultima operacion en la maquina
+    #             elif i == len(ops) - 1:
+    #                 possible_disps.append(-1 * (len(ops) - 1))
+    #             # Para las operaciones intermedias
+    #             else:
+    #                 move_left = -i
+    #                 move_right = len(ops) - 1 - i
+    #                 possible_disps.append((move_left, move_right))
+    #         displacements[m_id] = possible_disps
+    #     # Se escoge una maquina al azar (los indices de las maquinas empiezan en 1)
+    #
+    #     # machine_index = self.latest_machine if threshold > 0.7 else random.choice(range(1, len(self.m_graph)))
+    #     machine_index = random.choice(range(1, len(self.m_graph)))
+    #     # Agarramos la lista de desplazamientos para las operaciones de esa maquina
+    #     disps = displacements[machine_index]
+    #     # Escogemos el indice de una operacion al azar para desplazarla
+    #     operation_index = random.choice(range(len(disps) - 1))
+    #     # Agarramos la cantidad de movimientos posibles para la operacion obtenida
+    #     moves = displacements.get(machine_index)[operation_index]
+    #
+    #     ###################### START DATA COLLECTION ########################
+    #     if settings.options.collect_data:
+    #         if type(moves) == tuple:
+    #             settings.collector.add_data("first_op_moved", False)
+    #             settings.collector.add_data("last_op_moved", False)
+    #         else:
+    #             if moves > 0:
+    #                 settings.collector.add_data("first_op_moved", True)
+    #             else:
+    #                 settings.collector.add_data("first_op_moved", False)
+    #
+    #             if moves < 0:
+    #                 settings.collector.add_data("last_op_moved", True)
+    #             else:
+    #                 settings.collector.add_data("last_op_moved", False)
+    #     ###################### END DATA COLLECTION ##########################
+    #
+    #     # Si la operacion no es ni la primera ni la segunda
+    #     # agarramos una direccion de movimiento al azar
+    #     if type(moves) == tuple:
+    #         moves = int(random.choice(moves))
+    #
+    #     # Lista con las operaciones de la maquina
+    #     lst = self.m_graph.get(machine_index)
+    #     # Operacion a desplazar
+    #     operation = lst[operation_index]
+    #     # Indice de la operacion a desplazar
+    #     index = lst.index(operation)
+    #
+    #     ###################### START DATA COLLECTION ########################
+    #     if settings.options.collect_data:
+    #         settings.collector.add_data("selected_machine", machine_index)
+    #         settings.collector.add_data("switch_operation_1", operation_index)
+    #         settings.collector.add_data("operation_duration", operation.get_duration())
+    #     ###################### END DATA COLLECTION ##########################
+    #
+    #     # Cantidad de espacios a moverse
+    #     if self.debug:
+    #         print("Moves:", moves)
+    #
+    #     move = 1 if abs(moves) == 1 else random.choice(range(1, abs(moves)))
+    #     # Determinar direccion del desplazamiento
+    #     term = 1 if moves >= 0 else -1
+    #     # Llevar a cabo el desplazamiento
+    #     if self.debug: print("Move: ", move)
+    #
+    #     # guardamos los estados de los grafos antes de modificarlos
+    #     jobs_graph_original = cp.deepcopy(self.jobs_graph)
+    #     m_graph_original = cp.deepcopy(self.m_graph)
+    #
+    #     ###################### START DATA COLLECTION ########################
+    #     if settings.options.collect_data:
+    #         settings.collector.add_data("selected_machine", machine_index)
+    #         settings.collector.add_data("moves", move)
+    #         if term > 0:
+    #             settings.collector.add_data("move_direction", "right")
+    #         else:
+    #             settings.collector.add_data("move_direction", "left")
+    #
+    #     shorter_count = 0
+    #     longer_count = 0
+    #     equal_count = 0
+    #     ###################### END DATA COLLECTION ##########################
+    #
+    #     for i in range(move):
+    #         # Obtenemos la operacion a mover
+    #         operation = self.m_graph[machine_index][index]
+    #         # Obtenemos la operacion con la que se hara el shift
+    #         operation_aux = self.m_graph[machine_index][index + term]
+    #         # Se asignan las operaciones a sus nuevas ubicaciones
+    #         self.m_graph[machine_index][index] = operation_aux
+    #         self.m_graph[machine_index][index + term] = operation
+    #
+    #         ###################### START DATA COLLECTION ########################
+    #         if settings.options.collect_data:
+    #             if operation_aux.get_duration() == operation.get_duration():
+    #                 equal_count += 1
+    #             elif operation_aux.get_duration() > operation.get_duration():
+    #                 longer_count += 1
+    #             else:
+    #                 shorter_count += 1
+    #         ###################### END DATA COLLECTION ##########################
+    #
+    #         # Actualizamos el indice
+    #         index += term
+    #
+    #     ###################### START DATA COLLECTION ########################
+    #     if settings.options.collect_data:
+    #         settings.collector.add_data("equal_count", equal_count)
+    #         settings.collector.add_data("longer_count", longer_count)
+    #         settings.collector.add_data("shorter_count", shorter_count)
+    #     ###################### END DATA COLLECTION ##########################
+    #
+    #     # copiamos los grafos para poder hacer la validacion de restricciones
+    #     jobs_graph_verify = cp.deepcopy(self.jobs_graph)
+    #     m_graph_verify = cp.deepcopy(self.m_graph)
+    #
+    #     # Si se violo alguna restriccion en el plan generado
+    #     if self.violates_constraints(jobs_graph_verify, m_graph_verify):
+    #         if self.debug: print("---CICLADO EN PERTURBACION---")
+    #         # regresamos los grafos a su estado anterior y regresamos la solucion anterior
+    #         self.jobs_graph = jobs_graph_original
+    #         self.m_graph = m_graph_original
+    #
+    #         ###################### START DATA COLLECTION ########################
+    #         if settings.options.collect_data:
+    #             settings.collector.add_data("violates_constraint", True)
+    #         ###################### END DATA COLLECTION ##########################
+    #
+    #         return self
+    #     else:
+    #         ###################### START DATA COLLECTION ########################
+    #         if settings.options.collect_data:
+    #             settings.collector.add_data("violates_constraint", False)
+    #         ###################### END DATA COLLECTION ##########################
+    #
+    #     # Generamos el grafo con orden de maquinas asignadas
+    #     jobs_graph_aux = cp.deepcopy(self.jobs_graph)
+    #     m_graph_aux = cp.deepcopy(self.m_graph)
+    #     graph = self.fill_graph(jobs_graph_aux, m_graph_aux)
+    #
+    #     # Verificamos que no existan ciclos debido a un error en el codigo
+    #     if self.cycle_exists(graph):
+    #         raise ValueError("Se produjo un ciclo en el" +
+    #                          " grafo disyuntivo al momento de perturbar la solucion.")
+    #         import sys
+    #         sys.exit()
+    #
+    #     # Creamos una nueva solucion y hacemos el recorrido hacia adelante para calcular el makespan
+    #     new_solution = Solution(no_machines=self.no_machines, machines=self.machines,
+    #                             no_jobs=self.no_jobs, m_graph=self.m_graph, jobs_graph=self.jobs_graph,
+    #                             operations=self.operations)
+    #
+    #     new_solution.forward_traversal(graph, self.operations)
+    #     return new_solution
+
+    # # BEST MOVE SELECTION
+    # def create_neighbor(self):
+    #     """perturba la solucion actual y genera un vecino"""
+    #     # Lista para almacenar todos los posibles movimientos de todas las operaciones
+    #     m_graph_aux = OrderedDict(self.m_graph)
+    #     # Se genera la cantidad de desplazamientos posibles para cada operacion,
+    #     # numeros negativos es movimiento a la izquierda,
+    #     # numeros positivos es movimiento a la derecha
+    #     displacements = {}
+    #     for m_id, ops in m_graph_aux.items():
+    #         possible_disps = []
+    #         for i in range(len(ops)):
+    #             # Para la primera operacion en la maquina
+    #             if i == 0:
+    #                 possible_disps.append(len(ops) - 1)
+    #             # Para la ultima operacion en la maquina
+    #             elif i == len(ops) - 1:
+    #                 possible_disps.append(-1 * (len(ops) - 1))
+    #             # Para las operaciones intermedias
+    #             else:
+    #                 move_left = -i
+    #                 move_right = len(ops) - 1 - i
+    #                 possible_disps.append((move_left, move_right))
+    #         displacements[m_id] = possible_disps
+    #
+    #     # para todas las soluciones k
+    #     candidate_solutions = []
+    #     k = 3
+    #     for _ in range(k):
+    #         # Se escoge una maquina al azar (los indices de las maquinas empiezan en 1)
+    #         # machine_index = self.latest_machine if threshold > 0.7 else random.choice(range(1, len(self.m_graph)))
+    #         machine_index = random.choice(range(1, len(self.m_graph)))
+    #         # Agarramos la lista de desplazamientos para las operaciones de esa maquina
+    #         disps = displacements[machine_index]
+    #         # Escogemos el indice de una operacion al azar para desplazarla
+    #         operation_index = random.choice(range(len(disps) - 1))
+    #         # Agarramos la cantidad de movimientos posibles para la operacion obtenida
+    #         moves = displacements.get(machine_index)[operation_index]
+    #
+    #         ###################### START DATA COLLECTION ########################
+    #         if settings.options.collect_data:
+    #             if type(moves) == tuple:
+    #                 settings.collector.add_data("first_op_moved", False)
+    #                 settings.collector.add_data("last_op_moved", False)
+    #             else:
+    #                 if moves > 0:
+    #                     settings.collector.add_data("first_op_moved", True)
+    #                 else:
+    #                     settings.collector.add_data("first_op_moved", False)
+    #
+    #                 if moves < 0:
+    #                     settings.collector.add_data("last_op_moved", True)
+    #                 else:
+    #                     settings.collector.add_data("last_op_moved", False)
+    #         ###################### END DATA COLLECTION ##########################
+    #
+    #         # Si la operacion no es ni la primera ni la segunda
+    #         # agarramos una direccion de movimiento al azar
+    #         if type(moves) == tuple:
+    #             moves = int(random.choice(moves))
+    #
+    #         # Lista con las operaciones de la maquina
+    #         lst = self.m_graph.get(machine_index)
+    #         # Operacion a desplazar
+    #         operation = lst[operation_index]
+    #         # Indice de la operacion a desplazar
+    #         index = lst.index(operation)
+    #
+    #         ###################### START DATA COLLECTION ########################
+    #         if settings.options.collect_data:
+    #             settings.collector.add_data("selected_machine", machine_index)
+    #             settings.collector.add_data("switch_operation_1", operation_index)
+    #             settings.collector.add_data("operation_duration", operation.get_duration())
+    #         ###################### END DATA COLLECTION ##########################
+    #
+    #         # Cantidad de espacios a moverse
+    #         if self.debug:
+    #             print("Moves:", moves)
+    #
+    #         move = 1 if abs(moves) == 1 else random.choice(range(1, abs(moves)))
+    #         # Determinar direccion del desplazamiento
+    #         term = 1 if moves >= 0 else -1
+    #         # Llevar a cabo el desplazamiento
+    #         if self.debug: print("Move: ", move)
+    #
+    #         # guardamos los estados de los grafos antes de modificarlos
+    #         jobs_graph_original = cp.deepcopy(self.jobs_graph)
+    #         m_graph_original = cp.deepcopy(self.m_graph)
+    #
+    #         ###################### START DATA COLLECTION ########################
+    #         if settings.options.collect_data:
+    #             settings.collector.add_data("selected_machine", machine_index)
+    #             settings.collector.add_data("moves", move)
+    #             if term > 0:
+    #                 settings.collector.add_data("move_direction", "right")
+    #             else:
+    #                 settings.collector.add_data("move_direction", "left")
+    #
+    #         shorter_count = 0
+    #         longer_count = 0
+    #         equal_count = 0
+    #         ###################### END DATA COLLECTION ##########################
+    #
+    #         for i in range(move):
+    #             # Obtenemos la operacion a mover
+    #             operation = self.m_graph[machine_index][index]
+    #             # Obtenemos la operacion con la que se hara el shift
+    #             operation_aux = self.m_graph[machine_index][index + term]
+    #             # Se asignan las operaciones a sus nuevas ubicaciones
+    #             self.m_graph[machine_index][index] = operation_aux
+    #             self.m_graph[machine_index][index + term] = operation
+    #
+    #             ###################### START DATA COLLECTION ########################
+    #             if settings.options.collect_data:
+    #                 if operation_aux.get_duration() == operation.get_duration():
+    #                     equal_count += 1
+    #                 elif operation_aux.get_duration() > operation.get_duration():
+    #                     longer_count += 1
+    #                 else:
+    #                     shorter_count += 1
+    #             ###################### END DATA COLLECTION ##########################
+    #
+    #             # Actualizamos el indice
+    #             index += term
+    #
+    #         ###################### START DATA COLLECTION ########################
+    #         if settings.options.collect_data:
+    #             settings.collector.add_data("equal_count", equal_count)
+    #             settings.collector.add_data("longer_count", longer_count)
+    #             settings.collector.add_data("shorter_count", shorter_count)
+    #         ###################### END DATA COLLECTION ##########################
+    #
+    #         # copiamos los grafos para poder hacer la validacion de restricciones
+    #         jobs_graph_verify = cp.deepcopy(self.jobs_graph)
+    #         m_graph_verify = cp.deepcopy(self.m_graph)
+    #
+    #         # Si se violo alguna restriccion en el plan generado
+    #         if self.violates_constraints(jobs_graph_verify, m_graph_verify):
+    #             if self.debug: print("---CICLADO EN PERTURBACION---")
+    #             # regresamos los grafos a su estado anterior y regresamos la solucion anterior
+    #             self.jobs_graph = jobs_graph_original
+    #             self.m_graph = m_graph_original
+    #
+    #             ###################### START DATA COLLECTION ########################
+    #             if settings.options.collect_data:
+    #                 settings.collector.add_data("violates_constraint", True)
+    #             ###################### END DATA COLLECTION ##########################
+    #
+    #             candidate_solutions.append(self)
+    #             continue
+    #         else:
+    #             ###################### START DATA COLLECTION ########################
+    #             if settings.options.collect_data:
+    #                 settings.collector.add_data("violates_constraint", False)
+    #             ###################### END DATA COLLECTION ##########################
+    #
+    #         # Generamos el grafo con orden de maquinas asignadas
+    #         jobs_graph_aux = cp.deepcopy(self.jobs_graph)
+    #         m_graph_aux = cp.deepcopy(self.m_graph)
+    #         graph = self.fill_graph(jobs_graph_aux, m_graph_aux)
+    #
+    #         # Verificamos que no existan ciclos debido a un error en el codigo
+    #         if self.cycle_exists(graph):
+    #             raise ValueError("Se produjo un ciclo en el" +
+    #                              " grafo disyuntivo al momento de perturbar la solucion.")
+    #             import sys
+    #             sys.exit()
+    #
+    #         # Creamos una nueva solucion y hacemos el recorrido hacia adelante para calcular el makespan
+    #         new_solution = Solution(no_machines=self.no_machines, machines=self.machines,
+    #                                 no_jobs=self.no_jobs, m_graph=self.m_graph, jobs_graph=self.jobs_graph,
+    #                                 operations=self.operations)
+    #
+    #         new_solution.forward_traversal(graph, self.operations)
+    #         candidate_solutions.append(new_solution)
+    #
+    #         self.jobs_graph = jobs_graph_original
+    #         self.m_graph = m_graph_original
+    #
+    #     result = self
+    #
+    #     for candidate_solution in candidate_solutions:
+    #         if candidate_solution.cost() < result.cost():
+    #             result = candidate_solution
+    #
+    #     return result
+
+    # FIRST MOVE SELECTION
     def create_neighbor(self):
         """perturba la solucion actual y genera un vecino"""
         # Lista para almacenar todos los posibles movimientos de todas las operaciones
@@ -377,153 +736,167 @@ class Solution:
                     move_right = len(ops) - 1 - i
                     possible_disps.append((move_left, move_right))
             displacements[m_id] = possible_disps
-        # Se escoge una maquina al azar (los indices de las maquinas empiezan en 1)
 
-        # machine_index = self.latest_machine if threshold > 0.7 else random.choice(range(1, len(self.m_graph)))
-        machine_index = random.choice(range(1, len(self.m_graph)))
-        # Agarramos la lista de desplazamientos para las operaciones de esa maquina
-        disps = displacements[machine_index]
-        # Escogemos el indice de una operacion al azar para desplazarla
-        operation_index = random.choice(range(len(disps) - 1))
-        # Agarramos la cantidad de movimientos posibles para la operacion obtenida
-        moves = displacements.get(machine_index)[operation_index]
-
-        ###################### START DATA COLLECTION ########################
-        if settings.options.collect_data:
-            if type(moves) == tuple:
-                settings.collector.add_data("first_op_moved", False)
-                settings.collector.add_data("last_op_moved", False)
-            else:
-                if moves > 0:
-                    settings.collector.add_data("first_op_moved", True)
-                else:
-                    settings.collector.add_data("first_op_moved", False)
+        # para todas las soluciones k
+        candidate_solutions = []
+        k = 3
+        for _ in range(k):
+            # Se escoge una maquina al azar (los indices de las maquinas empiezan en 1)
+            # machine_index = self.latest_machine if threshold > 0.7 else random.choice(range(1, len(self.m_graph)))
+            machine_index = random.choice(range(1, len(self.m_graph)))
+            # Agarramos la lista de desplazamientos para las operaciones de esa maquina
+            disps = displacements[machine_index]
+            # Escogemos el indice de una operacion al azar para desplazarla
+            operation_index = random.choice(range(len(disps) - 1))
+            # Agarramos la cantidad de movimientos posibles para la operacion obtenida
+            moves = displacements.get(machine_index)[operation_index]
     
-                if moves < 0:
-                    settings.collector.add_data("last_op_moved", True)
-                else:
-                    settings.collector.add_data("last_op_moved", False)
-        ###################### END DATA COLLECTION ##########################
-        
-        # Si la operacion no es ni la primera ni la segunda
-        # agarramos una direccion de movimiento al azar
-        if type(moves) == tuple:
-            moves = int(random.choice(moves))
-        
-        # Lista con las operaciones de la maquina
-        lst = self.m_graph.get(machine_index)
-        # Operacion a desplazar
-        operation = lst[operation_index]
-        # Indice de la operacion a desplazar
-        index = lst.index(operation)
-
-        ###################### START DATA COLLECTION ########################
-        if settings.options.collect_data:
-            settings.collector.add_data("selected_machine", machine_index)
-            settings.collector.add_data("switch_operation_1", operation_index)
-            settings.collector.add_data("operation_duration", operation.get_duration())
-        ###################### END DATA COLLECTION ##########################
-        
-        # Cantidad de espacios a moverse
-        if self.debug:
-            print("Moves:", moves)
-
-        move = 1 if abs(moves) == 1 else random.choice(range(1, abs(moves)))
-        # Determinar direccion del desplazamiento
-        term = 1 if moves >= 0 else -1
-        # Llevar a cabo el desplazamiento
-        if self.debug: print("Move: ", move)
-
-        # guardamos los estados de los grafos antes de modificarlos
-        jobs_graph_original = cp.deepcopy(self.jobs_graph)
-        m_graph_original = cp.deepcopy(self.m_graph)
-
-        ###################### START DATA COLLECTION ########################
-        if settings.options.collect_data:
-            settings.collector.add_data("selected_machine", machine_index)
-            settings.collector.add_data("moves", move)
-            if term > 0:
-                settings.collector.add_data("move_direction", "right")
-            else:
-                settings.collector.add_data("move_direction", "left")
-                
-        shorter_count = 0
-        longer_count = 0
-        equal_count = 0
-        ###################### END DATA COLLECTION ##########################
-
-        for i in range(move):
-            # Obtenemos la operacion a mover
-            operation = self.m_graph[machine_index][index]
-            # Obtenemos la operacion con la que se hara el shift
-            operation_aux = self.m_graph[machine_index][index + term]
-            # Se asignan las operaciones a sus nuevas ubicaciones
-            self.m_graph[machine_index][index] = operation_aux
-            self.m_graph[machine_index][index + term] = operation
-
             ###################### START DATA COLLECTION ########################
             if settings.options.collect_data:
-                if operation_aux.get_duration() == operation.get_duration():
-                    equal_count += 1
-                elif operation_aux.get_duration() > operation.get_duration():
-                    longer_count += 1
+                if type(moves) == tuple:
+                    settings.collector.add_data("first_op_moved", False)
+                    settings.collector.add_data("last_op_moved", False)
                 else:
-                    shorter_count += 1
-            ###################### END DATA COLLECTION ##########################
+                    if moves > 0:
+                        settings.collector.add_data("first_op_moved", True)
+                    else:
+                        settings.collector.add_data("first_op_moved", False)
             
-            # Actualizamos el indice
-            index += term
-
-        ###################### START DATA COLLECTION ########################
-        if settings.options.collect_data:
-            settings.collector.add_data("equal_count", equal_count)
-            settings.collector.add_data("longer_count", longer_count)
-            settings.collector.add_data("shorter_count", shorter_count)
-        ###################### END DATA COLLECTION ##########################
+                    if moves < 0:
+                        settings.collector.add_data("last_op_moved", True)
+                    else:
+                        settings.collector.add_data("last_op_moved", False)
+            ###################### END DATA COLLECTION ##########################
+    
+            # Si la operacion no es ni la primera ni la segunda
+            # agarramos una direccion de movimiento al azar
+            if type(moves) == tuple:
+                moves = int(random.choice(moves))
+    
+            # Lista con las operaciones de la maquina
+            lst = self.m_graph.get(machine_index)
+            # Operacion a desplazar
+            operation = lst[operation_index]
+            # Indice de la operacion a desplazar
+            index = lst.index(operation)
+    
+            ###################### START DATA COLLECTION ########################
+            if settings.options.collect_data:
+                settings.collector.add_data("selected_machine", machine_index)
+                settings.collector.add_data("switch_operation_1", operation_index)
+                settings.collector.add_data("operation_duration", operation.get_duration())
+            ###################### END DATA COLLECTION ##########################
+    
+            # Cantidad de espacios a moverse
+            if self.debug:
+                print("Moves:", moves)
+    
+            move = 1 if abs(moves) == 1 else random.choice(range(1, abs(moves)))
+            # Determinar direccion del desplazamiento
+            term = 1 if moves >= 0 else -1
+            # Llevar a cabo el desplazamiento
+            if self.debug: print("Move: ", move)
+    
+            # guardamos los estados de los grafos antes de modificarlos
+            jobs_graph_original = cp.deepcopy(self.jobs_graph)
+            m_graph_original = cp.deepcopy(self.m_graph)
+    
+            ###################### START DATA COLLECTION ########################
+            if settings.options.collect_data:
+                settings.collector.add_data("selected_machine", machine_index)
+                settings.collector.add_data("moves", move)
+                if term > 0:
+                    settings.collector.add_data("move_direction", "right")
+                else:
+                    settings.collector.add_data("move_direction", "left")
+    
+            shorter_count = 0
+            longer_count = 0
+            equal_count = 0
+            ###################### END DATA COLLECTION ##########################
+    
+            for i in range(move):
+                # Obtenemos la operacion a mover
+                operation = self.m_graph[machine_index][index]
+                # Obtenemos la operacion con la que se hara el shift
+                operation_aux = self.m_graph[machine_index][index + term]
+                # Se asignan las operaciones a sus nuevas ubicaciones
+                self.m_graph[machine_index][index] = operation_aux
+                self.m_graph[machine_index][index + term] = operation
         
-        # copiamos los grafos para poder hacer la validacion de restricciones
-        jobs_graph_verify = cp.deepcopy(self.jobs_graph)
-        m_graph_verify = cp.deepcopy(self.m_graph)
-
-        # Si se violo alguna restriccion en el plan generado
-        if self.violates_constraints(jobs_graph_verify, m_graph_verify):
-            if self.debug: print("---CICLADO EN PERTURBACION---")
-            # regresamos los grafos a su estado anterior y regresamos la solucion anterior
+                ###################### START DATA COLLECTION ########################
+                if settings.options.collect_data:
+                    if operation_aux.get_duration() == operation.get_duration():
+                        equal_count += 1
+                    elif operation_aux.get_duration() > operation.get_duration():
+                        longer_count += 1
+                    else:
+                        shorter_count += 1
+                ###################### END DATA COLLECTION ##########################
+        
+                # Actualizamos el indice
+                index += term
+    
+            ###################### START DATA COLLECTION ########################
+            if settings.options.collect_data:
+                settings.collector.add_data("equal_count", equal_count)
+                settings.collector.add_data("longer_count", longer_count)
+                settings.collector.add_data("shorter_count", shorter_count)
+            ###################### END DATA COLLECTION ##########################
+    
+            # copiamos los grafos para poder hacer la validacion de restricciones
+            jobs_graph_verify = cp.deepcopy(self.jobs_graph)
+            m_graph_verify = cp.deepcopy(self.m_graph)
+    
+            # Si se violo alguna restriccion en el plan generado
+            if self.violates_constraints(jobs_graph_verify, m_graph_verify):
+                if self.debug: print("---CICLADO EN PERTURBACION---")
+                # regresamos los grafos a su estado anterior y regresamos la solucion anterior
+                self.jobs_graph = jobs_graph_original
+                self.m_graph = m_graph_original
+        
+                ###################### START DATA COLLECTION ########################
+                if settings.options.collect_data:
+                    settings.collector.add_data("violates_constraint", True)
+                ###################### END DATA COLLECTION ##########################
+        
+                candidate_solutions.append(self)
+                continue
+            else:
+                ###################### START DATA COLLECTION ########################
+                if settings.options.collect_data:
+                    settings.collector.add_data("violates_constraint", False)
+                    ###################### END DATA COLLECTION ##########################
+    
+            # Generamos el grafo con orden de maquinas asignadas
+            jobs_graph_aux = cp.deepcopy(self.jobs_graph)
+            m_graph_aux = cp.deepcopy(self.m_graph)
+            graph = self.fill_graph(jobs_graph_aux, m_graph_aux)
+    
+            # Verificamos que no existan ciclos debido a un error en el codigo
+            if self.cycle_exists(graph):
+                raise ValueError("Se produjo un ciclo en el" +
+                                 " grafo disyuntivo al momento de perturbar la solucion.")
+                import sys
+                sys.exit()
+    
+            # Creamos una nueva solucion y hacemos el recorrido hacia adelante para calcular el makespan
+            new_solution = Solution(no_machines=self.no_machines, machines=self.machines,
+                                    no_jobs=self.no_jobs, m_graph=self.m_graph, jobs_graph=self.jobs_graph,
+                                    operations=self.operations)
+    
+            new_solution.forward_traversal(graph, self.operations)
+            candidate_solutions.append(new_solution)
+    
             self.jobs_graph = jobs_graph_original
             self.m_graph = m_graph_original
 
-            ###################### START DATA COLLECTION ########################
-            if settings.options.collect_data:
-                settings.collector.add_data("violates_constraint", True)
-            ###################### END DATA COLLECTION ##########################
-            
-            return self
-        else:
-            ###################### START DATA COLLECTION ########################
-            if settings.options.collect_data:
-                settings.collector.add_data("violates_constraint", False)
-            ###################### END DATA COLLECTION ##########################
+        for candidate_solution in candidate_solutions:
+            if candidate_solution.cost() < self.cost():
+                return candidate_solution
 
-        # Generamos el grafo con orden de maquinas asignadas
-        jobs_graph_aux = cp.deepcopy(self.jobs_graph)
-        m_graph_aux = cp.deepcopy(self.m_graph)
-        graph = self.fill_graph(jobs_graph_aux, m_graph_aux)
-
-        # Verificamos que no existan ciclos debido a un error en el codigo
-        if self.cycle_exists(graph):
-            raise ValueError("Se produjo un ciclo en el" +
-                             " grafo disyuntivo al momento de perturbar la solucion.")
-            import sys
-            sys.exit()
-
-        # Creamos una nueva solucion y hacemos el recorrido hacia adelante para calcular el makespan
-        new_solution = Solution(no_machines=self.no_machines, machines=self.machines,
-                                no_jobs=self.no_jobs, m_graph=self.m_graph, jobs_graph=self.jobs_graph,
-                                operations=self.operations)
+        return self
         
-        new_solution.forward_traversal(graph, self.operations)
-        return new_solution
-
     def violates_constraints(self, jobs_graph, m_graph):
         """recorremos todo el grafo en busca de ciclos para verificar la
         factibilidad del plan actual"""

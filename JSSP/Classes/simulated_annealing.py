@@ -128,7 +128,8 @@ def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
             if trace:
                 print(" > iteration=%d, temp=%g, curr= %g, best=%g" %
                       (i, temp, candidate.cost(), best.cost()))
-            eiter += 1
+            """notice change"""
+            eiter += 3
         temp *= temp_change
     end_time = time.time()
     #print("Execution time", end_time - start_time)
