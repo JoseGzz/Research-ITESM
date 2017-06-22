@@ -23,21 +23,14 @@ def run_scripts(dd, dfs, cd, name, iters, pl=0):
 
 if __name__ == "__main__":
     start_time = time.time()
-    #d_file_directory = "../Instances/toy/"
-    #d_files = ["3x3_demo.txt", "4x4_demo.txt", "5x5_demo.txt", "10x10_demo.txt"]
-    #p_length = len(d_files)
 
     d_collection_directory = "../results/"
-    
-    #run_scripts(d_file_directory, d_files, d_collection_directory, "JSSP", 20)
 
     d_file_directory = "../Instances/taillard/"
-    #d_files = ["15x15/Ta01.txt", "20x15/Ta11.txt", "20x20/Ta21.txt", "30x15/Ta31.txt", "30x20/Ta41.txt",
-                  #"50x15/Ta51.txt", "50x20/Ta61.txt", "100x20/Ta71.txt"]
+    d_files = ["15x15/Ta01.txt", "20x15/Ta11.txt", "20x20/Ta21.txt", "30x15/Ta31.txt", "30x20/Ta41.txt",
+               "50x15/Ta51.txt", "50x20/Ta61.txt", "100x20/Ta71.txt"]
     
-    d_files = ["100x20/Ta71.txt"]
-
-    run_scripts(d_file_directory, d_files, d_collection_directory, "JSSP", 19, 15)
+    run_scripts(d_file_directory, d_files, d_collection_directory, "JSSP_2", 20)
     
     end_time = time.time()
     print()
