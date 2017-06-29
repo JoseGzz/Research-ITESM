@@ -70,6 +70,7 @@ def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
     
     # current parece ser de tipo Solution
     current = problem.random_solution()  # random_solution(problem)
+    hh.first_makespan = current.cost()
     temp = max_temp
     best = copy.deepcopy(current)
     worst = copy.deepcopy(current)

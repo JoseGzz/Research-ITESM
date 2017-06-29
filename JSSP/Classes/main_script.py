@@ -14,7 +14,7 @@ def run_scripts(dd, dfs, cd, name, iters, pl=0):
         i += previous_length + 1
         for j in range(iters):
             print("    Iteration: " + str(j + 1) + " RANDOM")
-            p = subprocess.Popen(["python simulated_annealing.py -c --df {0} --cf {1} --func RANDOM".format(
+            p = subprocess.Popen(["python simulated_annealing.py -c --df {0} --cf {1}".format(
                 data_file_directory + data_file,
                 data_collection_directory + result_file.replace("N", str(i)))],
                 shell=True)
@@ -27,12 +27,10 @@ if __name__ == "__main__":
     d_collection_directory = "../results/"
 
     d_file_directory = "../Instances/taillard/"
-    #d_files = ["15x15/Ta01.txt", "20x15/Ta11.txt", "20x20/Ta21.txt", "30x15/Ta31.txt", "30x20/Ta41.txt",
-    #           "50x15/Ta51.txt", "50x20/Ta61.txt", "100x20/Ta71.txt"]
-
-    d_files = ["50x20/Ta61.txt"]
+    d_files = ["15x15/Ta01.txt", "20x15/Ta11.txt", "20x20/Ta21.txt", "30x15/Ta31.txt", "30x20/Ta41.txt",
+               "50x15/Ta51.txt", "50x20/Ta61.txt", "100x20/Ta71.txt"]
     
-    run_scripts(d_file_directory, d_files, d_collection_directory, "JSSP", 20, 20)
+    run_scripts(d_file_directory, d_files, d_collection_directory, "JSSPH1", 20)
     
     end_time = time.time()
     print()
