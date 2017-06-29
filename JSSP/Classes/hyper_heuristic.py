@@ -10,7 +10,7 @@ class HyperHeuristic1:
     custom_temp = 100
     
     def heursitic_to_use(self):
-        if self.iteration < 100:
+        if self.iteration < 100 and self.heuristic == "P_AND_S":
             return self.heuristic
         elif self.heuristic == "P_AND_S":
             self.last_heuristic_change = 0
@@ -40,6 +40,7 @@ class HyperHeuristic1:
             else:
                 self.last_heuristic_change = self.iteration
                 self.heuristic = "BEST"
+                self.prev_best_makespans = []
                 return self.heuristic
             
     def was_there_change(self):

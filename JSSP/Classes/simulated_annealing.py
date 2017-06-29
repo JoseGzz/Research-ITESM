@@ -81,7 +81,6 @@ def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
     while temp > min_temp:
         eiter = 0
         while eiter < eq_iter:
-            i += 1
             
             ###################### START DATA COLLECTION ########################
             if settings.options.collect_data:
@@ -93,7 +92,7 @@ def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
                 settings.collector.add_data("temp_change_ratio", temp_change)
                 settings.collector.add_data("current_temp", temp)
 
-                settings.collector.add_data("heuristic", hh.heursitic_to_use())
+                settings.collector.add_data("heuristic", hh.heuristic)
             ###################### END DATA COLLECTION ##########################
             
             candidate = create_neighbor(current, hh.heursitic_to_use())
@@ -133,15 +132,17 @@ def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
             
             if trace:
                 print(" > iteration=%d, temp=%g, curr= %g, best=%g  H=%s" %
-                      (i, temp, candidate.cost(), best.cost(), hh.heursitic_to_use()))
+                      (i, temp, candidate.cost(), best.cost(), hh.heuristic))
             """notice change"""
             eiter += candidate.moved
-            hh.iteration = eiter
+            i += candidate.moved
+            hh.iteration += candidate.moved
             
             if hh.set_temp:
                 eiter = 0
                 temp = 10
                 hh.set_temp = False
+                hh.iteration = 0
                 
         temp *= temp_change
     end_time = time.time()
