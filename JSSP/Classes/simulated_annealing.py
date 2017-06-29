@@ -35,10 +35,10 @@ def should_accept(candidate, current, temperature):
     else:
         result = math.exp((ccost - ncost) / temperature) >= random.random()
         
-        #TODO: FIX WHEN POSSIBLE, RESULT IS A BOOLEAN NOT A NUMBER
         ###################### START DATA COLLECTION ########################
         if settings.options.collect_data:
             settings.collector.add_data("should_accept", result)
+            settings.collector.add_data("prob_acceptance", math.exp((ccost - ncost) / temperature))
         ###################### END DATA COLLECTION ##########################
         
         return result
@@ -159,7 +159,7 @@ if __name__ == "__main__":
     
     # store the data
     if settings.options.collect_filename:
-        settings.collector.write_to_file(settings.options.collect_filename)
+        settings.collector.append_to_file(settings.options.collect_filename)
     
     # cProfile.run('simulated_annealing(filename, max_temp, min_temp, eq_iter,\
     #                           temp_change, True)')
