@@ -9,12 +9,13 @@ import random
 import cProfile
 import matplotlib.pyplot as plt
 import settings
+from hyper_heuristic import HyperHeuristic1
 
 
-def create_neighbor(current):
+def create_neighbor(current, heuristic):
     """modifies the current solution"""
     candidate = copy.deepcopy(current)
-    candidate = copy.deepcopy(candidate.create_neighbor())
+    candidate = copy.deepcopy(candidate.create_neighbor(heuristic))
     return candidate
 
 
@@ -63,6 +64,7 @@ def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
     ###################### END DATA COLLECTION ##########################
     
     problem = JSSP()
+    hh = HyperHeuristic1()
     problem.read_data(filename)
     start_time = time.time()
     
@@ -90,9 +92,11 @@ def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
                 settings.collector.add_data("iter_per_temp", eq_iter)
                 settings.collector.add_data("temp_change_ratio", temp_change)
                 settings.collector.add_data("current_temp", temp)
+
+                settings.collector.add_data("heuristic", hh.heursitic_to_use())
             ###################### END DATA COLLECTION ##########################
             
-            candidate = create_neighbor(current)
+            candidate = create_neighbor(current, hh.heursitic_to_use())
 
             ###################### START DATA COLLECTION ########################
             if settings.options.collect_data:
@@ -119,6 +123,8 @@ def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
                     fig.canvas.draw()
                     plt.pause(0.0001)
 
+            hh.add_best_makespan(best.cost())
+
             ###################### START DATA COLLECTION ########################
             if settings.options.collect_data:
                 settings.collector.add_data("best_makespan", best.cost())
@@ -126,10 +132,17 @@ def simulated_annealing(filename, max_temp, min_temp, eq_iter, temp_change,
             ###################### END DATA COLLECTION ##########################
             
             if trace:
-                print(" > iteration=%d, temp=%g, curr= %g, best=%g" %
-                      (i, temp, candidate.cost(), best.cost()))
+                print(" > iteration=%d, temp=%g, curr= %g, best=%g  H=%s" %
+                      (i, temp, candidate.cost(), best.cost(), hh.heursitic_to_use()))
             """notice change"""
             eiter += candidate.moved
+            hh.iteration = eiter
+            
+            if hh.set_temp:
+                eiter = 0
+                temp = 10
+                hh.set_temp = False
+                
         temp *= temp_change
     end_time = time.time()
     #print("Execution time", end_time - start_time)
@@ -159,7 +172,7 @@ if __name__ == "__main__":
     
     # store the data
     if settings.options.collect_filename:
-        settings.collector.append_to_file(settings.options.collect_filename)
+        settings.collector.write_to_file(settings.options.collect_filename)
     
     # cProfile.run('simulated_annealing(filename, max_temp, min_temp, eq_iter,\
     #                           temp_change, True)')

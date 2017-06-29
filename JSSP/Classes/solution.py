@@ -1473,21 +1473,21 @@ class Solution:
         new_solution.moved = 1
         return new_solution
 
-    def create_neighbor(self):
+    def create_neighbor(self, heuristic):
         """perturba la solucion actual y genera un vecino"""
-        if settings.options.function == "RANDOM":
+        if heuristic == "RANDOM":
             return self._random_neighbor()
-        if settings.options.function == "P_AND_S":
+        if heuristic == "P_AND_S":
             return self._p_and_s_neighbor()
-        if settings.options.function == "BEST":
+        if heuristic == "BEST":
             return self._best_move_neighbor()
-        if settings.options.function == "BEST2":
+        if heuristic == "BEST2":
             return self._best_move_neighbor2()
-        if settings.options.function == "FIRST":
+        if heuristic == "FIRST":
             return self._first_move_neighbor()
-        if settings.options.function == "SEQUENTIAL":
+        if heuristic == "SEQUENTIAL":
             return self._sequential_neighbor()
-        if settings.options.function == "D_EXCHANGE":
+        if heuristic == "D_EXCHANGE":
             return self._d_exchange_neighbor()
 
     # P AND S EXCHANGE
