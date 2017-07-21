@@ -12,6 +12,7 @@ from collections import defaultdict as dd
 import copy as cp
 import random
 import settings
+from datetime import datetime
 
 
 class Solution:
@@ -271,7 +272,10 @@ class Solution:
                     graph[op][0].set_machine_order(True)
                     del graph_copy[op]
             # asignamos un orden aleatorio para comenzar
+            #TODO: HERE
+            random.seed(settings.options.seed)
             shuffle(spr)
+            #random.seed(datetime.now())
             # Se va armando el diccionario de maquinas
             # Siempre se utiliza el ultimo elemento de la lista
             # despues de la asignacion aleatoria
@@ -563,7 +567,7 @@ class Solution:
         if settings.options.collect_data:
             data = []
         ###################### END DATA COLLECTION ##########################
-        k = 3
+        k = settings.options.k
         for i in range(k):
             ###################### START DATA COLLECTION ########################
             if settings.options.collect_data:
@@ -775,7 +779,7 @@ class Solution:
         if settings.options.collect_data:
             data = []
         ###################### END DATA COLLECTION ##########################
-        k = 3
+        k = settings.options.k
         for i in range(k):
             ###################### START DATA COLLECTION ########################
             if settings.options.collect_data:
@@ -978,7 +982,7 @@ class Solution:
             displacements[m_id] = possible_disps
 
         # para todas las soluciones k
-        k = 3
+        k = settings.options.k
         ###################### START DATA COLLECTION ########################
         if settings.options.collect_data:
             data = []
@@ -1286,10 +1290,125 @@ class Solution:
         ###################### END DATA COLLECTION ##########################
         return self
 
-
-
-
-
+    def _reverse_sequential_neighbor(self):
+        """perturba la solucion actual y genera un vecino"""
+        # Se escoge una maquina al azar (los indices de las maquinas empiezan en 1)
+        machine_index = random.choice(range(1, len(self.m_graph)))
+        self.moved = 0
+        # para todas las operaciones de una máquina excepto la última
+        for i in range(len(self.m_graph.get(machine_index)) - 1):
+            # Empezamos por la primera operación
+            index = len(self.m_graph.get(machine_index)) - 1 - i
+        
+            ###################### START DATA COLLECTION ########################
+            if settings.options.collect_data:
+                settings.collector.add_data("selected_machine", machine_index)
+            ###################### END DATA COLLECTION ##########################
+        
+            # Determinar direccion del desplazamiento
+            term = -1
+        
+            # guardamos los estados de los grafos antes de modificarlos
+            jobs_graph_original = cp.deepcopy(self.jobs_graph)
+            m_graph_original = cp.deepcopy(self.m_graph)
+        
+            ###################### START DATA COLLECTION ########################
+            shorter_count = 0
+            longer_count = 0
+            equal_count = 0
+            ###################### END DATA COLLECTION ##########################
+        
+            # Obtenemos la operacion a mover
+            operation = self.m_graph[machine_index][index]
+            # Obtenemos la operacion con la que se hara el shift
+            operation_aux = self.m_graph[machine_index][index + term]
+            # Se asignan las operaciones a sus nuevas ubicaciones
+            self.m_graph[machine_index][index] = operation_aux
+            self.m_graph[machine_index][index + term] = operation
+        
+            ###################### START DATA COLLECTION ########################
+            if settings.options.collect_data:
+                if operation_aux.get_duration() == operation.get_duration():
+                    equal_count += 1
+                elif operation_aux.get_duration() > operation.get_duration():
+                    longer_count += 1
+                else:
+                    shorter_count += 1
+        
+            if settings.options.collect_data:
+                settings.collector.add_data("equal_count", equal_count)
+                settings.collector.add_data("longer_count", longer_count)
+                settings.collector.add_data("shorter_count", shorter_count)
+            ###################### END DATA COLLECTION ##########################
+        
+            # copiamos los grafos para poder hacer la validacion de restricciones
+            jobs_graph_verify = cp.deepcopy(self.jobs_graph)
+            m_graph_verify = cp.deepcopy(self.m_graph)
+        
+            # Si se violo alguna restriccion en el plan generado
+            if self.violates_constraints(jobs_graph_verify, m_graph_verify):
+                if self.debug:
+                    print("---CICLADO EN PERTURBACION---")
+                # regresamos los grafos a su estado anterior y regresamos la solucion anterior
+                self.jobs_graph = jobs_graph_original
+                self.m_graph = m_graph_original
+            
+                ###################### START DATA COLLECTION ########################
+                if settings.options.collect_data:
+                    settings.collector.add_data("violates_constraint", True)
+                ###################### END DATA COLLECTION ##########################
+            
+                continue
+            else:
+                ###################### START DATA COLLECTION ########################
+                if settings.options.collect_data:
+                    settings.collector.add_data("violates_constraint", False)
+                    ###################### END DATA COLLECTION ##########################
+        
+            # Generamos el grafo con orden de maquinas asignadas
+            jobs_graph_aux = cp.deepcopy(self.jobs_graph)
+            m_graph_aux = cp.deepcopy(self.m_graph)
+            graph = self.fill_graph(jobs_graph_aux, m_graph_aux)
+        
+            # Verificamos que no existan ciclos debido a un error en el codigo
+            if self.cycle_exists(graph):
+                raise ValueError("Se produjo un ciclo en el" +
+                                 " grafo disyuntivo al momento de perturbar la solucion.")
+                import sys
+                sys.exit()
+        
+            # Creamos una nueva solucion y hacemos el recorrido hacia adelante para calcular el makespan
+            new_solution = Solution(no_machines=self.no_machines, machines=self.machines,
+                                    no_jobs=self.no_jobs, m_graph=self.m_graph, jobs_graph=self.jobs_graph,
+                                    operations=self.operations)
+        
+            new_solution.forward_traversal(graph, self.operations)
+        
+            self.moved += 1
+            if new_solution.cost() < self.cost():
+                ###################### START DATA COLLECTION ########################
+                if settings.options.collect_data:
+                    settings.collector.add_data("times_moved", self.moved)
+                ###################### END DATA COLLECTION ##########################
+                new_solution.moved = self.moved
+                return new_solution
+        
+            self.jobs_graph = jobs_graph_original
+            self.m_graph = m_graph_original
+    
+        if self.moved == 0:
+            self.moved = 1
+    
+        ###################### START DATA COLLECTION ########################
+        if settings.options.collect_data:
+            settings.collector.add_data("times_moved", self.moved)
+        ###################### END DATA COLLECTION ##########################
+        return self
+    
+    
+    
+    
+    
 
     # DOUBLE EXCHANGE
     def _d_exchange_neighbor(self):
@@ -1489,6 +1608,8 @@ class Solution:
             return self._sequential_neighbor()
         if heuristic == "D_EXCHANGE":
             return self._d_exchange_neighbor()
+        if heuristic == "REVERSE_SEQUENTIAL":
+            return self._reverse_sequential_neighbor()
 
     # P AND S EXCHANGE
     def _p_and_s_neighbor(self):

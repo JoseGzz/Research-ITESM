@@ -19,11 +19,11 @@ def init():
     parser.add_option("--df", action="store", type="string", dest="data_filename")
     # set file to which the collected data should be stored
     parser.add_option("--cf", action="store", type="string", dest="collect_filename")
-    parser.add_option("--seed", action="store", type="long", dest="seed", default=123456789)
-    parser.add_option("--special", action="store_true", dest="special", default=False)
-    parser.add_option("-k", action="store", dest="k", type="long", default=3)
-    parser.add_option("--temp", action="store", dest="temp", type="float", default=0.9)
-    parser.add_option("--iters", action="store", dest="iters", type="float", default=100)
+    #parser.add_option("--seed", action="store", type="long", dest="seed", default=123456789)
+    #parser.add_option("--special", action="store_true", dest="special", default=False)
+    #parser.add_option("-k", action="store", dest="k", type="long", default=3)
+    #parser.add_option("--temp", action="store", dest="temp", type="float", default=0.9)
+    #parser.add_option("--iters", action="store", dest="iters", type="float", default=100)
     global options
     (options, _) = parser.parse_args()
     

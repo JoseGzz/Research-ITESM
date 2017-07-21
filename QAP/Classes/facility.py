@@ -6,7 +6,6 @@ ITESM Campus Monterrey
 03/2017
 """
 class Facility():
-
 	def __init__(self, fac_id=0, flows=[], location=None):
 		"""Inicialización de clase y valores"""
 		self.fac_id   = fac_id

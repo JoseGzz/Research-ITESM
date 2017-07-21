@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import subprocess
 import time
 
@@ -27,11 +28,11 @@ def run_scripts(dd, dfs, cd, name, iters, pl=0):
             for seed in seeds:
                 for k in ks:
                     for temp in temps:
-                        for iter in num_iters:
-                            p = subprocess.Popen(["python simulated_annealing.py -c --df {0} --cf {1} --func H4 --seed {2} -k {3} --temp {4} --iters {5}".format(
+                        for it in num_iters:
+                            p = subprocess.Popen(["python qap_solver.py -c --df {0} --cf {1} --seed {2} -k {3} --temp {4} --iters {5} --hh H4".format(
                                 data_file_directory + data_file,
                                 data_collection_directory + result_file.replace("N", str(i)),
-                                seed, k, temp, iter)],
+                                seed, k, temp, it)],
                                 shell=True)
                             
                             p.wait()
@@ -41,11 +42,12 @@ if __name__ == "__main__":
 
     d_collection_directory = "../results/"
 
-    d_file_directory = "../Instances/taillard/"
-    d_files = ["15x15/Ta01.txt", "20x15/Ta11.txt", "20x20/Ta21.txt", "30x15/Ta31.txt", "30x20/Ta41.txt"]
+    d_file_directory = "../instances/qap/taillard/"
+    d_files = ["tai10a.dat", "tai10b.dat", "tai12a.dat", "tai12b.dat", "tai15a.dat", "tai15b.dat",
+               "tai17a.dat", "tai20a.dat", "tai20b.dat", "tai25a.dat", "tai25b.dat", "tai30a.dat",
+               "tai30b.dat"]
 
-    
-    run_scripts(d_file_directory, d_files, d_collection_directory, "JSSPH4_params", 1)
+    run_scripts(d_file_directory, d_files, d_collection_directory, "QAP_HH4", 1)
     
     end_time = time.time()
     print()
