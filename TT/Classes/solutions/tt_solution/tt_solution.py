@@ -28,6 +28,7 @@ class TtSolution(Solution):
         self.isBacktracking = True
         self.stack = []
         self.candidates = self._get_candidates()
+        self.preference = 0
         
     def _get_candidates(self):
         result = []
@@ -40,6 +41,11 @@ class TtSolution(Solution):
         for k, sol in self.state['classes'].items():
             if sol.properties['committed'] == "false" and len(sol.properties['rooms']) == 0 and \
                     len(sol.properties['time_slots']) > 0:
+                result.append(k)
+                
+        for k, sol in self.state['classes'].items():
+            if sol.properties['committed'] == "false" and len(sol.properties['rooms']) > 0 and \
+                    len(sol.properties['time_slots']) == 0:
                 result.append(k)
                 
         holder = []
@@ -73,34 +79,43 @@ class TtSolution(Solution):
             
         return day
     
-    def find_room(self, ci):
-        room = None
-        if len(ci.properties['rooms']) > 0 and ci.properties['room_index'] < len(ci.properties['rooms']):
-            room = ci.properties['rooms'][ci.properties['room_index']]['id']
-            room = self.state['rooms'][room]
-        # else:
-        #     for rk, r in self.state['rooms'].items():
-        #         conflict = True
-        #         for ek, event in self.solution_space.items():
-        #             if event.day == day and event.room == r.uid and \
-        #                     (time_slot['start_time'] < event.start_time + event.duration
-        #                     and time_slot['start_time'] + time_slot['length'] > event.start_time):
-        #                 pass
-        #             else:
-        #                 conflict = False
-        #                 break
-        #
-        #         if not conflict:
-        #             room = r
-        #             break
-        
-        return room
+    def find_slot(self, ci):
+        if len(ci.properties['rooms']) > 0 and len(ci.properties['time_slots']) > 0:
+            if ci.properties['time_slot_index'] < len(ci.properties['time_slots']):
+                time_slot = ci.properties['time_slots'][ci.properties['time_slot_index']]
+                days = []
+                for index, day in enumerate(time_slot['days']):
+                    if day == '1':
+                        days.append(self._get_day(index))
+                    
+                room = ci.properties['rooms'][ci.properties['room_index']]['id']
+                room = self.state['rooms'][room]
+            
+                return days, room, time_slot['start'], time_slot['length']
+            
+        # no preference slot found, look in other rooms
+        if len(ci.properties['time_slots']) > 0:
+            if ci.properties['time_slot_index'] < len(ci.properties['time_slots']):
+                time_slot = ci.properties['time_slots'][ci.properties['time_slot_index']]
+                days = []
+                for index, day in enumerate(time_slot['days']):
+                    if day == '1':
+                        days.append(self._get_day(index))
+                        
+                index = ci.properties['room_search']
+                
+                room_key = list(self.state['rooms'].keys())[index]
+                room = self.state['rooms'][room_key]
+
+                return days, room, time_slot['start'], time_slot['length']
+
+        # no slot found,
+        return [], None, None, None
     
     def is_feasible(self, sol, days, room, time_start, time_length):
         for day in days:
             event = Event(day, time_start, time_length, room.uid, sol.uid)
-            if SameRoomAndTime().is_violated(self, event) or \
-                                    SameStudents().is_violated(self, event):
+            if SameRoomAndTime().is_violated(self, event) or SameStudents().is_violated(self, event):
                 return False
             
         return True
@@ -108,28 +123,18 @@ class TtSolution(Solution):
     def permute(self, heuristic):
         # do the backtracking and return a new solution
         if self.isBacktracking:
-            failed = False
-            for k, sol in self.state['classes'].items():
-                # TODO: remove thing after and, it should only be not committed
-                if sol.properties['committed'] == "false" and len(sol.properties['rooms']) > 0:
-                    time_slot = sol.properties['time_slots'][sol.properties['time_slot_index']]
-                    days = []
-                    for index, day in enumerate(time_slot['days']):
-                        if day == '1':
-                            days.append(self._get_day(index))
-
-                    room = self.find_room(sol)
-                    
-                    if room is None:
-                        failed = True
-                        
-                    if (not failed) and self.is_feasible(sol, days, room,time_slot['start'], time_slot['length']):
+            if len(self.candidates) > 0:
+                sol = self.state['classes'][self.candidates[-1]]
+                
+                days, room, start, length = self.find_slot(sol)
+                
+                if room is not None:
+                    if self.is_feasible(sol, days, room, start, length):
                         self.solution_space[sol.uid] = []
                         
                         for day in days:
-                            self.solution_space[sol.uid].append(Event(day, time_slot['start'],
-                                                         time_slot['length'], room.uid, sol.uid))
-                            sol.properties['committed'] = "true"
+                            self.solution_space[sol.uid].append(Event(day, start, length, room.uid, sol.uid))
+
                             rooms = self.state['rooms']
     
                             room_index = 0
@@ -138,49 +143,104 @@ class TtSolution(Solution):
                                     break
                                     
                                 room_index += 1
-                            print("succeded {0}-{1}, {2}-{3}".format(day, room_index, time_slot['start'],
-                                                                 time_slot['length']))
+                            print("######### secceded ({0}) #########".format(len(self.candidates)))
+                            print("id: {0}, com: {1}, rid: {2}, days: {3}, {4}:{5}".format(
+                                sol.uid, sol.properties['committed'], room.uid, days, start, length))
 
-                        self.stack.append(self.solution_space[sol.uid])
-                    else:
-                        if 'room_index' in sol.properties:
-                            if sol.properties['room_index'] < len(sol.properties['rooms']) - 1:
-                                sol.properties['room_index'] += 1
+                        self.stack.append(self.candidates.pop())
+                        self.preference -= 1
+                        return self
+
+                    print("######### failed ({0}) #########".format(len(self.candidates)))
+                    print("id: {0}, com: {1}, rid: {2}, days: {3}, {4}:{5}".format(
+                        sol.uid, sol.properties['committed'], room.uid, days, start, length))
+
+                print("######### No slot ({0}) #########".format(len(self.candidates)))
+                # do reset and backtracking if necessary
+                if 'room_index' in sol.properties:
+                    if sol.properties['room_index'] < len(sol.properties['rooms']) - 1:
+                        sol.properties['room_index'] += 1
+                        return self
+
+                if 'time_slot_index' in sol.properties and sol.properties['phase1']:
+                    if sol.properties['time_slot_index'] < len(sol.properties['time_slots']) - 1:
+                        if len(sol.properties['rooms']) > 0:
+                            sol.properties['room_index'] = 0
+                            sol.properties['time_slot_index'] += 1
+                            return self
+                        else:
+                            if sol.properties['room_search'] < len(self.state['rooms']) - 1:
+                                sol.properties['room_search'] += 1
                             else:
+                                sol.properties['time_slot_index'] += 1
+                                sol.properties['room_search'] = 0
+                            
+                            return self
+                        
+                # the class has to look in other classrooms
+                if 'time_slot_index' in sol.properties:
+                    if sol.properties['time_slot_index'] >= len(sol.properties['time_slots']) and \
+                                    len(sol.properties['rooms']) > 0:
+                        if sol.properties['phase1']:
+                            sol.properties['time_slot_index'] = 0
+                            sol.properties['phase1'] = False
+
+                if 'time_slot_index' in sol.properties:
+                    if sol.properties['time_slot_index'] < len(sol.properties['time_slots']) - 1:
+
+                        if sol.properties['room_search'] < len(self.state['rooms']) - 1:
+                            sol.properties['room_search'] += 1
+                        else:
+                            sol.properties['time_slot_index'] += 1
+                            sol.properties['room_search'] = 0
+
+                        return self
+                
+                # no solution found, start backtracking
+                sol.properties['time_slot_index'] = 0
+                # TODO: check likely cause of bug
+                # sol.properties['room_search'] = 0
+                sol.properties['time_search'] = 0
+                sol.properties['room_index'] = 0
+                sol.properties['room_search'] = 0
+                sol.properties['phase1'] = True
+               
+                if len(self.stack) > 0:
+                    sol_key = self.stack.pop()
+                    sol = self.state['classes'][sol_key]
+                    self.candidates.append(sol_key)
+
+                    if 'room_index' in sol.properties:
+                        if sol.properties['room_index'] < len(sol.properties['rooms']) - 1:
+                            sol.properties['room_index'] += 1
+                            return self
+
+                    if 'time_slot_index' in sol.properties:
+                        if sol.properties['time_slot_index'] < len(sol.properties['time_slots']) - 1:
+                            if len(sol.properties['rooms']) > 0:
                                 sol.properties['room_index'] = 0
                                 sol.properties['time_slot_index'] += 1
-                                
-                                if sol.properties['time_slot_index'] >= len(sol.properties['time_slots']):
-                                    if len(self.stack) > 0:
-                                        events = self.stack.pop()
-                                        new_sol = self.state['classes'][events[0].uid]
-                                        new_sol.properties['committed'] = "false"
-
-                                        if 'room_index' in new_sol.properties:
-                                            if new_sol.properties['room_index'] < len(new_sol.properties['rooms']) - 1:
-                                                new_sol.properties['room_index'] += 1
-                                            else:
-                                                new_sol.properties['room_index'] = 0
-                                                new_sol.properties['time_slot_index'] += 1
-                                                
-                                                if new_sol.properties['time_slot_index'] >= \
-                                                    len(new_sol.properties['time_slots']):
-                                                    print("ERROR 1")
-                                                    sys.exit(1)
-                                    else:
-                                        print("ERROR 2")
-                                        sys.exit(1)
-                                     
-                        print("failed")
-                    
-                    return self
+                                return self
+                            else:
+                                if sol.properties['room_search'] < len(self.state['rooms']) - 1:
+                                    sol.properties['room_search'] += 1
+                                else:
+                                    sol.properties['time_slot_index'] += 1
+                                    sol.properties['room_search'] = 0
+            
+                                return self
                             
+                    # if new sol has also no solution, problem has no solution
+                    print("ERROR, NO SOLUTION PRESENT")
+                    sys.exit(1)
+            
+            print("SOLVED, BE HAPPY :D")
             # just in case
             return self
 
     def cost(self):
         # TODO: return something different
-        return 0
+        return self.preference
 
     def does_violate_constraint(self):
         # TODO: implement after backtracking is working
@@ -212,10 +272,18 @@ class TtSolution(Solution):
                                 result[uid].append(event)
                             else:
                                 result[uid] = [event]
+                        else:
+                            uc['time_slot_index'] = 0
+                            uc['room_index'] = 0
+                            uc['room_search'] = 0
+                            uc['time_search'] = 0
+                            uc['phase1'] = True
                                 
             else:
                 uc['time_slot_index'] = 0
-                if len(uc['rooms']) > 0:
-                    uc['room_index'] = 0
-                        
+                uc['room_index'] = 0
+                uc['room_search'] = 0
+                uc['time_search'] = 0
+                uc['phase1'] = True
+
         return result

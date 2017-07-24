@@ -113,9 +113,11 @@ class SimulatedAnnealing:
                     settings.collector.add_data("worst_makespan", worst.cost())
                 ###################### END DATA COLLECTION ##########################
         
-                # TODO: change to < later
-                if candidate.cost() <= best.cost():
+                if candidate.cost() < best.cost():
                     best = cp.deepcopy(candidate)
+                    
+                    if settings.options.trace:
+                        self.plotter.plot(best)
                     
                 #print(len(best.solution_space))
 
@@ -125,13 +127,9 @@ class SimulatedAnnealing:
                     settings.collector.add_data("current_makespan", candidate.cost())
                 ###################### END DATA COLLECTION ##########################
                 
-                if settings.options.trace:
-                    print(" > iteration=%d, temp=%g, curr= %g, best=%g" %
-                        (self.eiter, temp, candidate.cost(), best.cost()))
-                
-                # TODO: find another place after TT is set
-                if settings.options.trace:
-                    self.plotter.plot(best)
+                #if settings.options.trace:
+                #    print(" > iteration=%d, temp=%g, curr= %g, best=%g" %
+                #        (self.eiter, temp, candidate.cost(), best.cost()))
                 
                 self.eiter += candidate.moved
                 self.hyper_heuristic.add_best_makespan(best.cost())

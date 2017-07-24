@@ -13,7 +13,6 @@ class SameRoomAndTime(Restriction):
                     if event.room == e.room:
                         if (e.start_time < event.start_time + event.duration and
                                 e.start_time + e.duration > event.start_time):
-                            print("first broken by {0} and {1}".format(e.uid, event.uid))
                             return True
         
         return False
