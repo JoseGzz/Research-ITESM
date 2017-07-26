@@ -4,8 +4,6 @@ from functools import cmp_to_key
 
 from TT.Classes.solutions.solution import Solution
 from TT.Classes.solutions.tt_solution.Event import Event
-from TT.Classes.solutions.tt_solution.restrictions.same_room_and_time import SameRoomAndTime
-from TT.Classes.solutions.tt_solution.restrictions.same_students import SameStudents
 from TT.Classes.solutions.tt_solution.types import Day
 
 
@@ -29,6 +27,14 @@ class TtSolution(Solution):
         self.stack = []
         self.candidates = self._get_candidates()
         self.preference = 0
+        self.constraints = []
+        self.soft_constraints = []
+        
+    def add_contraints(self, constraints):
+        self.constraints = constraints
+        
+    def add_soft_contraints(self, soft_constraints):
+        self.soft_constraints = soft_constraints
         
     def _get_candidates(self):
         result = []
@@ -80,7 +86,7 @@ class TtSolution(Solution):
         return day
     
     def find_slot(self, ci):
-        if len(ci.properties['rooms']) > 0 and len(ci.properties['time_slots']) > 0:
+        if len(ci.properties['rooms']) > 0 and len(ci.properties['time_slots']) > 0 and ci.properties['phase1']:
             if ci.properties['time_slot_index'] < len(ci.properties['time_slots']):
                 time_slot = ci.properties['time_slots'][ci.properties['time_slot_index']]
                 days = []
@@ -115,9 +121,11 @@ class TtSolution(Solution):
     def is_feasible(self, sol, days, room, time_start, time_length):
         for day in days:
             event = Event(day, time_start, time_length, room.uid, sol.uid)
-            if SameRoomAndTime().is_violated(self, event) or SameStudents().is_violated(self, event):
-                return False
             
+            for constraint in self.constraints:
+                if constraint.is_violated(self, event):
+                    return False
+
         return True
         
     def permute(self, heuristic):
@@ -179,26 +187,24 @@ class TtSolution(Solution):
                         
                 # the class has to look in other classrooms
                 if 'time_slot_index' in sol.properties:
-                    if sol.properties['time_slot_index'] >= len(sol.properties['time_slots']) and \
-                                    len(sol.properties['rooms']) > 0:
-                        if sol.properties['phase1']:
-                            sol.properties['time_slot_index'] = 0
-                            sol.properties['phase1'] = False
+                    if sol.properties['phase1']:
+                        sol.properties['time_slot_index'] = 0
+                        sol.properties['phase1'] = False
 
                 if 'time_slot_index' in sol.properties:
-                    if sol.properties['time_slot_index'] < len(sol.properties['time_slots']) - 1:
+                    if sol.properties['time_slot_index'] <= len(sol.properties['time_slots']) - 1 and \
+                            sol.properties['room_search'] < len(self.state['rooms']) - 1:
 
-                        if sol.properties['room_search'] < len(self.state['rooms']) - 1:
-                            sol.properties['room_search'] += 1
-                        else:
-                            sol.properties['time_slot_index'] += 1
-                            sol.properties['room_search'] = 0
-
+                        sol.properties['room_search'] += 1
                         return self
-                
+                    
+                    elif sol.properties['time_slot_index'] < len(sol.properties['time_slots']) - 1:
+                        sol.properties['time_slot_index'] += 1
+                        sol.properties['room_search'] = 0
+                        return self
+                        
                 # no solution found, start backtracking
                 sol.properties['time_slot_index'] = 0
-                # TODO: check likely cause of bug
                 # sol.properties['room_search'] = 0
                 sol.properties['time_search'] = 0
                 sol.properties['room_index'] = 0
@@ -229,12 +235,15 @@ class TtSolution(Solution):
                                     sol.properties['room_search'] = 0
             
                                 return self
-                            
+
+                else:
                     # if new sol has also no solution, problem has no solution
                     print("ERROR, NO SOLUTION PRESENT")
                     sys.exit(1)
             
-            print("SOLVED, BE HAPPY :D")
+            if len(self.candidates) <= 0:
+                print("SOLVED, BE HAPPY :D")
+                
             # just in case
             return self
 

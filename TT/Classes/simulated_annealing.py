@@ -67,9 +67,19 @@ class SimulatedAnnealing:
         self._temp_change_rate = 0.9
         self.eiter = 0
         self.plotter = None
+        self.constraints = []
+        self.soft_constraints = []
+        
+    def register_constraints(self, constraints):
+        self.constraints = constraints
+        
+    def register_soft_constraints(self, constraints):
+        self.soft_constraints = constraints
     
     def solve(self, filename):
         self._current_solution = self.data_reader.read(filename)
+        self._current_solution.add_contraints(self.constraints)
+        self._current_solution.add_soft_contraints(self.soft_constraints)
         self.hyper_heuristic.register(self)
 
         ###################### START DATA COLLECTION ########################

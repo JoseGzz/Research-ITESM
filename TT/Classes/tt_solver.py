@@ -3,9 +3,16 @@ import settings.qap_settings as settings
 from data_readers.tt_data_reader import TtDataReader
 from hyper_heuristics.h1 import H1
 from simulated_annealing import SimulatedAnnealing
+from TT.Classes.solutions.tt_solution.restrictions.different_time import DifferentTime
+from TT.Classes.solutions.tt_solution.restrictions.precedence import Precedence
+from TT.Classes.solutions.tt_solution.restrictions.preference_room import PreferenceRoom
+from TT.Classes.solutions.tt_solution.restrictions.room_cost import RoomCost
+from TT.Classes.solutions.tt_solution.restrictions.same_instructor import SameInstructor
+from TT.Classes.solutions.tt_solution.restrictions.same_room_and_time import SameRoomAndTime
+from TT.Classes.solutions.tt_solution.restrictions.same_students import SameStudents
+from TT.Classes.solutions.tt_solution.restrictions.spread import Spread
 import time
 import random
-
 from plotters.tt_plotter import TtPlotter
 
 if __name__ == "__main__":
@@ -21,13 +28,18 @@ if __name__ == "__main__":
     if not filename:
         raise UserWarning("enter data filename through the -df flag.")
 
-    solver = SimulatedAnnealing(TtDataReader(), H1())
-    solver.register_plotter(TtPlotter())
-    best_solution = solver.solve(filename)
-    # TODO: remove this line.
-    #solution = solver.data_reader.read(filename)
-    #plotter = TtPlotter()
-    #plotter.plot(solution)
+    constraints = [SameRoomAndTime(), SameStudents(), DifferentTime(), Precedence(), SameInstructor(),
+                   Spread()]
+    soft_constraints = [RoomCost(), PreferenceRoom()]
     
+    solver = SimulatedAnnealing(TtDataReader(), H1())
+    plotter = TtPlotter()
+    plotter.register_constraints(constraints)
+    plotter.register_soft_constraints(soft_constraints)
+    solver.register_plotter(plotter)
+    solver.register_constraints(constraints)
+    solver.register_soft_constraints(soft_constraints)
+    best_solution = solver.solve(filename)
+
     # print(best_solution)
     # print(best_solution.cost())

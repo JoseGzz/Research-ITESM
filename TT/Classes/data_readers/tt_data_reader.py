@@ -186,9 +186,9 @@ class TtDataReader(DataReader):
             for constraint in constraints:
                 if uc.uid in constraint.properties['classes']:
                     if constraint.properties['type'] not in uc.properties['constraints']:
-                        uc.properties['constraints'][constraint.properties['type']] = set()
+                        # TODO: changed from set to list, may introduce bug, added same uid to keep list as is
+                        uc.properties['constraints'][constraint.properties['type']] = []
                     for uid in constraint.properties['classes']:
-                        if uid != uc.uid:
-                            uc.properties['constraints'][constraint.properties['type']].add(uid)
+                        uc.properties['constraints'][constraint.properties['type']].append(uid)
 
         return TtSolution(result)
