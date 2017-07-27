@@ -10,7 +10,6 @@ from TT.Classes.solutions.tt_solution.types import Day
 from matplotlib.colors import LinearSegmentedColormap
 import matplotlib.colors
 from palettable.cubehelix import perceptual_rainbow_16_r
-import matplotlib.gridspec as gridspec
 
 
 class TtPlotter:
@@ -25,13 +24,12 @@ class TtPlotter:
         self.colors = matplotlib.colors.makeMappingArray(N=100, data=self.cmap)
         
         for fig_index, day in enumerate(self.days):
-            gs = gridspec.GridSpec(1, 4)
-            ax1 = plt.subplot2grid((1, 4), (0, 0), colspan=3)
-            ax2 = plt.subplot2grid((1, 4), (0, 3), colspan=1)
-            
             fig = plt.figure(fig_index)
-            self._set_axis(fig, day)
-            self.plots.append(fig)
+            ax1 = plt.subplot2grid((1, 8), (0, 0), colspan=6)
+            ax2 = plt.subplot2grid((1, 8), (0, 7), colspan=1)
+            
+            self._set_axis(fig, ax1, day)
+            self.plots.append((fig, ax1, ax2))
             
     def register_constraints(self, constraints):
         self.constraints = constraints
@@ -58,8 +56,7 @@ class TtPlotter:
         else:
             return self.colors[int(result)]
     
-    def assign_time_slot(self, event, solution, fig):
-        ax1 = fig.gca()
+    def assign_time_slot(self, event, solution, ax1):
         rooms = solution.state['rooms']
         
         room_index = 0
@@ -76,46 +73,49 @@ class TtPlotter:
         ax1.add_patch(
             patches.Rectangle(
                 (room_index, (0.5 + (20.5 - (event.start_time // 12)) * 2) - (event.duration / 12.0) - 1),  # (x,y)
-                1,  # width
-                event.duration / 6.0,  # height
+                1,                      # width
+                event.duration / 6.0,   # height
                 color=color
             )
         )
 
     def plot(self, solution):
-        for i, fig in enumerate(self.plots):
+        for i, (_, _, _) in enumerate(self.plots):
             fig = plt.figure(i)
-            plt.clf()
-            self._set_axis(fig, self.days[i])
+            ax1 = plt.subplot2grid((1, 8), (0, 0), colspan=6)
+            ax2 = plt.subplot2grid((1, 8), (0, 7), colspan=1)
+            
+            self._set_axis(fig, ax1, self.days[i])
             
             for k, events in solution.solution_space.items():
                 for event in events:
                     if i == 0 and event.day == Day.Monday:
-                        self.assign_time_slot(event, solution, fig)
+                        self.assign_time_slot(event, solution, ax1)
                     if i == 1 and event.day == Day.Tuesday:
-                        self.assign_time_slot(event, solution, fig)
+                        self.assign_time_slot(event, solution, ax1)
                     if i == 2 and event.day == Day.Wednesday:
-                        self.assign_time_slot(event, solution, fig)
+                        self.assign_time_slot(event, solution, ax1)
                     if i == 3 and event.day == Day.Thursday:
-                        self.assign_time_slot(event, solution, fig)
+                        self.assign_time_slot(event, solution, ax1)
                     if i == 4 and event.day == Day.Friday:
-                        self.assign_time_slot(event, solution, fig)
-                    
+                        self.assign_time_slot(event, solution, ax1)
+
+            plt.ion()
             if self.first_time:
-                ax = fig.add_subplot(1, 2, 2)
-                plot_cmap(self.cmap, 100, ax)
+                plot_cmap(self.cmap, 100, ax2)
                 plt.show()
+                
+                plt.pause(0.1)
             else:
-                ax = fig.add_subplot(1, 2, 2)
-                plot_cmap(self.cmap, 100, ax)
+                plot_cmap(self.cmap, 100, ax2)
                 plt.show()
                 fig.canvas.draw()
+                
                 plt.pause(0.1)
-
+                
         self.first_time = False
         
-    def _set_axis(self, fig, day):
-        fig.set_size_inches(8, 6)
+    def _set_axis(self, fig, ax, day):
         fig.suptitle(day, fontsize=12)
         
         x_labels = [i for i in range(81)]
@@ -125,22 +125,21 @@ class TtPlotter:
             y_labels.append("{0}:00".format(time))
             y_labels.append("{0}:30".format(time - 1))
     
-        ax = fig.gca()
         ax.set_xlabel('Locations')
         ax.set_ylabel('Time Slots')
         ax.set_xticklabels('')
         ax.set_xticks([i + 0.5 for i in range(82)], minor=True)
         ax.set_xticklabels(x_labels, minor=True)
     
-        plt.yticks(np.arange(0.5, 31, 1), y_labels)
-        plt.xticks(np.arange(0, 82, 1))
-        plt.rc('grid', linestyle="-", color='black')
-        plt.grid(True)
-        
-        plt.ion()
+        ax.set_yticklabels('')
+        ax.set_yticks(np.arange(0.5, 31, 1), minor=True)
+        ax.set_yticklabels(y_labels, minor=True)
+        ax.set_xticks(np.arange(0, 82, 1))
+
+        ax.grid(linestyle="-", color='black')
 
 
-def plot_cmap(cmap, ncolor, fig):
+def plot_cmap(cmap, ncolor, ax):
     """
     A convenient function to plot colors of a matplotlib cmap
 
@@ -159,7 +158,7 @@ def plot_cmap(cmap, ncolor, fig):
         cm = cmap
 
     with mpl.rc_context(mpl.rcParamsDefault):
-        fig.pcolor(np.linspace(1, ncolor, ncolor).reshape(ncolor, 1), cmap=cm)
-        fig.set_title(cm.name)
-        xt = fig.set_xticks([])
-        yt = fig.set_yticks(list(np.arange(0, 110, 10)))
+        ax.pcolor(np.linspace(1, ncolor, ncolor).reshape(ncolor, 1), cmap=cm)
+        ax.set_title(cm.name)
+        ax.set_xticks([])
+        ax.set_yticks(list(np.arange(0, 110, 10)))

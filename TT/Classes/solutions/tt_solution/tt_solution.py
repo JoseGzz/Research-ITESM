@@ -151,19 +151,19 @@ class TtSolution(Solution):
                                     break
                                     
                                 room_index += 1
-                            print("######### secceded ({0}) #########".format(len(self.candidates)))
-                            print("id: {0}, com: {1}, rid: {2}, days: {3}, {4}:{5}".format(
-                                sol.uid, sol.properties['committed'], room.uid, days, start, length))
+                            #print("######### secceded ({0}) #########".format(len(self.candidates)))
+                            #print("id: {0}, com: {1}, rid: {2}, days: {3}, {4}:{5}".format(
+                            #    sol.uid, sol.properties['committed'], room.uid, days, start, length))
 
                         self.stack.append(self.candidates.pop())
                         self.preference -= 1
                         return self
 
-                    print("######### failed ({0}) #########".format(len(self.candidates)))
-                    print("id: {0}, com: {1}, rid: {2}, days: {3}, {4}:{5}".format(
-                        sol.uid, sol.properties['committed'], room.uid, days, start, length))
+                    #print("######### failed ({0}) #########".format(len(self.candidates)))
+                    #print("id: {0}, com: {1}, rid: {2}, days: {3}, {4}:{5}".format(
+                    #    sol.uid, sol.properties['committed'], room.uid, days, start, length))
 
-                print("######### No slot ({0}) #########".format(len(self.candidates)))
+                #print("######### No slot ({0}) #########".format(len(self.candidates)))
                 # do reset and backtracking if necessary
                 if 'room_index' in sol.properties:
                     if sol.properties['room_index'] < len(sol.properties['rooms']) - 1:

@@ -15,6 +15,8 @@ import time
 import random
 from plotters.tt_plotter import TtPlotter
 
+from TT.Classes.solutions.tt_solution.restrictions.students_taking_class import StudentsTakingClass
+
 if __name__ == "__main__":
     settings.init()
     random.seed(time.time())
@@ -30,7 +32,7 @@ if __name__ == "__main__":
 
     constraints = [SameRoomAndTime(), SameStudents(), DifferentTime(), Precedence(), SameInstructor(),
                    Spread()]
-    soft_constraints = [RoomCost(), PreferenceRoom()]
+    soft_constraints = [RoomCost(), PreferenceRoom(), StudentsTakingClass()]
     
     solver = SimulatedAnnealing(TtDataReader(), H1())
     plotter = TtPlotter()

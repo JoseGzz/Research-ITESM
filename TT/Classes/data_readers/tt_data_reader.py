@@ -160,12 +160,14 @@ class TtDataReader(DataReader):
         # get the enrolled students
         students = []
         for student in soup.students.findChildren(recursive=False):
-            properties = {}
+            properties = {'offering': [],
+                          'class': []}
             
-            if student.has_attr('offering'):
-                properties['offering'] = student['offering']
-            if student.has_attr('class'):
-                properties['class'] = student['class']
+            for offering in student.findAll('offering'):
+                properties['offering'].append(int(offering['id']))
+                
+            for u_class in student.findAll('class'):
+                properties['class'].append(int(u_class['id']))
                 
             student_entity = Resource(int(student['id']), ResourceType.Student, properties)
             students.append(student_entity)
@@ -186,9 +188,17 @@ class TtDataReader(DataReader):
             for constraint in constraints:
                 if uc.uid in constraint.properties['classes']:
                     if constraint.properties['type'] not in uc.properties['constraints']:
-                        # TODO: changed from set to list, may introduce bug, added same uid to keep list as is
                         uc.properties['constraints'][constraint.properties['type']] = []
                     for uid in constraint.properties['classes']:
                         uc.properties['constraints'][constraint.properties['type']].append(uid)
-
+                        
+        enrollments = {}
+        for student in students:
+            for c_id in student.properties['class']:
+                if c_id in enrollments:
+                    enrollments[c_id].append(student.uid)
+                else:
+                    enrollments[c_id] = [student.uid]
+                    
+        result['enrollments'] = enrollments
         return TtSolution(result)
