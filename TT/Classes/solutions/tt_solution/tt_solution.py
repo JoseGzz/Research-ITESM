@@ -151,6 +151,7 @@ class TtSolution(Solution):
                                     break
                                     
                                 room_index += 1
+                                
                             #print("######### secceded ({0}) #########".format(len(self.candidates)))
                             #print("id: {0}, com: {1}, rid: {2}, days: {3}, {4}:{5}".format(
                             #    sol.uid, sol.properties['committed'], room.uid, days, start, length))
@@ -170,7 +171,7 @@ class TtSolution(Solution):
                         sol.properties['room_index'] += 1
                         return self
 
-                if 'time_slot_index' in sol.properties and sol.properties['phase1']:
+                if ('time_slot_index' in sol.properties) and sol.properties['phase1']:
                     if sol.properties['time_slot_index'] < len(sol.properties['time_slots']) - 1:
                         if len(sol.properties['rooms']) > 0:
                             sol.properties['room_index'] = 0
@@ -205,7 +206,6 @@ class TtSolution(Solution):
                         
                 # no solution found, start backtracking
                 sol.properties['time_slot_index'] = 0
-                # sol.properties['room_search'] = 0
                 sol.properties['time_search'] = 0
                 sol.properties['room_index'] = 0
                 sol.properties['room_search'] = 0
@@ -213,28 +213,9 @@ class TtSolution(Solution):
                
                 if len(self.stack) > 0:
                     sol_key = self.stack.pop()
-                    sol = self.state['classes'][sol_key]
                     self.candidates.append(sol_key)
 
-                    if 'room_index' in sol.properties:
-                        if sol.properties['room_index'] < len(sol.properties['rooms']) - 1:
-                            sol.properties['room_index'] += 1
-                            return self
-
-                    if 'time_slot_index' in sol.properties:
-                        if sol.properties['time_slot_index'] < len(sol.properties['time_slots']) - 1:
-                            if len(sol.properties['rooms']) > 0:
-                                sol.properties['room_index'] = 0
-                                sol.properties['time_slot_index'] += 1
-                                return self
-                            else:
-                                if sol.properties['room_search'] < len(self.state['rooms']) - 1:
-                                    sol.properties['room_search'] += 1
-                                else:
-                                    sol.properties['time_slot_index'] += 1
-                                    sol.properties['room_search'] = 0
-            
-                                return self
+                    return self
 
                 else:
                     # if new sol has also no solution, problem has no solution
